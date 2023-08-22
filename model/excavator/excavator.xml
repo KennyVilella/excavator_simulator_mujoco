@@ -1,0 +1,127 @@
+<mujoco model="excavator">
+  <asset>
+    <mesh file="mesh/arm_h_link_rod.obj" scale="1 1 1"/>
+    <mesh file="mesh/arm_h_link_tube.obj" scale="1 1 1"/>
+    <mesh file="mesh/arm.obj" scale="1 1 1"/>
+    <mesh file="mesh/boom_arm_rod.obj" scale="1 1 1"/>
+    <mesh file="mesh/boom_arm_tube.obj" scale="1 1 1"/>
+    <mesh file="mesh/boom.obj" scale="1 1 1"/>
+    <mesh file="mesh/bucket.obj" scale="1 1 1"/>
+    <mesh file="mesh/caterpillar.obj" scale="1 1 1"/>
+    <mesh file="mesh/chassis_boom_rod.obj" scale="1 1 1"/>
+    <mesh file="mesh/chassis_boom_tube.obj" scale="1 1 1"/>
+    <mesh file="mesh/chassis.obj" scale="1 1 1"/>
+    <mesh file="mesh/h_link.obj" scale="1 1 1"/>
+    <mesh file="mesh/side_link.obj" scale="1 1 1"/>
+  </asset>
+
+  <worldbody>
+    <!-- Floor -->
+    <body name="floor" pos="0 0 0" euler="0 0 0">
+      <geom type="plane" size="20 20 .01" rgba="1 1 1 1"/>
+    </body> <!-- Floor -->
+
+    <!-- Caterpillar -->
+    <body name="caterpillar" pos="0 0 0.04" euler="90 0 0">
+      <joint type="free" limited='false' damping="0" stiffness="1" armature="0"/>
+      <geom name="caterpillar" type="mesh" mesh="caterpillar" pos="0 0 0" euler="0 0 0"/>
+
+      <!-- Chassis -->
+      <body name="chassis" pos="0 0.76673 0" euler="0 0 0">
+        <joint name="chassis" axis="0 0 1" pos="0 0 0"/>
+        <geom name="chassis" type="mesh" mesh="chassis" pos="0 0 0" euler="0 0 0"/>
+
+        <!-- Chassis/Boom piston cylinder -->
+        <body name="chassis piston cylinder" pos="0.8 0.152 0." euler="0 0 72.3">
+          <joint name="chassis piston cylinder" type="hinge" axis="0 0 1" pos="0 0 0"/>
+          <geom name="chassis piston cylinder" type="mesh" mesh="chassis_boom_tube" pos="0 0 0" euler="0 0 0"/>
+
+          <!-- Chassis/Boom piston rod -->
+          <body name="chassis piston rod" pos="0.3399 0. 0." euler="0 0 0">
+            <joint name="chassis piston rod" type="slide" axis="1 0 0" limited="true" ref="0.3399" range="0.06 0.56" pos="0 0 0"/>
+            <geom name="chassis piston rod" type="mesh" mesh="chassis_boom_rod" pos="0 0 0" euler="0 0 0"/>
+          </body> <!-- Chassis/Boom piston rod -->
+        </body> <!-- Chassis/Boom piston cylinder -->
+
+        <!-- Boom -->
+        <body name="boom" pos="0.3256 0.389 0." euler="0 0 30">
+          <joint name="boom" type="hinge" axis="0 0 1" pos="0 0 0"/>
+          <geom name="boom" type="mesh" mesh="boom" pos="0 0 0" euler="0 0 0"/>
+
+          <!-- Boom/Arm piston cylinder -->
+          <body name="boom piston cylinder" pos="2.1653 0.9437 0." euler="0 0 -14.4">
+            <joint name="boom piston cylinder" type="hinge" axis="0 0 1" pos="0 0 0"/>
+            <geom name="boom piston cylinder" type="mesh" mesh="boom_arm_tube" pos="0 0 0" euler="0 0 0"/>
+
+            <!-- Boom/Arm piston rod -->
+            <body name="boom piston rod" pos="0.4342 0. 0." euler="0 0 0">
+              <joint name="boom piston rod" type="slide" axis="1 0 0" limited="true" ref="0.4342" range="0.28 0.93" pos="0 0 0"/>
+              <geom name="boom piston rod" type="mesh" mesh="boom_arm_rod" pos="0 0 0" euler="0 0 0"/>
+
+            </body> <!-- Boom/Arm piston rod -->
+          </body> <!-- Boom/Arm piston cylinder -->
+
+          <!-- Arm -->
+          <body name="arm" pos="3.8450 0. 0." euler="0 0 -60">
+            <joint name="arm" type="hinge" axis="0 0 1" pos="0 0 0"/>
+            <geom name="arm" type="mesh" mesh="arm" pos="0 0 0" euler="0 0 0"/>
+
+            <!-- Arm/Bucket piston cylinder -->
+            <body name="arm piston cylinder" pos="0.2402 0.3782 0." euler="0 0 4.19">
+              <joint name="arm piston cylinder" type="hinge" axis="0 0 1" pos="0 0 0"/>
+              <geom name="arm piston cylinder" type="mesh" mesh="arm_h_link_tube" pos="0 0 0" euler="0 0 0"/>
+
+              <!-- Arm/Bucket piston rod -->
+              <body name="arm piston rod" pos="0.5936 0. 0." euler="0 0 0">
+                <joint name="arm piston rod" type="slide" axis="1 0 0" limited="true" ref="0.5936" range="0.15 0.65" pos="0 0 0"/>
+                <geom name="arm piston rod" type="mesh" mesh="arm_h_link_rod" pos="0 0 0" euler="0 0 0"/>
+
+                <!-- H link -->
+                <body name="H link" pos="0.8656 0. 0." euler="0 0 -116.71">
+                  <joint name="H link" type="hinge" axis="0 0 1" pos="0 0 0"/>
+                  <geom name="H link" type="mesh" mesh="h_link" pos="0 0 0" euler="0 0 0"/>
+                </body> <!-- H link -->
+              </body> <!-- Arm/Bucket piston rod -->
+            </body> <!-- Arm/Bucket piston cylinder -->
+
+            <!-- Bucket -->
+            <body name="bucket" pos="1.996 0. 0." euler="0 0 70">
+              <joint name="bucket" type="hinge" axis="0 0 1" pos="0 0 0"/>
+              <geom name="bucket" type="mesh" mesh="bucket" pos="0 0 0" euler="0 0 0"/>
+
+              <!-- Side link -->
+              <body name="side link" pos="0.3790 0. 0." euler="0 0 95.66">
+                <joint name="side link" type="hinge" axis="0 0 1" pos="0 0 0"/>
+                <geom name="side link" type="mesh" mesh="side_link" pos="0 0 0" euler="0 0 0"/>
+              </body> <!-- Side link -->
+            </body> <!-- Bucket -->
+          </body> <!-- Arm -->
+        </body> <!-- Boom -->
+      </body> <!-- Chassis -->
+    </body> <!-- Caterpillar -->
+  </worldbody>
+
+  <equality>
+    <weld body1="caterpillar" body2="chassis"></weld>
+    <weld body1="floor" body2="caterpillar"></weld>
+    <connect body1="chassis piston rod" body2="boom" anchor="1.336 0. 0" solref="0.0002 1"></connect>
+    <connect body1="boom piston rod" body2="arm" anchor="1.147 0. 0" solref="0.0002 1"></connect>
+    <connect body1="H link" body2="arm" anchor="0.4539 0. 0" solref="0.0002 1"></connect>
+    <connect body1="side link" body2="H link" anchor="0.449 0. 0" solref="0.0002 1"></connect>
+  </equality>
+
+  <!-- Because the two hydraulic pistons are merged into one, the
+  collision algorithm considers that the cylinder and rod are into
+  contact with the boom. It is thus necessary to remove collision
+  checking between the hydraulic pistons and the boom-->
+  <contact>
+    <exclude body1="chassis piston rod" body2="boom"></exclude>
+    <exclude body1="chassis piston cylinder" body2="boom"></exclude>
+  </contact>
+
+  <actuator>
+    <velocity name="Boom" joint="chassis piston rod" kv="300000" ctrllimited="true" ctrlrange="-0.5 0.5"/>
+    <velocity name="Arm" joint="boom piston rod" kv="100000" ctrllimited="true" ctrlrange="-0.5 0.5"/>
+    <velocity name="Bucket" joint="arm piston rod" kv="100000" ctrllimited="true" ctrlrange="-0.5 0.5"/>
+  </actuator>
+</mujoco>
