@@ -95,7 +95,7 @@ Copyright, 2023, Vilella Kenny.
 
       <!-- Chassis -->
       <body name="chassis" pos="0 0.76673 0" euler="0 0 0">
-        <joint name="chassis" axis="0 0 1" pos="0 0 0"/>
+        <joint name="chassis" type="hinge" axis="0 1 0" pos="0 0 0"/>
         <geom name="chassis" type="mesh" mesh="chassis" material="chassis"
               pos="0 0 0" euler="0 0 0"/>
         <inertial pos="-0.486 0.480 -0.15" mass="20592"
@@ -197,7 +197,6 @@ Copyright, 2023, Vilella Kenny.
   </worldbody>
 
   <equality>
-    <weld body1="caterpillar" body2="chassis"/>
     <weld body1="floor" body2="caterpillar"/>
     <connect body1="chassis piston rod" body2="boom" anchor="1.336 0. 0"/>
     <connect body1="boom piston rod" body2="arm" anchor="1.147 0. 0"/>
@@ -215,6 +214,7 @@ Copyright, 2023, Vilella Kenny.
   </contact>
 
   <actuator>
+    <velocity name="Rotation" joint="chassis" kv="700000"/>
     <velocity name="Boom" joint="chassis piston rod" kv="700000"/>
     <velocity name="Arm" joint="boom piston rod" kv="100000"/>
     <velocity name="Bucket" joint="arm piston rod" kv="100000"/>
