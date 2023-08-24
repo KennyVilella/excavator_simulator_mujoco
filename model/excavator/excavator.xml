@@ -7,8 +7,6 @@ Copyright, 2023, Vilella Kenny.
 -->
 
 <mujoco model="excavator">
-<!-- 
--->
   <compiler meshdir="mesh" texturedir="texture"/>
 
   <default>
