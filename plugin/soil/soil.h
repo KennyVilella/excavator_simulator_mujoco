@@ -1,20 +1,21 @@
-#ifndef MUJOCO_PLUGIN_SOIL_H_
-#define MUJOCO_PLUGIN_SOIL_H_
+#ifndef MUJOCO_PLUGIN_SOIL_DYNAMICS_H_
+#define MUJOCO_PLUGIN_SOIL_DYNAMICS_H_
 
 #include <optional>
 
 #include <mujoco/mjdata.h>
 #include <mujoco/mjmodel.h>
-#include <mujoco/mujoco.h>
 
 namespace mujoco::plugin::soil {
 
 class Soil {
  public:
-  // Creates a new Soil instance or returns null on failure.
-  static std::optional<Soil> Create(const mjModel* m, mjData* d, int instance);
+  // Creates a new Dynamics instance or returns null on failure.
+  static Soil* Create(const mjModel* m, mjData* d, int instance);
   Soil(Soil&&) = default;
   ~Soil() = default;
+
+  void Compute(const mjModel* m, mjData* d, int instance);
 
   static void RegisterPlugin();
 
@@ -24,4 +25,4 @@ class Soil {
 
 }  // namespace mujoco::plugin::soil
 
-#endif  // MUJOCO_PLUGIN_SOIL_H_
+#endif  // MUJOCO_PLUGIN_SOIL_DYNAMICS_H_

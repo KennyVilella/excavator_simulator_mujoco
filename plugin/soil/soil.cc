@@ -1,11 +1,21 @@
+#include <mujoco/mjdata.h>
+#include <mujoco/mjmodel.h>
 #include <mujoco/mjplugin.h>
 #include <mujoco/mujoco.h>
-#include "soil.hpp"
+#include "soil.h"
 
 namespace mujoco::plugin::soil {
 
+Soil* Soil::Create(const mjModel* m, mjData* d, int instance) {
+    return nullptr;
+}
+
 // Plugin constructor
 Soil::Soil(const mjModel* m, mjData* d, int instance) {
+}
+
+// Plugin compute
+void Soil::Compute(const mjModel* m, mjData* d, int instance) {
 }
 
 // Plugin registration
@@ -21,12 +31,11 @@ void Soil::RegisterPlugin() {
 
   // Initialization callback
   plugin.init = +[](const mjModel* m, mjData* d, int instance) {
-    auto soil_or_null = Soil::Create(m, d, instance);
-    if (!soil_or_null.has_value()) {
+    auto* Soil = Soil::Create(m, d, instance);
+    if (!Soil) {
       return -1;
     }
-    d->plugin_data[instance] = reinterpret_cast<uintptr_t>(
-        new Soil(std::move(*soil_or_null)));
+    d->plugin_data[instance] = reinterpret_cast<uintptr_t>(Soil);
     return 0;
   };
 

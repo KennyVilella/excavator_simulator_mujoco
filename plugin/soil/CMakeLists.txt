@@ -1,11 +1,12 @@
 set(MUJOCO_SOIL_SRCS
-    soil.cpp
-    soil.hpp
-    register.cpp
+    register.cc
+    soil.h
+    soil.cc
 )
 
 add_library(soil SHARED)
 target_sources(soil PRIVATE ${MUJOCO_SOIL_SRCS})
+target_include_directories(soil PRIVATE ${MUJOCO_SOIL_INCLUDE})
 target_link_libraries(soil PRIVATE mujoco)
 target_compile_options(
   soil

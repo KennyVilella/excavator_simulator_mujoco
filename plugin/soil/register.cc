@@ -1,5 +1,5 @@
 #include <mujoco/mjplugin.h>
-#include "soil.hpp"
+#include "soil.h"
 
 namespace mujoco::plugin::soil {
 
