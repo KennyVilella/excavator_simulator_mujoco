@@ -1,3 +1,9 @@
+# Build folder
+build/
+
+# Swap files
+*.swp
+
 # Prerequisites
 *.d
 
