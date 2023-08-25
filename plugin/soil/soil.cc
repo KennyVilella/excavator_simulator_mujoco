@@ -1,11 +1,17 @@
+/*
+This file implements the main functions of the plugin.
+
+Copyright, 2023, Vilella Kenny.
+*/
 #include <mujoco/mjdata.h>
 #include <mujoco/mjmodel.h>
 #include <mujoco/mjplugin.h>
 #include <mujoco/mujoco.h>
-#include "soil.h"
+#include "plugin/soil/soil.h"
 
 namespace mujoco::plugin::soil {
 
+// Creates a Soil instance
 Soil* Soil::Create(const mjModel* m, mjData* d, int instance) {
     return nullptr;
 }

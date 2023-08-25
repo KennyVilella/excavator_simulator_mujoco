@@ -1,10 +1,14 @@
-#ifndef MUJOCO_PLUGIN_SOIL_DYNAMICS_H_
-#define MUJOCO_PLUGIN_SOIL_DYNAMICS_H_
+/*
+This file declares the main functions of the plugin.
 
-#include <optional>
+Copyright, 2023, Vilella Kenny.
+*/
+#ifndef PLUGIN_SOIL_SOIL_H_
+#define PLUGIN_SOIL_SOIL_H_
 
 #include <mujoco/mjdata.h>
 #include <mujoco/mjmodel.h>
+#include <optional>
 
 namespace mujoco::plugin::soil {
 
@@ -25,4 +29,4 @@ class Soil {
 
 }  // namespace mujoco::plugin::soil
 
-#endif  // MUJOCO_PLUGIN_SOIL_DYNAMICS_H_
+#endif  // PLUGIN_SOIL_SOIL_H_
