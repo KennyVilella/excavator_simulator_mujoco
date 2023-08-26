@@ -216,6 +216,7 @@ Copyright, 2023, Vilella Kenny.
   <contact>
     <exclude body1="chassis piston rod" body2="boom"/>
     <exclude body1="chassis piston cylinder" body2="boom"/>
+    <exclude body1="bucket" body2="floor"/>
   </contact>
 
   <actuator>
