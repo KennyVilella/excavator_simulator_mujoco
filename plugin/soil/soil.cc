@@ -7,7 +7,7 @@ Copyright, 2023, Vilella Kenny.
 #include <mujoco/mjmodel.h>
 #include <mujoco/mjplugin.h>
 #include <mujoco/mujoco.h>
-#include "plugin/soil/soil.h"
+#include "soil.h"
 
 namespace mujoco::plugin::soil {
 
