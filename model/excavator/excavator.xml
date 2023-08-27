@@ -10,7 +10,11 @@ Copyright, 2023, Vilella Kenny.
   <compiler meshdir="mesh" texturedir="texture"/>
 
   <extension>
-    <plugin plugin="mujoco.soil"/>
+    <plugin plugin="mujoco.soil">
+      <instance name="terrain">
+        <config key="cell_size_z" value="0.01"/>
+      </instance>
+    </plugin>
   </extension>
 
   <default>
