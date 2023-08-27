@@ -8,12 +8,18 @@ cd $SCRIPT_DIR
 
 # Copy the soil simulator if not already present
 if [ ! -d "plugin/soil/soil_dynamics_cpp" ]; then
+  echo "Cloning soil_dynamics_cpp..."
   cd plugin/soil/
   git clone https://github.com/KennyVilella/soil_dynamics_cpp
   cd $SCRIPT_DIR
 else
   cd plugin/soil/soil_dynamics_cpp
-  if [! "git rev-parse --is-inside-work-tree"]; then
+  if [ "$(git rev-parse --show-toplevel 2>/dev/null)" = "$(pwd)" ]; then
+    echo "soil_dynamics_cpp is already installed, skip"
+  else
+    echo "Cloning soil_dynamics_cpp..."
+    cd ../
+    rm -rf soil_dynamics_cpp
     git clone https://github.com/KennyVilella/soil_dynamics_cpp
   fi
   cd $SCRIPT_DIR
