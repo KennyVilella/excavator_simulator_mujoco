@@ -4,6 +4,9 @@ build/
 # Swap files
 *.swp
 
+# Mujoco files
+MUJOCO_LOG.TXT
+
 # Prerequisites
 *.d
 
