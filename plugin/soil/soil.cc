@@ -18,6 +18,7 @@ Copyright, 2023, Vilella Kenny.
 #include <mujoco/mjplugin.h>
 #include <mujoco/mujoco.h>
 #include "soil.h"
+#include <soil_simulator/soil_dynamics.hpp>
 
 namespace mujoco::plugin::soil {
 namespace {
