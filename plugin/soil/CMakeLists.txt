@@ -3,11 +3,10 @@ set(MUJOCO_SOIL_SRCS
     ${CMAKE_CURRENT_SOURCE_DIR}/soil.h
     ${CMAKE_CURRENT_SOURCE_DIR}/soil.cc
 )
-set(MUJOCO_SOIL_INCLUDE
-    ${CMAKE_CURRENT_SOURCE_DIR}/soil_dynamics_cpp/soil_simulator
-)
+set(MUJOCO_SOIL_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/soil_dynamics_cpp)
 
-find_library(NAMES soil_simulator)
+
+find_library(soil_simulator NAMES soil_simulator)
 
 add_library(soil SHARED)
 target_sources(soil PRIVATE ${MUJOCO_SOIL_SRCS})
