@@ -188,6 +188,7 @@ Copyright, 2023, Vilella Kenny.
 
             <!-- Bucket -->
             <body name="bucket" pos="1.996 0. 0." euler="0 0 70">
+              <plugin plugin="mujoco.soil" instance ="terrain"/>
               <joint name="bucket" type="hinge" axis="0 0 1" pos="0 0 0"/>
               <geom name="bucket" type="mesh" mesh="bucket" material="bucket"
                     pos="0 0 0" euler="0 0 0"/>
