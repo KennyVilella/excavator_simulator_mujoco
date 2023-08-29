@@ -4,6 +4,11 @@ This file implements the main functions of the plugin.
 Copyright, 2023, Vilella Kenny.
 */
 
+#include "soil.h"
+#include <mujoco/mjdata.h>
+#include <mujoco/mjmodel.h>
+#include <mujoco/mjplugin.h>
+#include <mujoco/mujoco.h>
 #include <algorithm>
 #include <cctype>
 #include <cstdint>
@@ -13,39 +18,41 @@ Copyright, 2023, Vilella Kenny.
 #include <optional>
 #include <string>
 #include <utility>
-#include <mujoco/mjdata.h>
-#include <mujoco/mjmodel.h>
-#include <mujoco/mjplugin.h>
-#include <mujoco/mujoco.h>
-#include "soil.h"
+#include <vector>
 #include <soil_simulator/soil_dynamics.hpp>
 #include <soil_simulator/types.hpp>
+#include <soil_simulator/utils.hpp>
 
 namespace mujoco::plugin::soil {
 namespace {
 
 // Check that input parameter is present
 bool CheckAttr(const char* name, const mjModel* m, int instance) {
-  char *end;
-  std::string value = mj_getPluginConfig(m, instance, name);
-  value.erase(std::remove_if(value.begin(), value.end(), isspace), value.end());
-  strtod(value.c_str(), &end);
-  return end == value.data() + value.size();
+    char *end;
+    std::string value = mj_getPluginConfig(m, instance, name);
+    value.erase(
+        std::remove_if(value.begin(), value.end(), isspace), value.end());
+    strtod(value.c_str(), &end);
+    return end == value.data() + value.size();
 }
 
-}
+}  // namespace
 
 // Creates a Soil instance
 Soil* Soil::Create(const mjModel* m, mjData* d, int instance) {
     // Checking all input parameters
     if (!CheckAttr("cell_size_z", m, instance))
-        mju_error("Soil plugin: Invalid ``cell_size_z`` parameter specification");
+        mju_error(
+            "Soil plugin: Invalid ``cell_size_z`` parameter specification");
     if (!CheckAttr("repose_angle", m, instance))
-        mju_error("Soil plugin: Invalid ``repose_angle`` parameter specification");
+        mju_error(
+            "Soil plugin: Invalid ``repose_angle`` parameter specification");
     if (!CheckAttr("max_iterations", m, instance))
-        mju_error("Soil plugin: Invalid ``max_iterations`` parameter specification");
+        mju_error(
+            "Soil plugin: Invalid ``max_iterations`` parameter specification");
     if (!CheckAttr("cell_buffer", m, instance))
-        mju_error("Soil plugin: Invalid ``cell_buffer`` parameter specification");
+        mju_error(
+            "Soil plugin: Invalid ``cell_buffer`` parameter specification");
 
     return new Soil(m, d, instance);
 }
@@ -53,10 +60,14 @@ Soil* Soil::Create(const mjModel* m, mjData* d, int instance) {
 // Plugin constructor
 Soil::Soil(const mjModel* m, mjData* d, int instance) {
     // Importing all input parameters
-    mjtNum cell_size_z = strtod(mj_getPluginConfig(m, instance, "cell_size_z"), nullptr);
-    mjtNum repose_angle = strtod(mj_getPluginConfig(m, instance, "repose_angle"), nullptr);
-    mjtNum max_iterations = strtod(mj_getPluginConfig(m, instance, "max_iterations"), nullptr);
-    mjtNum cell_buffer = strtod(mj_getPluginConfig(m, instance, "cell_buffer"), nullptr);
+    mjtNum cell_size_z = strtod(
+        mj_getPluginConfig(m, instance, "cell_size_z"), nullptr);
+    mjtNum repose_angle = strtod(
+        mj_getPluginConfig(m, instance, "repose_angle"), nullptr);
+    mjtNum max_iterations = strtod(
+        mj_getPluginConfig(m, instance, "max_iterations"), nullptr);
+    mjtNum cell_buffer = strtod(
+        mj_getPluginConfig(m, instance, "cell_buffer"), nullptr);
 
     // Calculating geometry of the grid
     int* length_x = m->hfield_nrow;
@@ -79,18 +90,32 @@ Soil::Soil(const mjModel* m, mjData* d, int instance) {
     std::vector<float> b_pos_init = {0.0, 0.0, -0.5};
     std::vector<float> t_pos_init = {0.7, 0.0, -0.5};
     float bucket_width = 0.5;
-    soil_simulator::Bucket *bucket = new soil_simulator::Bucket(
+    soil_simulator::Bucket bucket(
         o_pos_init, j_pos_init, b_pos_init, t_pos_init, bucket_width);
 
     // Initalizing the simulation parameter
-    soil_simulator::SimParam sim_param(repose_angle, max_iterations, cell_buffer);
+    soil_simulator::SimParam sim_param(
+        repose_angle, max_iterations, cell_buffer);
 
     // Initalizing the simulation outputs class
-    soil_simulator::SimOut *sim_out = new soil_simulator::SimOut(grid);
+    soil_simulator::SimOut sim_out(grid);
 }
 
 // Plugin compute
 void Soil::Compute(const mjModel* m, mjData* d, int instance) {
+    std::vector<float> pos = {0.0, 0.0, 0.0};
+    std::vector<float> ori = {0.0, 0.0, 0.0, 1.0};
+
+    // Creating pointer to bucket and sim_out
+    // Normally, one should directly create the pointer to the class instance
+    // in the plugin constructor but for some unkown reasons the pointer does
+    // not work in this function. It seems that the address of the pointer is
+    // changed somewhere else. This is a temporary workaround.
+    soil_simulator::Bucket* bucket_ptr = &bucket;
+    soil_simulator::SimOut* sim_out_ptr = &sim_out;
+
+    // Stepping the soil_simulator
+    sim.step(sim_out_ptr, pos, ori, grid, bucket_ptr, sim_param, 1e-5);
 }
 
 // Plugin registration
@@ -102,7 +127,8 @@ void Soil::RegisterPlugin() {
     plugin.capabilityflags |= mjPLUGIN_PASSIVE;
 
     // Input parameters
-    const char* attributes[] = {"cell_size_z", "repose_angle", "max_iterations", "cell_buffer"};
+    const char* attributes[] = {
+        "cell_size_z", "repose_angle", "max_iterations", "cell_buffer"};
     plugin.nattribute = sizeof(attributes) / sizeof(attributes[0]);
     plugin.attributes = attributes;
 
