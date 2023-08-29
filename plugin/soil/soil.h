@@ -25,14 +25,14 @@ class Soil {
 
      static void RegisterPlugin();
 
- private:
-     Soil(const mjModel* m, mjData* d, int instance);
-
+     int bucket_id;
      soil_simulator::SoilDynamics sim;
      soil_simulator::Grid grid;
      soil_simulator::Bucket bucket;
      soil_simulator::SimParam sim_param;
      soil_simulator::SimOut sim_out;
+ private:
+     Soil(const mjModel* m, mjData* d, int instance);
 };
 
 }  // namespace mujoco::plugin::soil

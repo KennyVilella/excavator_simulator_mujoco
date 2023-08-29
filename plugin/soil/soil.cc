@@ -69,6 +69,13 @@ Soil::Soil(const mjModel* m, mjData* d, int instance) {
     mjtNum cell_buffer = strtod(
         mj_getPluginConfig(m, instance, "cell_buffer"), nullptr);
 
+    // Determining bucket ID
+    for (auto ii = 1; ii < m->nbody; ii++) {
+        if (m->body_plugin[ii] == instance) {
+            bucket_id = ii;
+        }
+    }
+
     // Calculating geometry of the grid
     int* length_x = m->hfield_nrow;
     int* length_y = m->hfield_ncol;
@@ -78,10 +85,10 @@ Soil::Soil(const mjModel* m, mjData* d, int instance) {
     mjtNum cell_size_xy = 2.0 * grid_size_x / *length_x;
 
     // Initalizing the simulator
-    soil_simulator::SoilDynamics sim;
+    //soil_simulator::SoilDynamics sim;
 
     // Initalizing the simulation grid
-    soil_simulator::Grid grid(
+    soil_simulator::Grid grid_new(
         grid_size_x, grid_size_y, grid_size_z, cell_size_xy, cell_size_z);
 
     // Initalizing the simulated bucket
@@ -90,21 +97,36 @@ Soil::Soil(const mjModel* m, mjData* d, int instance) {
     std::vector<float> b_pos_init = {0.0, 0.0, -0.5};
     std::vector<float> t_pos_init = {0.7, 0.0, -0.5};
     float bucket_width = 0.5;
-    soil_simulator::Bucket bucket(
+    soil_simulator::Bucket bucket_new(
         o_pos_init, j_pos_init, b_pos_init, t_pos_init, bucket_width);
 
     // Initalizing the simulation parameter
-    soil_simulator::SimParam sim_param(
+    soil_simulator::SimParam sim_param_new(
         repose_angle, max_iterations, cell_buffer);
 
     // Initalizing the simulation outputs class
-    soil_simulator::SimOut sim_out(grid);
+    soil_simulator::SimOut sim_out_new(grid_new);
+
+    // Override class instances
+    // This is a dirty way of dealing with the issue.
+    // This should be improved.
+    grid = grid_new;
+    bucket = bucket_new;
+    sim_param = sim_param_new;
+    sim_out = sim_out_new;
 }
 
 // Plugin compute
 void Soil::Compute(const mjModel* m, mjData* d, int instance) {
-    std::vector<float> pos = {0.0, 0.0, 0.0};
-    std::vector<float> ori = {0.0, 0.0, 0.0, 1.0};
+    std::vector<float> pos = {
+        static_cast<float>(d->xpos[3*bucket_id]),
+        static_cast<float>(d->xpos[3*bucket_id+1]),
+        static_cast<float>(d->xpos[3*bucket_id+2])};
+    std::vector<float> ori = {
+        static_cast<float>(d->xquat[4*bucket_id+1]),
+        static_cast<float>(d->xquat[4*bucket_id+2]),
+        static_cast<float>(d->xquat[4*bucket_id+3]),
+        static_cast<float>(d->xquat[4*bucket_id])};
 
     // Creating pointer to bucket and sim_out
     // Normally, one should directly create the pointer to the class instance
