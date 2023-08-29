@@ -5,7 +5,6 @@ set(MUJOCO_SOIL_SRCS
 )
 set(MUJOCO_SOIL_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/soil_dynamics_cpp)
 
-
 find_library(soil_simulator NAMES soil_simulator)
 
 add_library(soil SHARED)
@@ -14,8 +13,7 @@ target_include_directories(soil PRIVATE ${MUJOCO_SOIL_INCLUDE})
 
 target_link_libraries(
   soil
-  PRIVATE mujoco
-          soil_simulator)
+  PRIVATE mujoco)
 target_compile_options(
   soil
   PRIVATE ${AVX_COMPILE_OPTIONS}
