@@ -13,6 +13,9 @@ Copyright, 2023, Vilella Kenny.
     <plugin plugin="mujoco.soil">
       <instance name="terrain">
         <config key="cell_size_z" value="0.01"/>
+        <config key="repose_angle" value="0.85"/>
+        <config key="max_iterations" value="10"/>
+        <config key="cell_buffer" value="4"/>
       </instance>
     </plugin>
   </extension>
