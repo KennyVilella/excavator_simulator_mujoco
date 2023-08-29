@@ -19,6 +19,7 @@ Copyright, 2023, Vilella Kenny.
 #include <mujoco/mujoco.h>
 #include "soil.h"
 #include <soil_simulator/soil_dynamics.hpp>
+#include <soil_simulator/types.hpp>
 
 namespace mujoco::plugin::soil {
 namespace {
@@ -55,6 +56,8 @@ Soil::Soil(const mjModel* m, mjData* d, int instance) {
     mjtNum grid_size_y = m->hfield_size[1];
     mjtNum grid_size_z = m->hfield_size[2];
     mjtNum cell_size_xy = 2.0 * grid_size_x / *length_x;
+
+    soil_simulator::Grid grid(4.0, 4.0, 4.0, 0.05, 0.01);
 }
 
 // Plugin compute
