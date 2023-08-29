@@ -13,7 +13,9 @@ target_include_directories(soil PRIVATE ${MUJOCO_SOIL_INCLUDE})
 
 target_link_libraries(
   soil
-  PRIVATE mujoco)
+  PRIVATE mujoco
+          soil_simulator
+)
 target_compile_options(
   soil
   PRIVATE ${AVX_COMPILE_OPTIONS}
