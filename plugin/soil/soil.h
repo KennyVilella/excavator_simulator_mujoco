@@ -9,22 +9,30 @@ Copyright, 2023, Vilella Kenny.
 #include <mujoco/mjdata.h>
 #include <mujoco/mjmodel.h>
 #include <optional>
+#include <soil_simulator/soil_dynamics.hpp>
+#include <soil_simulator/types.hpp>
 
 namespace mujoco::plugin::soil {
 
 class Soil {
  public:
-  // Creates a new Dynamics instance or returns null on failure.
-  static Soil* Create(const mjModel* m, mjData* d, int instance);
-  Soil(Soil&&) = default;
-  ~Soil() = default;
+     // Creates a new Dynamics instance or returns null on failure.
+     static Soil* Create(const mjModel* m, mjData* d, int instance);
+     Soil(Soil&&) = default;
+     ~Soil() = default;
 
-  void Compute(const mjModel* m, mjData* d, int instance);
+     void Compute(const mjModel* m, mjData* d, int instance);
 
-  static void RegisterPlugin();
+     static void RegisterPlugin();
 
  private:
-  Soil(const mjModel* m, mjData* d, int instance);
+     Soil(const mjModel* m, mjData* d, int instance);
+
+     soil_simulator::SoilDynamics sim;
+     soil_simulator::Grid grid;
+     soil_simulator::Bucket bucket;
+     soil_simulator::SimParam sim_param;
+     soil_simulator::SimOut sim_out;
 };
 
 }  // namespace mujoco::plugin::soil
