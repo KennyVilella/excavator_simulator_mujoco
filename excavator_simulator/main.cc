@@ -325,6 +325,15 @@ void PhysicsLoop(mj::Simulate& sim) {
     soil_id = mj_name2id(m, mjOBJ_PLUGIN, "terrain");
     if ((terrain_id != -1) && (soil_id != -1)) {
       soil_plugin = true;
+      // check number of plugin state
+      int spec = mjSTATE_PLUGIN;
+      int size = mj_stateSize(m, spec);
+      std::vector<mjtNum> soil_state(size);
+      mj_getState(m, d, soil_state.data(), spec);
+      if (soil_state.size() != 1) {
+        mju_warning("Too many plugin state, disabling visual update");
+        soil_plugin = false;
+      }
     } else {
       soil_plugin = false;
     }
@@ -414,8 +423,16 @@ void PhysicsLoop(mj::Simulate& sim) {
       }
     }  // release std::lock_guard<std::mutex>
 
-    // update hfield if necessary
-    if (soil_plugin) sim.UpdateHField(terrain_id);
+    if (soil_plugin) {
+      // get plugin soil state
+      int spec = mjSTATE_PLUGIN;
+      int size = mj_stateSize(m, spec);
+      std::vector<mjtNum> soil_state(size);
+      mj_getState(m, d, soil_state.data(), spec);
+
+      // update hfield if necessary
+      if (soil_state[0] == 1.0) sim.UpdateHField(terrain_id);
+    }
   }
 }
 }  // namespace

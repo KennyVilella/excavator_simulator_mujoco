@@ -76,6 +76,9 @@ Soil::Soil(const mjModel* m, mjData* d, int instance) {
         }
     }
 
+    // Determining hfield ID of terrain
+    terrain_id = mj_name2id(m, mjOBJ_HFIELD, "terrain");
+
     // Calculating geometry of the grid
     int* length_x = m->hfield_nrow;
     int* length_y = m->hfield_ncol;
@@ -107,6 +110,13 @@ Soil::Soil(const mjModel* m, mjData* d, int instance) {
     // Initalizing the simulation outputs class
     soil_simulator::SimOut sim_out_new(grid_new);
 
+    // Setting state associated with visual update
+    int spec = mjSTATE_PLUGIN;
+    int size = mj_stateSize(m, spec);
+    std::vector<mjtNum> soil_state(size);
+    soil_state[0] = -1.0;
+    mj_setState(m, d, soil_state.data(), spec);
+
     // Override class instances
     // This is a dirty way of dealing with the issue.
     // This should be improved.
@@ -136,8 +146,28 @@ void Soil::Compute(const mjModel* m, mjData* d, int instance) {
     soil_simulator::Bucket* bucket_ptr = &bucket;
     soil_simulator::SimOut* sim_out_ptr = &sim_out;
 
+    // Stepping should be done only if the bucket has moved enough
+    // This can be done inside the soil_simulator maybe.
+
     // Stepping the soil_simulator
     sim.step(sim_out_ptr, pos, ori, grid, bucket_ptr, sim_param, 1e-5);
+
+    // Allowing the visual update of the terrain
+    int spec = mjSTATE_PLUGIN;
+    int size = mj_stateSize(m, spec);
+    std::vector<mjtNum> soil_state(size);
+    soil_state[0] = 1.0;
+    mj_setState(m, d, soil_state.data(), spec);
+
+    // Updating Hfield with terrain
+    // This should be improved
+    // At least update only in the relax_area
+    for (auto jj = 0; jj < sim_out.terrain_[0].size()-1; jj++) {
+        for (auto ii = 0; ii < sim_out.terrain_.size()-1; ii++) {
+            int new_index = (sim_out.terrain_[0].size()-1) * jj + ii;
+            m->hfield_data[new_index] = sim_out.terrain_[ii][jj];
+        }
+    }
 }
 
 // Plugin registration
@@ -154,8 +184,8 @@ void Soil::RegisterPlugin() {
     plugin.nattribute = sizeof(attributes) / sizeof(attributes[0]);
     plugin.attributes = attributes;
 
-    // Stateless
-    plugin.nstate = +[](const mjModel* m, int instance) { return 0; };
+    // One state
+    plugin.nstate = +[](const mjModel* m, int instance) { return 1; };
 
     // Initialization callback
     plugin.init = +[](const mjModel* m, mjData* d, int instance) {
