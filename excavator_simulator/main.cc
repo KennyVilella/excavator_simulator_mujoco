@@ -260,6 +260,11 @@ void PhysicsLoop(mj::Simulate& sim) {
   std::chrono::time_point<mj::Simulate::Clock> syncCPU;
   mjtNum syncSim = 0;
 
+  // declare variable used for the soil plugin
+  int terrain_id;
+  int soil_id;
+  bool soil_plugin;
+
   // run until asked to exit
   while (!sim.exitrequest.load()) {
     if (sim.droploadrequest.load()) {
@@ -313,6 +318,15 @@ void PhysicsLoop(mj::Simulate& sim) {
       std::this_thread::yield();
     } else {
       std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    }
+
+    // check if soil plugin is available
+    terrain_id = mj_name2id(m, mjOBJ_HFIELD, "terrain");
+    soil_id = mj_name2id(m, mjOBJ_PLUGIN, "terrain");
+    if ((terrain_id != -1) && (soil_id != -1)) {
+      soil_plugin = true;
+    } else {
+      soil_plugin = false;
     }
 
     {
@@ -399,6 +413,9 @@ void PhysicsLoop(mj::Simulate& sim) {
         }
       }
     }  // release std::lock_guard<std::mutex>
+
+    // update hfield if necessary
+    if (soil_plugin) sim.UpdateHField(terrain_id);
   }
 }
 }  // namespace
