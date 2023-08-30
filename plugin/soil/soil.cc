@@ -87,9 +87,6 @@ Soil::Soil(const mjModel* m, mjData* d, int instance) {
     mjtNum grid_size_z = m->hfield_size[2];
     mjtNum cell_size_xy = 2.0 * grid_size_x / *length_x;
 
-    // Initalizing the simulator
-    //soil_simulator::SoilDynamics sim;
-
     // Initalizing the simulation grid
     soil_simulator::Grid grid_new(
         grid_size_x, grid_size_y, grid_size_z, cell_size_xy, cell_size_z);
@@ -97,9 +94,9 @@ Soil::Soil(const mjModel* m, mjData* d, int instance) {
     // Initalizing the simulated bucket
     std::vector<float> o_pos_init = {0.0, 0.0, 0.0};
     std::vector<float> j_pos_init = {0.0, 0.0, 0.0};
-    std::vector<float> b_pos_init = {0.0, 0.0, -0.5};
-    std::vector<float> t_pos_init = {0.7, 0.0, -0.5};
-    float bucket_width = 0.5;
+    std::vector<float> b_pos_init = {0.0, 0.7, -0.5};
+    std::vector<float> t_pos_init = {0.0, -0.14, -0.97};
+    float bucket_width = 0.34;
     soil_simulator::Bucket bucket_new(
         o_pos_init, j_pos_init, b_pos_init, t_pos_init, bucket_width);
 
