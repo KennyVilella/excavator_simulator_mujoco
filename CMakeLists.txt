@@ -54,3 +54,4 @@ findorfetch(
 )
 
 add_subdirectory(plugin/soil)
+add_subdirectory(excavator_simulator)
