@@ -92,7 +92,6 @@ Copyright, 2023, Vilella Kenny.
 
   <worldbody>
     <!-- Floor -->
-
     <body name="floor" pos="0 0 0" euler="0 0 0">
       <geom name="terrain" type="hfield" hfield="terrain" material="floor"/>
     </body> <!-- Floor -->
