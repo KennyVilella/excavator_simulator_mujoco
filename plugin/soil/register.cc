@@ -4,7 +4,7 @@ This file registers the soil plugin to MuJoCo.
 Copyright, 2023, Vilella Kenny.
 */
 #include <mujoco/mjplugin.h>
-#include "plugin/soil/soil.h"
+#include "soil.h"
 
 namespace mujoco::plugin::soil {
 
