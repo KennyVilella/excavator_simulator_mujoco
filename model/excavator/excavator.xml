@@ -32,7 +32,9 @@ Copyright, 2023, Vilella Kenny.
   </visual>
 
   <asset>
-    <hfield name="terrain"  nrow="320" ncol="320" size="8.0 8.0 8.0 4.0"/>
+    <hfield name="terrain" nrow="320" ncol="320" size="8.0 8.0 8.0 4.0"/>
+    <hfield name="bucket soil 1" nrow="320" ncol="320" size="8.0 8.0 8.0 0.01"/>
+    <hfield name="bucket soil 2" nrow="320" ncol="320" size="8.0 8.0 8.0 0.01"/>
 
     <texture name="floor" type="2d" file="floor_texture.png"/>
     <material name="floor" emission="1" texrepeat="10 10" texture="floor"/>
@@ -95,6 +97,18 @@ Copyright, 2023, Vilella Kenny.
     <body name="floor" pos="0 0 0" euler="0 0 0">
       <geom name="terrain" type="hfield" hfield="terrain" material="floor"/>
     </body> <!-- Floor -->
+
+    <!-- First bucket soil layer -->
+    <body name="soil 1" pos="0 0 0" euler="0 0 0">
+      <geom name="bucket soil 1" type="hfield" hfield="bucket soil 1"
+          material="floor" contype="0" conaffinity="0"/>
+    </body> <!-- First bucket soil layer -->
+
+    <!-- Second bucket soil layer -->
+    <body name="soil 2" pos="0 0 0" euler="0 0 0">
+      <geom name="bucket soil 2" type="hfield" hfield="bucket soil 2"
+          material="floor" contype="0" conaffinity="0"/>
+    </body> <!-- Second bucket soil layer -->
 
     <!-- Caterpillar -->
     <body name="caterpillar" pos="0 0 0.04" euler="90 0 0">
