@@ -41,3 +41,6 @@ fi
 
 # Copy the soil library to the custom plugin folder
 cp build/plugin/soil/libsoil.so build/bin/mujoco_plugin
+
+# Copy the excavator_simulator executable to build/bin
+cp build/excavator_simulator/excavator_simulator build/bin

@@ -13,6 +13,9 @@ Copyright, 2023, Vilella Kenny.
     <plugin plugin="mujoco.soil">
       <instance name="terrain">
         <config key="cell_size_z" value="0.01"/>
+        <config key="repose_angle" value="0.85"/>
+        <config key="max_iterations" value="10"/>
+        <config key="cell_buffer" value="4"/>
       </instance>
     </plugin>
   </extension>
@@ -29,7 +32,7 @@ Copyright, 2023, Vilella Kenny.
   </visual>
 
   <asset>
-    <hfield name="terrain"  nrow="320" ncol="320" size="8.0 8.0 8.0 0.1"/>
+    <hfield name="terrain"  nrow="320" ncol="320" size="8.0 8.0 8.0 4.0"/>
 
     <texture name="floor" type="2d" file="floor_texture.png"/>
     <material name="floor" emission="1" texrepeat="10 10" texture="floor"/>
@@ -184,6 +187,7 @@ Copyright, 2023, Vilella Kenny.
 
             <!-- Bucket -->
             <body name="bucket" pos="1.996 0. 0." euler="0 0 70">
+              <plugin plugin="mujoco.soil" instance ="terrain"/>
               <joint name="bucket" type="hinge" axis="0 0 1" pos="0 0 0"/>
               <geom name="bucket" type="mesh" mesh="bucket" material="bucket"
                     pos="0 0 0" euler="0 0 0"/>
