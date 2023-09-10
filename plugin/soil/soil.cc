@@ -79,6 +79,10 @@ Soil::Soil(const mjModel* m, mjData* d, int instance) {
     // Determining hfield ID of terrain
     terrain_id = mj_name2id(m, mjOBJ_HFIELD, "terrain");
 
+    // Determining hfield ID of bucket soil
+    bucket_soil_1_id = mj_name2id(m, mjOBJ_HFIELD, "bucket soil 1");
+    bucket_soil_2_id = mj_name2id(m, mjOBJ_HFIELD, "bucket soil 2");
+
     // Calculating geometry of the grid
     int* length_x = m->hfield_nrow;
     int* length_y = m->hfield_ncol;
@@ -115,12 +119,10 @@ Soil::Soil(const mjModel* m, mjData* d, int instance) {
     mj_setState(m, d, soil_state.data(), spec);
 
     // Setting initial terrain to zero
-    for (auto jj = 0; jj < sim_out.terrain_[0].size()-1; jj++) {
-        for (auto ii = 0; ii < sim_out.terrain_.size()-1; ii++) {
-            int new_index = (sim_out.terrain_[0].size()-1) * jj + ii;
-            m->hfield_data[new_index] = 0.0;
-        }
-    }
+    int n_hfield_terrain = (
+        m->hfield_nrow[terrain_id] * m->hfield_ncol[terrain_id]);
+    for (auto ii = 0; ii < n_hfield_terrain; ii++)
+            m->hfield_data[ii] = 0.0;
 
     // Override class instances
     // This is a dirty way of dealing with the issue.
@@ -167,10 +169,40 @@ void Soil::Compute(const mjModel* m, mjData* d, int instance) {
         // Updating Hfield with terrain
         // This should be improved
         // At least update only in the relax_area
-        for (auto jj = 0; jj < sim_out.terrain_[0].size()-1; jj++) {
-            for (auto ii = 0; ii < sim_out.terrain_.size()-1; ii++) {
-                int new_index = (sim_out.terrain_[0].size()-1) * jj + ii;
-                m->hfield_data[new_index] = sim_out.terrain_[ii][jj] / m->hfield_size[2];
+        int n_hfield_terrain = (
+            m->hfield_nrow[terrain_id] * m->hfield_ncol[terrain_id]);
+        for (auto jj = 0; jj < m->hfield_nrow[terrain_id]; jj++) {
+            for (auto ii = 0; ii < m->hfield_ncol[terrain_id]; ii++) {
+                // Calculating index for the terrain hfield
+                int new_index = m->hfield_nrow[terrain_id] * jj + ii;
+
+                // Updating the terrain hfield
+                m->hfield_data[new_index] = (
+                    sim_out.terrain_[ii][jj] / m->hfield_size[2]);
+
+                // Updating the bucket soil 1 hfield if necessary
+                if (
+                    (sim_out.body_soil_[0][ii][jj] != 0.0) ||
+                    (sim_out.body_soil_[1][ii][jj] != 0.0)) {
+                    // Updating
+                    m->hfield_data[n_hfield_terrain + new_index] = (
+                        sim_out.body_soil_[1][ii][jj] / m->hfield_size[2]);
+                } else {
+                    // Setting to NULL, this is a dirty workaround
+                    m->hfield_data[n_hfield_terrain + new_index] = NULL;
+                }
+
+                // Updating the bucket soil 2 hfield if necessary
+                if (
+                    (sim_out.body_soil_[2][ii][jj] != 0.0) ||
+                    (sim_out.body_soil_[3][ii][jj] != 0.0)) {
+                    // Updating
+                    m->hfield_data[2*n_hfield_terrain + new_index] = (
+                        sim_out.body_soil_[3][ii][jj] / m->hfield_size[2]);
+                } else {
+                    // Setting to NULL, this is a dirty workaround
+                    m->hfield_data[2*n_hfield_terrain + new_index] = NULL;
+                }
             }
         }
     }

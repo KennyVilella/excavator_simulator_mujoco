@@ -27,6 +27,8 @@ class Soil {
 
      int bucket_id;
      int terrain_id;
+     int bucket_soil_1_id;
+     int bucket_soil_2_id;
      soil_simulator::SoilDynamics sim;
      soil_simulator::Grid grid;
      soil_simulator::Bucket bucket;
