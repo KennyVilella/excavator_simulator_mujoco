@@ -70,11 +70,7 @@ Soil::Soil(const mjModel* m, mjData* d, int instance) {
         mj_getPluginConfig(m, instance, "cell_buffer"), nullptr);
 
     // Determining bucket ID
-    for (auto ii = 1; ii < m->nbody; ii++) {
-        if (m->body_plugin[ii] == instance) {
-            bucket_id = ii;
-        }
-    }
+    bucket_id = mj_name2id(m, mjOBJ_BODY, "bucket");
 
     // Determining hfield ID of terrain
     terrain_id = mj_name2id(m, mjOBJ_HFIELD, "terrain");
@@ -85,31 +81,30 @@ Soil::Soil(const mjModel* m, mjData* d, int instance) {
 
     // Calculating geometry of the grid
     int* length_x = m->hfield_nrow;
-    int* length_y = m->hfield_ncol;
     mjtNum grid_size_x = m->hfield_size[0];
     mjtNum grid_size_y = m->hfield_size[1];
     mjtNum grid_size_z = 0.5 * m->hfield_size[2];
     mjtNum cell_size_xy = 2.0 * grid_size_x / *length_x;
 
     // Initalizing the simulation grid
-    soil_simulator::Grid grid_new(
+    grid = soil_simulator::Grid(
         grid_size_x, grid_size_y, grid_size_z, cell_size_xy, cell_size_z);
 
     // Initalizing the simulated bucket
     std::vector<float> o_pos_init = {0.0, 0.0, 0.0};
     std::vector<float> j_pos_init = {0.0, 0.0, 0.0};
-    std::vector<float> b_pos_init = {0.0, 0.7, -0.5};
-    std::vector<float> t_pos_init = {0.0, -0.14, -0.97};
-    float bucket_width = 0.34;
-    soil_simulator::Bucket bucket_new(
+    std::vector<float> b_pos_init = {0.7, 0.0, -0.5};
+    std::vector<float> t_pos_init = {-0.14, 0.0, -0.97};
+    float bucket_width = 0.68;
+    bucket = new soil_simulator::Bucket(
         o_pos_init, j_pos_init, b_pos_init, t_pos_init, bucket_width);
 
     // Initalizing the simulation parameter
-    soil_simulator::SimParam sim_param_new(
+    sim_param = soil_simulator::SimParam(
         repose_angle, max_iterations, cell_buffer);
 
     // Initalizing the simulation outputs class
-    soil_simulator::SimOut sim_out_new(grid_new);
+    sim_out = new soil_simulator::SimOut(grid);
 
     // Setting state associated with visual update
     int spec = mjSTATE_PLUGIN;
@@ -123,14 +118,6 @@ Soil::Soil(const mjModel* m, mjData* d, int instance) {
         m->hfield_nrow[terrain_id] * m->hfield_ncol[terrain_id]);
     for (auto ii = 0; ii < n_hfield_terrain; ii++)
             m->hfield_data[ii] = 0.0;
-
-    // Override class instances
-    // This is a dirty way of dealing with the issue.
-    // This should be improved.
-    grid = grid_new;
-    bucket = bucket_new;
-    sim_param = sim_param_new;
-    sim_out = sim_out_new;
 }
 
 // Plugin compute
@@ -141,22 +128,14 @@ void Soil::Compute(const mjModel* m, mjData* d, int instance) {
         static_cast<float>(d->xpos[3*bucket_id+1]),
         static_cast<float>(d->xpos[3*bucket_id+2])};
     std::vector<float> ori = {
-        static_cast<float>(d->xquat[4*bucket_id+1]),
-        static_cast<float>(d->xquat[4*bucket_id+2]),
-        static_cast<float>(d->xquat[4*bucket_id+3]),
-        static_cast<float>(d->xquat[4*bucket_id])};
-
-    // Creating pointer to bucket and sim_out
-    // Normally, one should directly create the pointer to the class instance
-    // in the plugin constructor but for some unkown reasons the pointer does
-    // not work in this function. It seems that the address of the pointer is
-    // changed somewhere else. This is a temporary workaround.
-    soil_simulator::Bucket* bucket_ptr = &bucket;
-    soil_simulator::SimOut* sim_out_ptr = &sim_out;
+        static_cast<float>(d->xquat[4*bucket_id]),
+        static_cast<float>(-d->xquat[4*bucket_id+1]),
+        static_cast<float>(-d->xquat[4*bucket_id+2]),
+        static_cast<float>(-d->xquat[4*bucket_id+3])};
 
     // Stepping the soil_simulator
     bool soil_update = sim.step(
-        sim_out_ptr, pos, ori, grid, bucket_ptr, sim_param, 1e-5);
+        sim_out, pos, ori, grid, bucket, sim_param, 1e-5);
 
     if (soil_update) {
         // Allowing the visual update of the terrain
