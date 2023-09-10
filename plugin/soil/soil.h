@@ -29,13 +29,13 @@ class Soil {
      int terrain_id;
      int bucket_soil_1_id;
      int bucket_soil_2_id;
-     soil_simulator::SoilDynamics sim;
-     soil_simulator::Grid grid;
-     soil_simulator::Bucket bucket;
-     soil_simulator::SimParam sim_param;
-     soil_simulator::SimOut sim_out;
  private:
      Soil(const mjModel* m, mjData* d, int instance);
+     soil_simulator::SoilDynamics sim;
+     soil_simulator::Grid grid;
+     soil_simulator::Bucket *bucket;
+     soil_simulator::SimParam sim_param;
+     soil_simulator::SimOut *sim_out;
 };
 
 }  // namespace mujoco::plugin::soil
