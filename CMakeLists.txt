@@ -46,7 +46,7 @@ findorfetch(
   GIT_REPO
   https://github.com/KennyVilella/mujoco.git
   GIT_TAG
-  feature/add_custom_upload_hfield
+  main
   TARGETS
   mujoco::mujoco
   mujoco::platform_ui_adapter
