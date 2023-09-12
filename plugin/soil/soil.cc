@@ -168,7 +168,7 @@ void Soil::Compute(const mjModel* m, mjData* d, int instance) {
                         sim_out->body_soil_[1][ii][jj] / m->hfield_size[2]);
                 } else {
                     // Setting to NULL, this is a dirty workaround
-                    m->hfield_data[n_hfield_terrain + new_index] = NULL;
+                    m->hfield_data[n_hfield_terrain + new_index] = mjMAXVAL;
                 }
 
                 // Updating the bucket soil 2 hfield if necessary
@@ -180,7 +180,7 @@ void Soil::Compute(const mjModel* m, mjData* d, int instance) {
                         sim_out->body_soil_[3][ii][jj] / m->hfield_size[2]);
                 } else {
                     // Setting to NULL, this is a dirty workaround
-                    m->hfield_data[2*n_hfield_terrain + new_index] = NULL;
+                    m->hfield_data[2*n_hfield_terrain + new_index] = mjMAXVAL;
                 }
             }
         }
