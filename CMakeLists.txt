@@ -44,9 +44,9 @@ findorfetch(
   LIBRARY_NAME
   mujoco
   GIT_REPO
-  https://github.com/deepmind/mujoco.git
+  https://github.com/KennyVilella/mujoco.git
   GIT_TAG
-  2.3.7
+  main
   TARGETS
   mujoco::mujoco
   mujoco::platform_ui_adapter
