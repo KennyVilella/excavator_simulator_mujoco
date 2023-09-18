@@ -30,4 +30,4 @@ target_link_options(
   ${EXTRA_LINK_OPTIONS}
 )
 
-add_subdirectory(soil_dynamics_cpp)
+add_subdirectory(soil_dynamics_cpp EXCLUDE_FROM_ALL)
