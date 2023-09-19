@@ -22,7 +22,29 @@ Last, some meshes have been remeshed using `Blender` in order to make the textur
 
 ## Model geometry
 The reference frame of the excavator models follows the right-hand rule and assumes that the Z axis points upward.
+The different parts of the excavator are showned below
 
+In the following, the geometry of each part would be described.
+
+### Caterpillar
+
+### Chassis
+
+### Boom
+
+### Chassis/Boom hyrdaulic cylinder
+
+### Arm
+
+### Boom/Arm hydraulic cylinder
+
+### Bucket
+
+### H link
+
+### Side link
+
+### Arm/H link hydraulic cylinder
 
 ## Actuation mode
 The current model uses velocity control to actuate the four joints.
