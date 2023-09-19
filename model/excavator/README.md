@@ -22,29 +22,51 @@ Last, some meshes have been remeshed using `Blender` in order to make the textur
 
 ## Model geometry
 The reference frame of the excavator models follows the right-hand rule and assumes that the Z axis points upward.
-The different parts of the excavator are showned below
+The different parts of the excavator are shown below.
+
+![Excavator schematic](image/excavator.jpg)
 
 In the following, the geometry of each part would be described.
 
 ### Caterpillar
+![Catterpillar schematic](image/caterpillar.jpg)
+
 
 ### Chassis
+![Chassis schematic](image/chassis.jpg)
+
 
 ### Boom
+![Boom schematic](image/boom.jpg)
 
-### Chassis/Boom hyrdaulic cylinder
+
+### Chassis/Boom hydraulic piston
+![Chassis/Boom piston schematic](image/chassis_piston.jpg)
+
 
 ### Arm
+![Arm schematic](image/arm.jpg)
 
-### Boom/Arm hydraulic cylinder
+
+### Boom/Arm hydraulic piston
+![Boom/Arm piston schematic](image/boom_piston.jpg)
+
 
 ### Bucket
+![Bucket schematic](image/bucket.jpg)
+
 
 ### H link
+![H link schematic](image/h_link.jpg)
+
 
 ### Side link
+![Side link schematic](image/side_link.jpg)
 
-### Arm/H link hydraulic cylinder
+
+### Arm/H link hydraulic piston
+![Arm/H link schematic](image/arm_piston.jpg)
+
 
 ## Actuation mode
 The current model uses velocity control to actuate the four joints.
@@ -55,10 +77,12 @@ A custom plugin should be made to provide a better actuation.
 The inertia of the different parts have been estimated with `Meshlab`.
 Some meshes are not "watertight" and had to be modified in order to obtain an estimate.
 The modifications made include:
+
 - "Merge Close Vertices"
 - "Trun into a Pure-Triangular mesh"
 - "Uniform Mesh Resampling"
 - "Close Holes"
+
 In some cases, some vertices had to be deleted in order to obtain a watertight mesh.
 
 Overall, the accuracy of the inertia estimate is expected to be low as it is assumed that all parts are composed of only one material, and that `Meshlab` does not account for hollow meshes.
