@@ -14,9 +14,10 @@ The resulting textures are stored in the `texture` folder.
 This section lists all the modifications that have been made to the original meshes.
 
 First, unnecessary parts, such as pipes, have been removed to produce a simpler and cleaner model.
-The excavator has then been separated into its different moving parts.
+The excavator has then been separated into its different moving parts and scaled down (100 times).
 
-Each part has been translated and rotated such that the origin of the mesh corresponds to the joint location and that the frame aligned with the chosen convention described in the next section.
+Each part has been translated such that the origin of the mesh corresponds to the location of the joint connecting it to its parent body.
+The parts are then rotated so that their reference position align with the convention described in the next section.
 
 Last, some meshes have been remeshed using `Blender` in order to make the texture looks more natural.
 
@@ -31,42 +32,195 @@ In the following, the geometry of each part would be described.
 ### Caterpillar
 ![Catterpillar schematic](image/caterpillar.jpg)
 
+The caterpillar is the base of the model and its origin is assumed to be at **A**.
+It is connected to the chassis at **B** with a hinge joint in the **Z** direction.
+
+Below is the Cartesian coordinates of the important points of this part in its reference position.
+
+| Points | Coordinates   |
+| ------ | ------------- |
+| **A**  | (0, 0, 0)     |
+| **B**  | (0, 0, 0.767) |
 
 ### Chassis
 ![Chassis schematic](image/chassis.jpg)
 
+The chassis is a children of the caterpillar and its origin is assumed to be at **B**.
+It is connected to the boom at **C** with a hinge joint in the **Y** direction and to the chassis piston cylinder at **D** with a hinge joint in the **Y** direction.
+
+Below is the Cartesian coordinates of the important points of this part in its reference position.
+
+| Points | Coordinates       |
+| ------ | ----------------- |
+| **B**  | (0, 0, 0)         |
+| **C**  | (0.326, 0, 0.389) |
+| **D**  | (0.800, 0, 0.152) |
 
 ### Boom
 ![Boom schematic](image/boom.jpg)
 
+The boom is a children of the chassis and its origin is assumed to be at **C**.
+It is connected to the arm at **H** with a hinge joint in the **Y** direction, to the chassis piston rod at
+**E** with a hinge joint in the **Y** direction, and to the boom piston cylinder at **F** with a hinge joint in the **Y** direction.
+
+Below is the Cartesian coordinates of the important points of this part in its reference position.
+
+| Points | Coordinates       |
+| ------ | ----------------- |
+| **C**  | (0, 0, 0)         |
+| **E**  | (1.532, 0, 0.686) |
+| **F**  | (2.165, 0, 0.944) |
+| **H**  | (3.845, 0, 0)     |
 
 ### Chassis/Boom hydraulic piston
 ![Chassis/Boom piston schematic](image/chassis_piston.jpg)
 
+The chassis hydraulic piston is composed of two parts, the chassis piston cylinder and the chassis piston rod, that connects the chassis to the boom.
+
+#### Chassis piston cylinder
+The chassis piston cylinder is a children of the chassis and its origin is assumed to be at **D**.
+It is connected to the chassis piston rod at **E'** with a prismatic (slide) joint in the **X** direction.
+The position of **E'** is however dependent of the joint state.
+
+A possible range for the length **DE'** has been selected arbitrarily based on measurements of the mesh.
+
+Below is the Cartesian coordinates of the important points of this part in its reference position.
+
+| Points | Coordinates           |
+| ------ | --------------------- |
+| **D**  | (0, 0, 0)             |
+| **E'** | (0.060 - 0.560, 0, 0) |
+
+#### Chassis piston rod
+The chassis piston rod is a children of the chassis piston cylinder and its origin is assumed to be at **E'**.
+It is connected to the boom at **E** with a hinge joint in the **Y** direction.
+Note that this induces a closed loop kinematics.
+
+Below is the Cartesian coordinates of the important points of this part in its reference position.
+
+| Points | Coordinates   |
+| ------ | ------------- |
+| **E'** | (0, 0, 0)     |
+| **E**  | (1.336, 0, 0) |
 
 ### Arm
 ![Arm schematic](image/arm.jpg)
 
+The arm is a children of the boom and its origin is assumed to be at **H**.
+It is connected to the bucket at **M** with a hinge joint in the **Y** direction, to the boom piston rod at
+**G** with a hinge joint in the **Y** direction, to the arm piston cylinder at **I** with a hinge joint in the **Y** direction, and to the H link at **K** with a hinge joint in the **Y** direction.
+
+Below is the Cartesian coordinates of the important points of this part in its reference position.
+
+| Points | Coordinates        |
+| ------ | ------------------ |
+| **H**  | (0, 0, 0)          |
+| **G**  | (-0.551, 0, 0.147) |
+| **I**  | (0.240, 0, 0.378)  |
+| **K**  | (1.522, 0, 0.065   |
+| **M**  | (1.996, 0, 0)      |
 
 ### Boom/Arm hydraulic piston
 ![Boom/Arm piston schematic](image/boom_piston.jpg)
 
+The boom hydraulic piston is composed of two parts, the boom piston cylinder and the boom piston rod, that connects the boom to the arm.
+
+#### Boom piston cylinder
+The boom piston cylinder is a children of the boom and its origin is assumed to be at **F**.
+It is connected to the boom piston rod at **G'** with a prismatic (slide) joint in the **X** direction.
+The position of **G'** is however dependent of the joint state.
+
+A possible range for the length **FG'** has been selected arbitrarily based on measurements of the mesh.
+
+Below is the Cartesian coordinates of the important points of this part in its reference position.
+
+| Points | Coordinates           |
+| ------ | --------------------- |
+| **F**  | (0, 0, 0)             |
+| **G'** | (0.280 - 0.930, 0, 0) |
+
+#### Boom piston rod
+The boom piston rod is a children of the boom piston cylinder and its origin is assumed to be at **G'**.
+It is connected to the arm at **G** with a hinge joint in the **Y** direction.
+Note that this induces a closed loop kinematics.
+
+Below is the Cartesian coordinates of the important points of this part in its reference position.
+
+| Points | Coordinates   |
+| ------ | ------------- |
+| **G'** | (0, 0, 0)     |
+| **G**  | (1.147, 0, 0) |
 
 ### Bucket
 ![Bucket schematic](image/bucket.jpg)
 
+The bucket is a children of the arm and its origin is assumed to be at **M**.
+It is connected to the side link at **L** with a hinge joint in the **Y** direction.
 
-### H link
-![H link schematic](image/h_link.jpg)
+Below is the Cartesian coordinates of the important points of this part in its reference position.
 
+| Points | Coordinates   |
+| ------ | ------------- |
+| **M**  | (0, 0, 0)     |
+| **L**  | (0.379, 0, 0) |
 
 ### Side link
 ![Side link schematic](image/side_link.jpg)
 
+The side link is a children of the bucket and its origin is assumed to be at **L**.
+It is connected to the H link and arm piston rod at **J** with a hinge joint in the **Y** direction.
+Note that this induces a closed loop kinematics.
+
+Below is the Cartesian coordinates of the important points of this part in its reference position.
+
+| Points | Coordinates   |
+| ------ | ------------- |
+| **L**  | (0, 0, 0)     |
+| **J**  | (0.449, 0, 0) |
 
 ### Arm/H link hydraulic piston
 ![Arm/H link schematic](image/arm_piston.jpg)
 
+The arm hydraulic piston is composed of two parts, the arm piston cylinder and the arm piston rod, that connects the arm to the H link.
+
+#### Arm piston cylinder
+The arm piston cylinder is a children of the arm and its origin is assumed to be at **I**.
+It is connected to the arm piston rod at **J'** with a prismatic (slide) joint in the **X** direction.
+The position of **J'** is however dependent of the joint state.
+
+A possible range for the length **IJ'** has been selected arbitrarily based on measurements of the mesh.
+
+Below is the Cartesian coordinates of the important points of this part in its reference position.
+
+| Points | Coordinates           |
+| ------ | --------------------- |
+| **I**  | (0, 0, 0)             |
+| **J'** | (0.15 - 0.65, 0, 0) |
+
+#### Arm piston rod
+The arm piston rod is a children of the arm piston cylinder and its origin is assumed to be at **J'**.
+It is connected to the H link and side link at **J** with a hinge joint in the **Y** direction.
+
+Below is the Cartesian coordinates of the important points of this part in its reference position.
+
+| Points | Coordinates   |
+| ------ | ------------- |
+| **J'** | (0, 0, 0)     |
+| **J**  | (0.866, 0, 0) |
+
+### H link
+![H link schematic](image/h_link.jpg)
+
+The H link is a children of the arm piston rod and its origin is assumed to be at **J**.
+It is connected to the arm at **K** with a hinge joint in the **Y** direction.
+Note that this induces a closed loop kinematics.
+
+Below is the Cartesian coordinates of the important points of this part in its reference position.
+
+| Points | Coordinates   |
+| ------ | ------------- |
+| **J**  | (0, 0, 0)     |
+| **K**  | (0.454, 0, 0) |
 
 ## Actuation mode
 The current model uses velocity control to actuate the four joints.
