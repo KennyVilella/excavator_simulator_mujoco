@@ -31,22 +31,18 @@ The different parts of the excavator are shown below.
 \
 \
 \
-The names of the different parts given in this schematic follows the selected convention and would be used throughouth this simulator.
-Moreover, the joints connecting all the parts are also named and would be used to make the description easier.
+The names of the different parts are given in this schematic and would be used in the following as well as throughouth this simulator.
+
 In the following, the geometry of each part would be described.
 
 ### Caterpillar
 \
-\
-\
 ![Catterpillar schematic](image/caterpillar.jpg)
-\
-\
-\
+
 The caterpillar is the base of the model and its origin is assumed to be at **A**.
 It is connected to the chassis at **B** with a hinge joint in the **Z** direction.
 
-Below is the Cartesian coordinates of the important points of the caterpillar in its reference position.
+Below is the Cartesian coordinates of the important points of this part in its reference position.
 
 | Points | Coordinates   |
 | ------ | ------------- |
@@ -54,17 +50,12 @@ Below is the Cartesian coordinates of the important points of the caterpillar in
 | **B**  | (0, 0, 0.767) |
 
 ### Chassis
-\
-\
-\
 ![Chassis schematic](image/chassis.jpg)
-\
-\
-\
+
 The chassis is a children of the caterpillar and its origin is assumed to be at **B**.
 It is connected to the boom at **C** with a hinge joint in the **Y** direction and to the chassis piston cylinder at **D** with a hinge joint in the **Y** direction.
 
-Below is the Cartesian coordinates of the important points of the chassis in its reference position.
+Below is the Cartesian coordinates of the important points of this part in its reference position.
 
 | Points | Coordinates       |
 | ------ | ----------------- |
@@ -79,7 +70,7 @@ The boom is a children of the chassis and its origin is assumed to be at **C**.
 It is connected to the arm at **H** with a hinge joint in the **Y** direction, to the chassis piston rod at
 **E** with a hinge joint in the **Y** direction, and to the boom piston cylinder at **F** with a hinge joint in the **Y** direction.
 
-Below is the Cartesian coordinates of the important points of the boom in its reference position.
+Below is the Cartesian coordinates of the important points of this part in its reference position.
 
 | Points | Coordinates       |
 | ------ | ----------------- |
@@ -100,7 +91,7 @@ The position of **E'** is however dependent of the joint state.
 
 A possible range for the length **DE'** has been selected arbitrarily based on measurements of the mesh.
 
-Below is the Cartesian coordinates of the important points of the chassis piston cylinder in its reference position.
+Below is the Cartesian coordinates of the important points of this part in its reference position.
 
 | Points | Coordinates           |
 | ------ | --------------------- |
@@ -112,7 +103,7 @@ The chassis piston rod is a children of the chassis piston cylinder and its orig
 It is connected to the boom at **E** with a hinge joint in the **Y** direction.
 Note that this induces a closed loop kinematics.
 
-Below is the Cartesian coordinates of the important points of the chassis piston rod in its reference position.
+Below is the Cartesian coordinates of the important points of this part in its reference position.
 
 | Points | Coordinates   |
 | ------ | ------------- |
@@ -126,7 +117,7 @@ The arm is a children of the boom and its origin is assumed to be at **H**.
 It is connected to the bucket at **M** with a hinge joint in the **Y** direction, to the boom piston rod at
 **G** with a hinge joint in the **Y** direction, to the arm piston cylinder at **I** with a hinge joint in the **Y** direction, and to the H link at **K** with a hinge joint in the **Y** direction.
 
-Below is the Cartesian coordinates of the important points of the arm in its reference position.
+Below is the Cartesian coordinates of the important points of this part in its reference position.
 
 | Points | Coordinates        |
 | ------ | ------------------ |
@@ -148,7 +139,7 @@ The position of **G'** is however dependent of the joint state.
 
 A possible range for the length **FG'** has been selected arbitrarily based on measurements of the mesh.
 
-Below is the Cartesian coordinates of the important points of the boom piston cylinder in its reference position.
+Below is the Cartesian coordinates of the important points of this part in its reference position.
 
 | Points | Coordinates           |
 | ------ | --------------------- |
@@ -160,7 +151,7 @@ The boom piston rod is a children of the boom piston cylinder and its origin is 
 It is connected to the arm at **G** with a hinge joint in the **Y** direction.
 Note that this induces a closed loop kinematics.
 
-Below is the Cartesian coordinates of the important points of the boom piston rod in its reference position.
+Below is the Cartesian coordinates of the important points of this part in its reference position.
 
 | Points | Coordinates   |
 | ------ | ------------- |
@@ -173,7 +164,7 @@ Below is the Cartesian coordinates of the important points of the boom piston ro
 The bucket is a children of the arm and its origin is assumed to be at **M**.
 It is connected to the side link at **L** with a hinge joint in the **Y** direction.
 
-Below is the Cartesian coordinates of the important points of the bucket in its reference position.
+Below is the Cartesian coordinates of the important points of this part in its reference position.
 
 | Points | Coordinates   |
 | ------ | ------------- |
@@ -187,7 +178,7 @@ The side link is a children of the bucket and its origin is assumed to be at **L
 It is connected to the H link and arm piston rod at **J** with a hinge joint in the **Y** direction.
 Note that this induces a closed loop kinematics.
 
-Below is the Cartesian coordinates of the important points of the side link in its reference position.
+Below is the Cartesian coordinates of the important points of this part in its reference position.
 
 | Points | Coordinates   |
 | ------ | ------------- |
@@ -206,7 +197,7 @@ The position of **J'** is however dependent of the joint state.
 
 A possible range for the length **IJ'** has been selected arbitrarily based on measurements of the mesh.
 
-Below is the Cartesian coordinates of the important points of the arm piston cylinder in its reference position.
+Below is the Cartesian coordinates of the important points of this part in its reference position.
 
 | Points | Coordinates           |
 | ------ | --------------------- |
@@ -217,7 +208,7 @@ Below is the Cartesian coordinates of the important points of the arm piston cyl
 The arm piston rod is a children of the arm piston cylinder and its origin is assumed to be at **J'**.
 It is connected to the H link and side link at **J** with a hinge joint in the **Y** direction.
 
-Below is the Cartesian coordinates of the important points of the arm piston rod in its reference position.
+Below is the Cartesian coordinates of the important points of this part in its reference position.
 
 | Points | Coordinates   |
 | ------ | ------------- |
@@ -231,7 +222,7 @@ The H link is a children of the arm piston rod and its origin is assumed to be a
 It is connected to the arm at **K** with a hinge joint in the **Y** direction.
 Note that this induces a closed loop kinematics.
 
-Below is the Cartesian coordinates of the important points of the H link in its reference position.
+Below is the Cartesian coordinates of the important points of this part in its reference position.
 
 | Points | Coordinates   |
 | ------ | ------------- |
@@ -242,8 +233,6 @@ Below is the Cartesian coordinates of the important points of the H link in its 
 The current model uses velocity control to actuate the four joints.
 This is however not fully satisfactory as the boom and arm of the excavator is falling down under the influence of gravity even when a zero velocity is requested.
 A custom plugin should be made to provide a better actuation.
-
-The rotation actuator is connected to the caterpillar/chassis hinge joint, while the three other actuators are connected to the three hydraulic pistons prismatic joints.
 
 ## Inertia calculation
 The inertia of the different parts have been estimated with [Meshlab][Meshlab].
