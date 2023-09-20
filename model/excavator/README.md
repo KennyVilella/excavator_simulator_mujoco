@@ -248,10 +248,10 @@ Nevertheless, these results are reasonable at first order and are sufficient for
 
 Note that the results from [Meshlab][Meshlab] were rescaled assuming a density of 8000 kg/m^3, a typical value for steel.
 
-[Blender]: /url "https://www.blender.org/"
-[Meshlab]: /url "https://www.meshlab.net/"
-[metal]: /url "https://www.poliigon.com/texture/lightly-worn-galvanised-steel-industrial-metal-texture/3129"
-[steel]: /url "https://www.poliigon.com/texture/stainless-steel-texture-clean-brushed/7174"
-[dirt]: /url "https://www.poliigon.com/texture/ground-dirt-weeds-patchy-004/6987"
+[Blender]: https://www.blender.org/
+[Meshlab]: https://www.meshlab.net/
+[metal]: https://www.poliigon.com/texture/lightly-worn-galvanised-steel-industrial-metal-texture/3129
+[steel]: https://www.poliigon.com/texture/stainless-steel-texture-clean-brushed/7174
+[dirt]: https://www.poliigon.com/texture/ground-dirt-weeds-patchy-004/6987
 
 [^1]: by ipatzwijaya, https://free3d.com/3d-model/excavator-501815.html
