@@ -32,9 +32,9 @@ Copyright, 2023, Vilella Kenny.
   </visual>
 
   <asset>
-    <hfield name="terrain" nrow="320" ncol="320" size="8.0 8.0 8.0 4.0"/>
-    <hfield name="bucket soil 1" nrow="320" ncol="320" size="8.0 8.0 8.0 0.01"/>
-    <hfield name="bucket soil 2" nrow="320" ncol="320" size="8.0 8.0 8.0 0.01"/>
+    <hfield name="terrain" nrow="320" ncol="320" size="8.0 8.0 12.0 4.0"/>
+    <hfield name="bucket soil 1" nrow="320" ncol="320" size="8.0 8.0 12.0 0.01"/>
+    <hfield name="bucket soil 2" nrow="320" ncol="320" size="8.0 8.0 12.0 0.01"/>
 
     <texture name="floor" type="2d" file="floor_texture.png"/>
     <material name="floor" emission="1" texrepeat="10 10" texture="floor"/>
