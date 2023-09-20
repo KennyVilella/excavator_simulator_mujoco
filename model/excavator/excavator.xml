@@ -39,55 +39,55 @@ Copyright, 2023, Vilella Kenny.
     <texture name="floor" type="2d" file="floor_texture.png"/>
     <material name="floor" emission="1" texrepeat="10 10" texture="floor"/>
 
-    <mesh file="caterpillar.obj" refquat="0.707 -0.707 0 0"/>
+    <mesh file="caterpillar.obj"/>
     <texture name="caterpillar" type="2d" file="caterpillar_texture.png"/>
     <material name="caterpillar" emission="1" texture="caterpillar"/>
 
-    <mesh file="chassis.obj" refquat="0.707 -0.707 0 0"/>
+    <mesh file="chassis.obj"/>
     <texture name="chassis" type="2d" file="chassis_texture.png"/>
     <material name="chassis" emission="1" texture="chassis"/>
 
-    <mesh file="chassis_boom_tube.obj" refquat="0.707 -0.707 0 0"/>
+    <mesh file="chassis_boom_tube.obj"/>
     <texture name="chassis cylinder" type="2d" file="chassis_boom_tube_texture.png"/>
     <material name="chassis cylinder" texture="chassis cylinder"/>
 
-    <mesh file="chassis_boom_rod.obj" refquat="0.707 -0.707 0 0"/>
+    <mesh file="chassis_boom_rod.obj"/>
     <texture name="chassis rod" type="2d" file="chassis_boom_rod_texture.png"/>
     <material name="chassis rod" emission="1" texture="chassis rod"/>
 
-    <mesh file="boom.obj" refquat="0.707 -0.707 0 0"/>
+    <mesh file="boom.obj"/>
     <texture name="boom" type="2d" file="boom_texture.png"/>
     <material name="boom" texture="boom" rgba="0.98 0.65 0.15 1"/>
 
-    <mesh file="boom_arm_tube.obj" refquat="0.707 -0.707 0 0"/>
+    <mesh file="boom_arm_tube.obj"/>
     <texture name="boom cylinder" type="2d" file="boom_arm_tube_texture.png"/>
     <material name="boom cylinder" texture="boom cylinder"/>
 
-    <mesh file="boom_arm_rod.obj" refquat="0.707 -0.707 0 0"/>
+    <mesh file="boom_arm_rod.obj"/>
     <texture name="boom rod" type="2d" file="boom_arm_rod_texture.png"/>
     <material name="boom rod" emission="1" texture="boom rod"/>
 
-    <mesh file="arm.obj" refquat="0.683 -0.683 -0.183 0.183"/>
+    <mesh file="arm.obj" refquat="0.966 0 -0.259 0"/>
     <texture name="arm" type="2d" file="arm_texture.png"/>
     <material name="arm" texture="arm" rgba="0.98 0.65 0.15 1"/>
 
-    <mesh file="arm_h_link_tube.obj" refquat="0.707 -0.707 0 0"/>
+    <mesh file="arm_h_link_tube.obj"/>
     <texture name="arm cylinder" type="2d" file="arm_h_link_tube_texture.png"/>
     <material name="arm cylinder" texture="arm cylinder"/>
 
-    <mesh file="arm_h_link_rod.obj" refquat="0.707 -0.707 0 0"/>
+    <mesh file="arm_h_link_rod.obj"/>
     <texture name="arm rod" type="2d" file="arm_h_link_rod_texture.png"/>
     <material name="arm rod" emission="1" texture="arm rod"/>
 
-    <mesh file="h_link.obj" refquat="0.707 -0.707 0 0"/>
+    <mesh file="h_link.obj"/>
     <texture name="H link" type="2d" file="h_link_texture.png"/>
     <material name="H link" texture="H link"/>
 
-    <mesh file="bucket.obj" refquat="0.707 -0.707 0 0"/>
+    <mesh file="bucket.obj"/>
     <texture name="bucket" type="2d" file="bucket_texture.png"/>
     <material name="bucket" texture="bucket" rgba="0.3 0.3 0.3 1"/>
 
-    <mesh file="side_link.obj" refquat="0.707 -0.707 0 0"/>
+    <mesh file="side_link.obj"/>
     <texture name="side link" type="2d" file="side_link_texture.png"/>
     <material name="side link" texture="side link"/>
   </asset>
