@@ -3,11 +3,11 @@ This folder contains the hydraulic excavator model used in this repository.
 Below is a description of the model including references for all the material used.
 
 ## Content
-The excavator model is inside the `excavator.xml` file that follows MuJoCo format.
-The 3D model of the excavator has been downloaded online ([3D model][]) and modified, as described in the next section, to fit the purpose of this repository.
+The excavator model is inside the [excavator.xml](excavator.xml) file.
+The 3D model of the excavator has been downloaded online ([3D model]()) and modified, as described in the next section, to fit the purpose of this repository.
 The meshes are stored in the `mesh` folder.
 
-Textures have been downloaded online ([metal][], [steel][], and [dirt][]) and applied to meshes using `Blender`.
+Textures have been downloaded online ([metal](), [steel](), and [dirt]()) and applied to meshes using `Blender`.
 The resulting textures are stored in the `texture` folder.
 
 ## Model modifications
@@ -19,17 +19,20 @@ The excavator has then been separated into its different moving parts and scaled
 Each part has been translated such that the origin of the mesh corresponds to the location of the joint connecting it to its parent body.
 The parts are then rotated so that their reference position align with the convention described in the next section.
 
-Last, some meshes have been remeshed using `Blender` in order to make the texture looks more natural.
+Last, some meshes have been remeshed using `Blender` to make the texture looks more natural.
 
 ## Model geometry
-The reference frame of the excavator models follows the right-hand rule and assumes that the Z axis points upward.
-The different parts of the excavator are shown below.
-
+The reference frame of the excavator models follow the right-hand rule and assumes that the Z axis points upward.
+The different parts of the excavator are shown below.\
+\
+\
 ![Excavator schematic](image/excavator.jpg)
-
+\
+\
 In the following, the geometry of each part would be described.
 
 ### Caterpillar
+\
 ![Catterpillar schematic](image/caterpillar.jpg)
 
 The caterpillar is the base of the model and its origin is assumed to be at **A**.
