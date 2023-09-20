@@ -26,6 +26,7 @@ The reference frame of the excavator models follow the right-hand rule and assum
 The different parts of the excavator are shown below.
 \
 \
+\
 ![Excavator schematic](image/excavator.jpg)
 \
 \
@@ -35,7 +36,6 @@ Moreover, the joints connecting all the parts are also named and would be used t
 In the following, the geometry of each part would be described.
 
 ### Caterpillar
-\
 \
 ![Catterpillar schematic](image/caterpillar.jpg)
 \
@@ -53,7 +53,6 @@ Below is the Cartesian coordinates of the important points of the caterpillar in
 
 ### Chassis
 \
-\
 ![Chassis schematic](image/chassis.jpg)
 \
 \
@@ -70,7 +69,6 @@ Below is the Cartesian coordinates of the important points of the chassis in its
 | **D**  | (0.800, 0, 0.152) |
 
 ### Boom
-\
 \
 ![Boom schematic](image/boom.jpg)
 \
@@ -90,7 +88,6 @@ Below is the Cartesian coordinates of the important points of the boom in its re
 | **H**  | (3.845, 0, 0)     |
 
 ### Chassis/Boom hydraulic piston
-\
 \
 ![Chassis/Boom piston schematic](image/chassis_piston.jpg)
 \
@@ -126,7 +123,6 @@ Below is the Cartesian coordinates of the important points of the chassis piston
 
 ### Arm
 \
-\
 ![Arm schematic](image/arm.jpg)
 \
 \
@@ -146,7 +142,6 @@ Below is the Cartesian coordinates of the important points of the arm in its ref
 | **M**  | (1.996, 0, 0)      |
 
 ### Boom/Arm hydraulic piston
-\
 \
 ![Boom/Arm piston schematic](image/boom_piston.jpg)
 \
@@ -182,7 +177,6 @@ Below is the Cartesian coordinates of the important points of the boom piston ro
 
 ### Bucket
 \
-\
 ![Bucket schematic](image/bucket.jpg)
 \
 \
@@ -198,7 +192,6 @@ Below is the Cartesian coordinates of the important points of the bucket in its 
 | **L**  | (0.379, 0, 0) |
 
 ### Side link
-\
 \
 ![Side link schematic](image/side_link.jpg)
 \
@@ -216,7 +209,6 @@ Below is the Cartesian coordinates of the important points of the side link in i
 | **J**  | (0.449, 0, 0) |
 
 ### Arm/H link hydraulic piston
-\
 \
 ![Arm/H link schematic](image/arm_piston.jpg)
 \
@@ -250,7 +242,6 @@ Below is the Cartesian coordinates of the important points of the arm piston rod
 | **J**  | (0.866, 0, 0) |
 
 ### H link
-\
 \
 ![H link schematic](image/h_link.jpg)
 \
