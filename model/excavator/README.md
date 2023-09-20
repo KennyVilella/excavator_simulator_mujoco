@@ -4,10 +4,10 @@ Below is a description of the model including references for all the material us
 
 ## Content
 The excavator model is inside the [excavator.xml](excavator.xml) file.
-The 3D model of the excavator has been downloaded online ([3D model]()) and modified, as described in the next section, to fit the purpose of this repository.
+The 3D model of the excavator has been downloaded online[^1] and modified, as described in the next section, to fit the purpose of this repository.
 The meshes are stored in the `mesh` folder.
 
-Textures have been downloaded online ([metal](), [steel](), and [dirt]()) and applied to meshes using `Blender`.
+Textures have been downloaded online ([metal][metal], [steel][steel], and [dirt][dirt]) and applied to meshes using [Blender][Blender].
 The resulting textures are stored in the `texture` folder.
 
 ## Model modifications
@@ -19,7 +19,7 @@ The excavator has then been separated into its different moving parts and scaled
 Each part has been translated such that the origin of the mesh corresponds to the location of the joint connecting it to its parent body.
 The parts are then rotated so that their reference position align with the convention described in the next section.
 
-Last, some meshes have been remeshed using `Blender` to make the texture looks more natural.
+Last, some meshes have been remeshed using [Blender][Blender] to make the texture looks more natural.
 
 ## Model geometry
 The reference frame of the excavator models follow the right-hand rule and assumes that the Z axis points upward.
@@ -231,7 +231,7 @@ This is however not fully satisfactory as the boom and arm of the excavator is f
 A custom plugin should be made to provide a better actuation.
 
 ## Inertia calculation
-The inertia of the different parts have been estimated with `Meshlab`.
+The inertia of the different parts have been estimated with [Meshlab][Meshlab].
 Some meshes are not "watertight" and had to be modified in order to obtain an estimate.
 The modifications made include:
 
@@ -242,13 +242,15 @@ The modifications made include:
 
 In some cases, some vertices had to be deleted in order to obtain a watertight mesh.
 
-Overall, the accuracy of the inertia estimate is expected to be low as it is assumed that all parts are composed of only one material, and that `Meshlab` does not account for hollow meshes.
+Overall, the accuracy of the inertia estimate is expected to be low as it is assumed that all parts are composed of only one material, and that [Meshlab][Meshlab] does not account for hollow meshes.
 This can also be seen with the estimate of the mass of the different parts, which seems to be higher than expected.
 Nevertheless, these results are reasonable at first order and are sufficient for the purpose of this simulator.
 
-Note that the results from `Meshlab` were rescaled assuming a density of 8000 kg/m^3, a typical value for steel.
+Note that the results from [Meshlab][Meshlab] were rescaled assuming a density of 8000 kg/m^3, a typical value for steel.
 
-[3D model]: by ipatzwijaya, https://free3d.com/3d-model/excavator-501815.html
-[metal]: https://www.poliigon.com/texture/lightly-worn-galvanised-steel-industrial-metal-texture/3129
-[steel]: https://www.poliigon.com/texture/stainless-steel-texture-clean-brushed/7174
-[dirt]: https://www.poliigon.com/texture/ground-dirt-weeds-patchy-004/6987
+[^1]: by ipatzwijaya, https://free3d.com/3d-model/excavator-501815.html
+[Blender]: /url "https://www.blender.org/"
+[Meshlab]: /url "https://www.meshlab.net/"
+[metal]: /url "https://www.poliigon.com/texture/lightly-worn-galvanised-steel-industrial-metal-texture/3129"
+[steel]: /url "https://www.poliigon.com/texture/stainless-steel-texture-clean-brushed/7174"
+[dirt]: /url "https://www.poliigon.com/texture/ground-dirt-weeds-patchy-004/6987"
