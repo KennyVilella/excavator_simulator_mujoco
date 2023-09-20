@@ -225,7 +225,7 @@ Copyright, 2023, Vilella Kenny.
     <weld body1="floor" body2="caterpillar"/>
     <connect body1="chassis piston rod" body2="boom" anchor="1.336 0 0"/>
     <connect body1="boom piston rod" body2="arm" anchor="1.147 0 0"/>
-    <connect body1="arm" body2="H link" anchor="1.350 0 -0.704"/>
+    <connect body1="H link" body2="arm" anchor="0.454 0 0"/>
     <connect body1="side link" body2="H link" anchor="0.449 0 0"/>
   </equality>
 
