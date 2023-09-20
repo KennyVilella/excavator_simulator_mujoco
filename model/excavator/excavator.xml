@@ -119,7 +119,7 @@ Copyright, 2023, Vilella Kenny.
                 fullinertia="4896 6689 10884 -29 -46 -12"/>
 
       <!-- Chassis -->
-      <body name="chassis" pos="0 0 0.76673" euler="0 0 0">
+      <body name="chassis" pos="0 0 0.767" euler="0 0 0">
         <joint name="chassis" type="hinge" axis="0 0 1" pos="0 0 0"/>
         <geom name="chassis" type="mesh" mesh="chassis" material="chassis"
               pos="0 0 0" euler="0 0 0"/>
@@ -134,7 +134,7 @@ Copyright, 2023, Vilella Kenny.
           <inertial pos="0.397 0.0 0.0" mass="116" diaginertia="2.8 8.5 11"/>
 
           <!-- Chassis/Boom piston rod -->
-          <body name="chassis piston rod" pos="0.3399 0. 0." euler="0 0 0">
+          <body name="chassis piston rod" pos="0.340 0. 0." euler="0 0 0">
             <joint name="chassis piston rod" type="slide" axis="1 0 0" limited="true"
                    ref="0.3399" range="0.06 0.56" pos="0 0 0"/>
             <geom name="chassis piston rod" type="mesh" mesh="chassis_boom_rod"
@@ -144,7 +144,7 @@ Copyright, 2023, Vilella Kenny.
         </body> <!-- Chassis/Boom piston cylinder -->
 
         <!-- Boom -->
-        <body name="boom" pos="0.3256 0 0.389" euler="0 -30 0">
+        <body name="boom" pos="0.326 0 0.389" euler="0 -30 0">
           <joint name="boom" type="hinge" axis="0 1 0" pos="0 0 0"/>
           <geom name="boom" type="mesh" mesh="boom" material="boom"
                 pos="0 0 0" euler="0 0 0"/>
@@ -152,14 +152,14 @@ Copyright, 2023, Vilella Kenny.
                     fullinertia="87 1768 1690 -0.2 -14 0.02"/>
 
           <!-- Boom/Arm piston cylinder -->
-          <body name="boom piston cylinder" pos="2.1653 0 0.9437" euler="0 14.4 0">
+          <body name="boom piston cylinder" pos="2.165 0 0.944" euler="0 14.4 0">
             <joint name="boom piston cylinder" type="hinge" axis="0 1 0" pos="0 0 0"/>
             <geom name="boom piston cylinder" type="mesh" mesh="boom_arm_tube"
                   material="boom cylinder" pos="0 0 0" euler="0 0 0"/>
             <inertial pos="0.581 0.0 0.0" mass="63" diaginertia="0.07 9.6 9.6"/>
 
             <!-- Boom/Arm piston rod -->
-            <body name="boom piston rod" pos="0.4342 0 0" euler="0 0 0">
+            <body name="boom piston rod" pos="0.434 0 0" euler="0 0 0">
               <joint name="boom piston rod" type="slide" axis="1 0 0" limited="true"
                      ref="0.4342" range="0.28 1.1" pos="0 0 0"/>
               <geom name="boom piston rod" type="mesh" mesh="boom_arm_rod"
@@ -169,28 +169,28 @@ Copyright, 2023, Vilella Kenny.
           </body> <!-- Boom/Arm piston cylinder -->
 
           <!-- Arm -->
-          <body name="arm" pos="3.8450 0 0" euler="0 30 0">
+          <body name="arm" pos="3.845 0 0" euler="0 30 0">
             <joint name="arm" type="hinge" axis="0 1 0" pos="0 0 0"/>
             <geom name="arm" type="mesh" mesh="arm" material="arm" pos="0 0 0" euler="0 0 0"/>
             <inertial pos="0.476 0.0 0.119" mass="880" fullinertia="15 302 290 -0.2 23 0.02"/>
 
             <!-- Arm/Bucket piston cylinder -->
-            <body name="arm piston cylinder" pos="0.3971 0 0.2074" euler="0 25.81 0">
+            <body name="arm piston cylinder" pos="0.397 0 0.207" euler="0 25.81 0">
               <joint name="arm piston cylinder" type="hinge" axis="0 1 0" pos="0 0 0"/>
               <geom name="arm piston cylinder" type="mesh" mesh="arm_h_link_tube"
                     material="arm cylinder" pos="0 0 0" euler="0 0 0"/>
               <inertial pos="0.332 0.0 0.0" mass="25" diaginertia="0.02 1.9 1.9"/>
 
               <!-- Arm/Bucket piston rod -->
-              <body name="arm piston rod" pos="0.5936 0 0" euler="0 0 0">
+              <body name="arm piston rod" pos="0.594 0 0" euler="0 0 0">
                 <joint name="arm piston rod" type="slide" axis="1 0 0" limited="true"
-                       ref="0.5936" range="0.15 0.75" pos="0 0 0"/>
+                       ref="0.594" range="0.15 0.75" pos="0 0 0"/>
                 <geom name="arm piston rod" type="mesh" mesh="arm_h_link_rod"
                       material="arm rod" pos="0 0 0" euler="0 0 0"/>
                 <inertial pos="0.538 0.0 0.0" mass="16" diaginertia="0.02 1.3 1.3"/>
 
                 <!-- H link -->
-                <body name="H link" pos="0.8656 0 0" euler="0 116.71 0">
+                <body name="H link" pos="0.866 0 0" euler="0 116.71 0">
                   <joint name="H link" type="hinge" axis="0 1 0" pos="0 0 0"/>
                   <geom name="H link" type="mesh" mesh="h_link" material="H link"
                         pos="0 0 0" euler="0 0 0"/>
@@ -200,7 +200,7 @@ Copyright, 2023, Vilella Kenny.
             </body> <!-- Arm/Bucket piston cylinder -->
 
             <!-- Bucket -->
-            <body name="bucket" pos="1.7286 0 -0.998" euler="0 -40 0">
+            <body name="bucket" pos="1.729 0 -0.998" euler="0 -40 0">
               <joint name="bucket" type="hinge" axis="0 1 0" pos="0 0 0"/>
               <geom name="bucket" type="mesh" mesh="bucket" material="bucket"
                     pos="0 0 0" euler="0 0 0"/>
@@ -208,7 +208,7 @@ Copyright, 2023, Vilella Kenny.
                         fullinertia="77 65 55 -0.2 -11 0.02"/>
 
               <!-- Side link -->
-              <body name="side link" pos="0.3790 0 0" euler="0 -95.66 0">
+              <body name="side link" pos="0.379 0 0" euler="0 -95.66 0">
                 <joint name="side link" type="hinge" axis="0 1 0" pos="0 0 0"/>
                 <geom name="side link" type="mesh" mesh="side_link"
                       material="side link" pos="0 0 0" euler="0 0 0"/>
@@ -225,7 +225,7 @@ Copyright, 2023, Vilella Kenny.
     <weld body1="floor" body2="caterpillar"/>
     <connect body1="chassis piston rod" body2="boom" anchor="1.336 0. 0"/>
     <connect body1="boom piston rod" body2="arm" anchor="1.147 0. 0"/>
-    <connect body1="arm" body2="H link" anchor="1.3505 0. -0.7041"/>
+    <connect body1="arm" body2="H link" anchor="1.350 0. -0.704"/>
     <connect body1="side link" body2="H link" anchor="0.449 0. 0"/>
   </equality>
 
