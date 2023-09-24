@@ -1,7 +1,7 @@
 # excavator_simulator_mujoco
 This repository implements a simulator of a hydraulic excavator including soil digging, transportation, and dumping.
 The simulator is built on the top of a customized version of [MuJoCo][MuJoCo], available [here][Mujoco2].
-The only modfication of this customized version is a better visualization of floating soil.
+The only modification of this customized version is a better visualization of floating soil.
 
 The soil dynamics is modeled using [soil_dyanmics_cpp][soil simulator] and a custom soil plugin serves as an interface with [MuJoCo][MuJoCo].
 An excavator model is also included that is thoroughly described in the corresponding [README](model/excavator/README.md).
@@ -36,7 +36,7 @@ There are several important features that are yet to be implemented.
 These include, in order of priority:
 
 - A template to generate excavator model with varying initial position.
-- Add options to customize the inital terrain shape.
+- Add options to customize the initial terrain shape.
 - Improve the soil plugin. In particular, add more check to ensure the plugin is properly connected.
 - Improve the actuation. The excavator should not move when a zero velocity is requested.
 - Add reaction force from the soil.
