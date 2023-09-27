@@ -53,6 +53,9 @@ Soil* Soil::Create(const mjModel* m, mjData* d, int instance) {
     if (!CheckAttr("cell_buffer", m, instance))
         mju_error(
             "Soil plugin: Invalid ``cell_buffer`` parameter specification");
+    if (!CheckAttr("amp_noise", m, instance))
+        mju_error(
+            "Soil plugin: Invalid ``amp_noise`` parameter specification");
 
     return new Soil(m, d, instance);
 }
@@ -68,6 +71,8 @@ Soil::Soil(const mjModel* m, mjData* d, int instance) {
         mj_getPluginConfig(m, instance, "max_iterations"), nullptr);
     mjtNum cell_buffer = strtod(
         mj_getPluginConfig(m, instance, "cell_buffer"), nullptr);
+    mjtNum amp_noise = strtod(
+        mj_getPluginConfig(m, instance, "amp_noise"), nullptr);
 
     // Determining bucket ID
     bucket_id = mj_name2id(m, mjOBJ_BODY, "bucket");
@@ -113,11 +118,22 @@ Soil::Soil(const mjModel* m, mjData* d, int instance) {
     soil_state[0] = -1.0;
     mj_setState(m, d, soil_state.data(), spec);
 
-    // Setting initial terrain to zero
+    // Setting initial terrain
+    sim.init(sim_out, grid, amp_noise);
+
+    // Setting hfield with initial terrain
     int n_hfield_terrain = (
         m->hfield_nrow[terrain_id] * m->hfield_ncol[terrain_id]);
-    for (auto ii = 0; ii < n_hfield_terrain; ii++)
-            m->hfield_data[ii] = 0.0;
+    for (auto jj = 0; jj < m->hfield_nrow[terrain_id]; jj++) {
+        for (auto ii = 0; ii < m->hfield_ncol[terrain_id]; ii++) {
+            // Calculating index for the terrain hfield
+            int new_index = m->hfield_nrow[terrain_id] * jj + ii;
+
+            // Updating the terrain hfield
+            m->hfield_data[new_index] = (
+                sim_out->terrain_[ii][jj] / m->hfield_size[2]);
+        }
+    }
 }
 
 // Plugin compute
@@ -197,7 +213,8 @@ void Soil::RegisterPlugin() {
 
     // Input parameters
     const char* attributes[] = {
-        "cell_size_z", "repose_angle", "max_iterations", "cell_buffer"};
+        "cell_size_z", "repose_angle", "max_iterations", "cell_buffer",
+        "amp_noise"};
     plugin.nattribute = sizeof(attributes) / sizeof(attributes[0]);
     plugin.attributes = attributes;
 
