@@ -26,7 +26,7 @@ else
 fi
 
 # Setup the CMake environment
-cmake -S . -B build -DCMAKE_C_COMPILER=clang-16 -DCMAKE_CXX_COMPILER=clang++-16
+cmake -S . -B build -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
 
 # Build the soil plugin
 cmake --build build
