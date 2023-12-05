@@ -3,7 +3,7 @@ This folder contains the soil plugin that serves as an interface to the [soil si
 For more information on the soil simulator, the reader is encouraged to consult the documentation available in its [repository][soil_dyanmics_cpp].
 Here, the content of the soil plugin as well as its typical usage would be described.
 
-The properties of the simulated grid are obtained fron the various `HField` present in the model.
+The properties of the simulated grid are obtained from the various `HField` present in the model.
 Only the height of the cells should be provided as an input parameter (`cell_size_z`) of the plugin.
 The terrain is then initialized with some noise using the `Init` function of the soil simulator.
 The amplitude of the noise can be set in the plugin instance with the `amp_noise` parameter.
@@ -16,8 +16,8 @@ Lower cell size would therefore create larger `HField` that are updated more fre
 In the current implementation, several key elements are hardcoded so that the model must satisfy these requirements for the soil plugin to work
 - The terrain `HField` must be called `terrain`.
 - Two `Hfield` should be added for the bucket soil called `bucket soil 1` and `bucket soil 2`.
-- The size of the three `HField` mentionned above should be consistent.
-- The bucket dimension and shape are hardcoded. If the user wnats to change the bucket/model used, it is then necessary to update the bucket dimension directly in the soil plugin. 
+- The size of the three `HField` mentioned above should be consistent.
+- The bucket dimension and shape are hardcoded. If the user wants to change the bucket/model used, it is then necessary to update the bucket dimension directly in the soil plugin.
 
 ## Parameter list
 The plugin has the following parameters:
