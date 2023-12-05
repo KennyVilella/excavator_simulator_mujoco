@@ -6,11 +6,14 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 # Move to the repo
 cd $SCRIPT_DIR
 
+# Version of soil_dynamics_cpp
+soil_version="v1.1.0"
+
 # Copy the soil simulator if not already present
 if [ ! -d "plugin/soil/soil_dynamics_cpp" ]; then
   echo "Cloning soil_dynamics_cpp..."
   cd plugin/soil/
-  git clone -b v1.0.0 https://github.com/KennyVilella/soil_dynamics_cpp
+  git clone -b $soil_version https://github.com/KennyVilella/soil_dynamics_cpp
   cd $SCRIPT_DIR
 else
   cd plugin/soil/soil_dynamics_cpp
@@ -20,7 +23,7 @@ else
     echo "Cloning soil_dynamics_cpp..."
     cd ../
     rm -rf soil_dynamics_cpp
-    git clone -b v1.0.0 https://github.com/KennyVilella/soil_dynamics_cpp
+    git clone -b $soil_version https://github.com/KennyVilella/soil_dynamics_cpp
   fi
   cd $SCRIPT_DIR
 fi
