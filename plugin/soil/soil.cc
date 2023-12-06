@@ -86,16 +86,16 @@ Soil* Soil::Create(const mjModel* m, mjData* d, int instance) {
     if (m->hfield_ncol[terrain_id] != m->hfield_ncol[bucket_soil_2_id])
         mju_error("Soil plugin: Inconsistent number of columns between "
             "``terrain`` and ``bucket soil 2`` HFields");
-    if (m->hfield_size[terrain_id] != m->hfield_size[bucket_soil_1_id])
+    if (m->hfield_size[4*terrain_id] != m->hfield_size[4*bucket_soil_1_id])
         mju_error("Soil plugin: Inconsistent size in the X direction between "
             "``terrain`` and ``bucket soil 1`` HFields");
-    if (m->hfield_size[terrain_id] != m->hfield_size[bucket_soil_2_id])
+    if (m->hfield_size[4*terrain_id] != m->hfield_size[4*bucket_soil_2_id])
         mju_error("Soil plugin: Inconsistent size in the X direction between "
             "``terrain`` and ``bucket soil 2`` HFields");
-    if (m->hfield_size[terrain_id + 1] != m->hfield_size[bucket_soil_1_id + 1])
+    if (m->hfield_size[4*terrain_id+1] != m->hfield_size[4*bucket_soil_1_id+1])
         mju_error("Soil plugin: Inconsistent size in the Y direction between "
             "``terrain`` and ``bucket soil 1`` HFields");
-    if (m->hfield_size[terrain_id + 1] != m->hfield_size[bucket_soil_2_id + 1])
+    if (m->hfield_size[4*terrain_id+1] != m->hfield_size[4*bucket_soil_2_id+1])
         mju_error("Soil plugin: Inconsistent size in the Y direction between "
             "``terrain`` and ``bucket soil 2`` HFields");
 
@@ -225,7 +225,7 @@ void Soil::Compute(const mjModel* m, mjData* d, int instance) {
                     m->hfield_data[n_hfield_terrain + new_index] = (
                         sim_out->body_soil_[1][ii][jj] / m->hfield_size[2]);
                 } else {
-                    // Setting to NULL, this is a dirty workaround
+                    // Setting to mjMAXVAL, this is a dirty workaround
                     m->hfield_data[n_hfield_terrain + new_index] = mjMAXVAL;
                 }
 
@@ -237,7 +237,7 @@ void Soil::Compute(const mjModel* m, mjData* d, int instance) {
                     m->hfield_data[2*n_hfield_terrain + new_index] = (
                         sim_out->body_soil_[3][ii][jj] / m->hfield_size[2]);
                 } else {
-                    // Setting to NULL, this is a dirty workaround
+                    // Setting to mjMAXVAL, this is a dirty workaround
                     m->hfield_data[2*n_hfield_terrain + new_index] = mjMAXVAL;
                 }
             }
