@@ -98,6 +98,12 @@ Soil* Soil::Create(const mjModel* m, mjData* d, int instance) {
     if (m->hfield_size[4*terrain_id+1] != m->hfield_size[4*bucket_soil_2_id+1])
         mju_error("Soil plugin: Inconsistent size in the Y direction between "
             "``terrain`` and ``bucket soil 2`` HFields");
+    if (m->hfield_size[4*terrain_id+2] != m->hfield_size[4*bucket_soil_1_id+2])
+        mju_error("Soil plugin: Inconsistent size in the Z direction between "
+            "``terrain`` and ``bucket soil 1`` HFields");
+    if (m->hfield_size[4*terrain_id+2] != m->hfield_size[4*bucket_soil_2_id+2])
+        mju_error("Soil plugin: Inconsistent size in the Z direction between "
+            "``terrain`` and ``bucket soil 2`` HFields");
 
     return new Soil(m, d, instance);
 }
