@@ -17,26 +17,27 @@ def _calc_excavator_pose(
     """
     """
     # Calculating the pose of the boom
-    x_F, z_F, ext_chassis_boom_piston, angle_chassis_boom_piston = _calc_boom_pose(angle_boom)
+    x_F, z_F, ext_cb_piston, angle_cb_piston = _calc_boom_pose(angle_boom)
     print("\n================= Boom pose =================")
-    print("Piston extension: %.2f" % (ext_chassis_boom_piston))
-    print("angle_chassis_boom_piston: %.2f rad, %.2f deg" % (angle_chassis_boom_piston, np.rad2deg(angle_chassis_boom_piston)))
+    print("Piston extension: %.2f" % (ext_cb_piston))
+    print("angle_chassis_boom_piston: %.2f deg" % (np.rad2deg(angle_cb_piston)))
 
     # Calculating the pose of the arm
-    x_I, z_I, x_K, z_K, x_M, z_M, ext_boom_arm_piston, angle_boom_arm_piston = _calc_arm_pose(angle_arm, x_F, z_F)
-    angle_boom_arm_piston = angle_boom - angle_boom_arm_piston
+    x_I, z_I, x_K, z_K, x_M, z_M, ext_ba_piston, angle_ba_piston = _calc_arm_pose(
+        angle_arm, x_F, z_F)
+    angle_ba_piston = angle_boom - angle_ba_piston
     print("\n================= Arm pose =================")
     print("Piston extension: %.2f" % (ext_boom_arm_piston))
-    print("angle_boom_arm_piston: %.2f rad, %.2f deg" % (angle_boom_arm_piston, np.rad2deg(angle_boom_arm_piston)))
+    print("angle_boom_arm_piston: %.2f deg" % (np.rad2deg(angle_ba_piston)))
 
     # Calculating the pose of the H link and bucket
-    ext_arm_h_link_piston, angle_h_link, angle_arm_h_link_piston, angle_side_link = _calc_H_link_pose(
+    ext_ah_piston, angle_h_link, angle_ah_piston, angle_side_link = _calc_H_link_pose(
         angle_bucket, x_I, z_I, x_K, z_K, x_M, z_M)
     print("\n================= H link pose =================")
-    print("Piston extension: %.2f" % (ext_arm_h_link_piston))
-    print("angle_arm_h_link_piston: %.2f rad, %.2f deg" % (angle_arm_h_link_piston, np.rad2deg(angle_arm_h_link_piston)))
-    print("angle_h_link: %.2f rad, %.2f deg" % (angle_h_link, np.rad2deg(angle_h_link)))
-    print("angle_side_link: %.2f rad, %.2f deg" % (angle_side_link, np.rad2deg(angle_side_link)))
+    print("Piston extension: %.2f" % (ext_ah_piston))
+    print("angle_arm_h_link_piston: %.2f deg" % (np.rad2deg(angle_ah_piston)))
+    print("angle_h_link: %.2f deg" % (np.rad2deg(angle_h_link)))
+    print("angle_side_link: %.2f deg" % (np.rad2deg(angle_side_link)))
 
     return
 
@@ -69,9 +70,9 @@ def _calc_boom_pose(angle_boom: float) -> list:
     ED = np.sqrt((x_E - x_D) ** 2 + (z_E - z_D) ** 2)
 
     # Calculating angle of the chassis/boom piston relative to the horizontal plane
-    angle_chassis_boom_piston = np.arccos((x_E - x_D) / ED)
+    angle_cb_piston = np.arccos((x_E - x_D) / ED)
 
-    return [x_F - x_H, z_F - z_H, ED - piston_cylinder_length, angle_chassis_boom_piston]
+    return [x_F - x_H, z_F - z_H, ED - piston_cylinder_length, angle_cb_piston]
 
 def _calc_arm_pose(angle_arm: float, x_F: float, z_F: float) -> list:
     """
@@ -115,9 +116,9 @@ def _calc_arm_pose(angle_arm: float, x_F: float, z_F: float) -> list:
     FG = np.sqrt((x_G - x_F) ** 2 + (z_G - z_F) ** 2)
 
     # Calculating angle of the boom/arm piston relative to the horizontal plane
-    angle_boom_arm_piston = np.arccos((x_G - x_F) / FG)
+    angle_ba_piston = np.arccos((x_G - x_F) / FG)
 
-    return [x_I, z_I, x_K, z_K, x_M, z_M, FG - piston_cylinder_length, angle_boom_arm_piston]
+    return [x_I, z_I, x_K, z_K, x_M, z_M, FG - piston_cylinder_length, angle_ba_piston]
 
 def _calc_H_link_pose(
     angle_bucket: float, x_I: float, z_I: float, x_K: float, z_K: float,
@@ -137,10 +138,12 @@ def _calc_H_link_pose(
     # Calculating the KL distance
     KL = np.sqrt((x_L + x_M - x_K) ** 2 + (z_L + z_M - z_K) ** 2)
 
-    # Calculating the angle at the H link attachment formed by the side link/H link triangle
+    # Calculating the angle at the H link attachment formed by
+    # the side link/H link triangle
     angle_JKL = np.arccos((JK * JK + KL * KL - JL * JL) / (2 * JK * KL))
 
-    # Calculating the angle at the arm/H link piston rod attachment formed by the side link/H link triangle
+    # Calculating the angle at the arm/H link piston rod attachment formed by
+    # the side link/H link triangle
     angle_LJK = np.arccos((JK * JK + JL * JL - KL * KL) / (2 * JK * JL))
 
     # Calculating angle of the segment KL relative to the horizontal plane
@@ -153,19 +156,20 @@ def _calc_H_link_pose(
     # Calculating total length of the arm/H link piston
     IJ = np.sqrt((x_I - x_J) ** 2 + (z_I - z_J) ** 2)
 
-    # Calculating angle of the arm/H link relative to the HM segment (arm frame)
-    angle_arm_h_link_piston = np.arccos((x_J - x_I) / IJ)
+    # Calculating the angle of the arm/H link relative to the HM segment (arm frame)
+    angle_ah_piston = np.arccos((x_J - x_I) / IJ)
 
-    # Calculating angle of the side link relative to the horizontal plane
+    # Calculating the angle of the side link relative to the horizontal plane
     angle_side_link = np.arccos((x_L + x_M - x_J) / JL)
 
-    # Calculating angle of the H link relative to the IJ segment (arm/H link piston frame)
-    angle_h_link = angle_LJK + angle_side_link - angle_arm_h_link_piston
+    # Calculating the angle of the H link relative to the IJ segment
+    # (arm/H link piston frame)
+    angle_h_link = angle_LJK + angle_side_link - angle_ah_piston
 
-    # Calculating angle of the side link relative to the LM segment (bucket frame)
+    # Calculating the angle of the side link relative to the LM segment (bucket frame)
     angle_side_link = -(np.pi - angle_side_link - angle_bucket)
 
-    return [IJ - piston_cylinder_length, angle_h_link, angle_arm_h_link_piston, angle_side_link]
+    return [IJ - piston_cylinder_length, angle_h_link, angle_ah_piston, angle_side_link]
 
 if __name__ == "__main__":
     _calc_excavator_pose(np.deg2rad(30), np.deg2rad(-30.), np.deg2rad(40.))
