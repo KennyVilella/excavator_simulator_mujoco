@@ -209,7 +209,7 @@ Copyright, 2023, Vilella Kenny.
                         fullinertia="77 65 55 -0.2 -11 0.02"/>
 
               <!-- Side link -->
-              <body name="side link" pos="0.379 0 0" euler="0 -95.7 0">
+              <body name="side link" pos="0.379 0 0" euler="0 -93.3 0">
                 <joint name="side link" type="hinge" axis="0 1 0" pos="0 0 0"/>
                 <geom name="side link" type="mesh" mesh="side_link"
                       material="side link" pos="0 0 0" euler="0 0 0"/>
