@@ -14,7 +14,18 @@ import numpy as np
 #======================================================================================#
 def _calc_excavator_pose(
     angle_boom: float, angle_arm: float, angle_bucket: float) -> list:
-    """
+    """Calculates the excavator pose.
+
+    This function calculates all the properties required to set the excavator pose in
+    the MuJoCo model and prints them.
+
+    The math behind the calculation as well as the convention used are available in
+    the model readme.
+
+    Args:
+        angle_boom: Angle of the boom relative to the horizontal plane. [rad]
+        angle_arm: Angle of the arm relative to the horizontal plane. [rad]
+        angle_bucket: Angle of the bucket relative to the horizontal plane. [rad]
     """
     # Calculating the pose of the boom
     x_F, z_F, ext_cb_piston, angle_cb_piston = _calc_boom_pose(angle_boom)
@@ -42,7 +53,27 @@ def _calc_excavator_pose(
     return
 
 def _calc_boom_pose(angle_boom: float) -> list:
-    """
+    """Calculates the boom pose.
+
+    This function calculates all the properties required to set the boom in the
+    MuJoCo model.
+
+    Some information about this function:
+    - All distance are given in cm.
+    - All angles are given in radian.
+    - The position of E, D, H and F are given in the boom frame.
+
+    The math behind the calculation as well as the convention used are available in
+    the model readme.
+
+    Args:
+        angle_boom: Angle of the boom relative to the horizontal plane. [rad]
+
+    Returns:
+        A list containing the position of the boom/arm piston cylinder attachment in the
+        arm frame (X and Z direction), the position of the piston rod in the chassis/boom
+        piston cylinder, and the angle of the chassis/boom piston relative to the
+        horizontal plane.
     """
     # Input parameters measured from meshes
     CH = 384.5
@@ -75,7 +106,33 @@ def _calc_boom_pose(angle_boom: float) -> list:
     return [x_F - x_H, z_F - z_H, ED - piston_cylinder_length, angle_cb_piston]
 
 def _calc_arm_pose(angle_arm: float, x_F: float, z_F: float) -> list:
-    """
+    """Calculates the arm pose.
+
+    This function calculates all the properties required to set the arm in the
+    MuJoCo model.
+
+    Some information about this function:
+    - All distance are given in cm.
+    - All angles are given in radian.
+    - The position of G, I, K and M are given in the arm frame.
+
+    The math behind the calculation as well as the convention used are available in
+    the model readme.
+
+    Args:
+        angle_arm: Angle of the arm relative to the horizontal plane. [rad]
+        x_F: Position of the boom/arm piston cylinder attachment in the X direction
+             given in the arm frame. [cm]
+        z_F: Position of the boom/arm piston cylinder attachment in the Z direction
+             given in the arm frame. [cm]
+
+    Returns:
+        A list containing the position of the arm/H link piston cylinder attachment in
+        the arm frame (X and Z direction), the position of the H link attachment in the
+        arm frame (X and Z direction), the position of the bucket attachment in the arm
+        frame (X and Z direction), the position of the piston rod in the boom/arm
+        piston cylinder, and the angle of the boom/arm piston relative to the horizontal
+        plane.
     """
     # Input parameters measured from meshes
     HG = 57.0
@@ -123,7 +180,40 @@ def _calc_arm_pose(angle_arm: float, x_F: float, z_F: float) -> list:
 def _calc_H_link_pose(
     angle_bucket: float, x_I: float, z_I: float, x_K: float, z_K: float,
     x_M: float, z_M: float) -> list:
-    """
+    """Calculates the H link and bucket pose.
+
+    This function calculates all the properties required to set the H link in the
+    MuJoCo model.
+
+    Some information about this function:
+    - All distance are given in cm.
+    - All angles are given in radian.
+    - The position of L is given in the bucket frame.
+    - The position of J is given in the arm frame.
+
+    The math behind the calculation as well as the convention used are available in
+    the model readme.
+
+    Args:
+        angle_bucket: Angle of the bucket relative to the horizontal plane. [rad]
+        x_I: Position of the arm/H link piston cylinder attachment in the X direction
+             given in the arm frame. [cm]
+        z_I: Position of the arm/H link piston cylinder attachment in the Z direction
+             given in the arm frame. [cm]
+        x_K: Position of the H link attachment in the X direction given in the arm
+             frame. [cm]
+        z_K: Position of the H link attachment in the Z direction given in the arm
+             frame. [cm]
+        x_M: Position of the bucket attachment in the X direction given in the arm
+             frame. [cm]
+        z_M: Position of the bucket attachment in the Z direction given in the arm
+             frame. [cm]
+
+    Returns:
+        A list containing the position of the piston rod in the arm/H link piston
+        cylinder, the angle of the H link relative to the IJ segment, the angle of the
+        arm/H link relative to the HM segment, and the angle of the side link relative
+        to the LM segment.
     """
     # Input parameters measured from meshes
     JK = 45.4
@@ -156,17 +246,16 @@ def _calc_H_link_pose(
     # Calculating total length of the arm/H link piston
     IJ = np.sqrt((x_I - x_J) ** 2 + (z_I - z_J) ** 2)
 
-    # Calculating the angle of the arm/H link relative to the HM segment (arm frame)
+    # Calculating the angle of the arm/H link relative to the HM segment
     angle_ah_piston = np.arccos((x_J - x_I) / IJ)
 
     # Calculating the angle of the side link relative to the horizontal plane
     angle_side_link = np.arccos((x_L + x_M - x_J) / JL)
 
     # Calculating the angle of the H link relative to the IJ segment
-    # (arm/H link piston frame)
     angle_h_link = angle_LJK + angle_side_link - angle_ah_piston
 
-    # Calculating the angle of the side link relative to the LM segment (bucket frame)
+    # Calculating the angle of the side link relative to the LM segment
     angle_side_link = -(np.pi - angle_side_link - angle_bucket)
 
     return [IJ - piston_cylinder_length, angle_h_link, angle_ah_piston, angle_side_link]
