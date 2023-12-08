@@ -50,7 +50,8 @@ def _calc_excavator_pose(
     print("angle_h_link: %.2f deg" % (np.rad2deg(angle_h_link)))
     print("angle_side_link: %.2f deg" % (np.rad2deg(angle_side_link)))
 
-    return
+    return [angle_cb_piston, ext_cb_piston, angle_ba_piston, ext_ba_piston,
+        angle_ah_piston, ext_ah_piston, angle_h_link, angle_side_link]
 
 def _calc_boom_pose(angle_boom: float) -> list:
     """Calculates the boom pose.
