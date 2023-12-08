@@ -1,0 +1,253 @@
+<!-- Excavator template
+
+This file is a template for generating an excavator model.
+
+Copyright, 2023, Vilella Kenny.
+-->
+
+<mujoco model="excavator">
+  <compiler meshdir="mesh" texturedir="texture"/>
+
+  <extension>
+    <plugin plugin="mujoco.soil">
+      <instance name="terrain">
+        <config key="cell_size_z" value="{{ soil.cell_size_z }}"/>
+        <config key="repose_angle" value="{{ soil.repose_angle }}"/>
+        <config key="max_iterations" value="{{ soil.max_iterations }}"/>
+        <config key="cell_buffer" value="{{ soil.cell_buffer }}"/>
+        <config key="amp_noise" value="{{ soil.amp_noise }}"/>
+      </instance>
+    </plugin>
+  </extension>
+
+  <default>
+    <velocity ctrllimited="true" ctrlrange="-0.5 0.5"/>
+    <mesh scale="1 1 1"/>
+    <material emission="0.25" rgba="1 1 1 1"/>
+    <equality solref="0.0002 1"/>
+  </default>
+
+  <visual>
+    <headlight ambient="1 1 1" diffuse="0 0 0" specular="0 0 0"/>
+  </visual>
+
+  <asset>
+    <hfield name="terrain" nrow="{{ soil.grid_size_x }}" ncol="{{ soil.grid_size_y }}"
+            size="{{ soil.grid_length_x }} {{ soil.grid_length_y }} {{ soil.grid_length_z }} 4.0"/>
+    <hfield name="bucket soil 1" nrow="{{ soil.grid_size_x }}" ncol="{{ soil.grid_size_y }}"
+            size="{{ soil.grid_length_x }} {{ soil.grid_length_y }} {{ soil.grid_length_z }} 0.01"/>
+    <hfield name="bucket soil 2" nrow="{{ soil.grid_size_x }}" ncol="{{ soil.grid_size_y }}"
+            size="{{ soil.grid_length_x }} {{ soil.grid_length_y }} {{ soil.grid_length_z }} 0.01"/>
+
+    <texture name="floor" type="2d" file="floor_texture.png"/>
+    <material name="floor" emission="1" texrepeat="10 10" texture="floor"/>
+
+    <mesh file="caterpillar.obj"/>
+    <texture name="caterpillar" type="2d" file="caterpillar_texture.png"/>
+    <material name="caterpillar" emission="1" texture="caterpillar"/>
+
+    <mesh file="chassis.obj"/>
+    <texture name="chassis" type="2d" file="chassis_texture.png"/>
+    <material name="chassis" emission="1" texture="chassis"/>
+
+    <mesh file="chassis_boom_tube.obj"/>
+    <texture name="chassis cylinder" type="2d" file="chassis_boom_tube_texture.png"/>
+    <material name="chassis cylinder" texture="chassis cylinder"/>
+
+    <mesh file="chassis_boom_rod.obj"/>
+    <texture name="chassis rod" type="2d" file="chassis_boom_rod_texture.png"/>
+    <material name="chassis rod" emission="1" texture="chassis rod"/>
+
+    <mesh file="boom.obj"/>
+    <texture name="boom" type="2d" file="boom_texture.png"/>
+    <material name="boom" texture="boom" rgba="0.98 0.65 0.15 1"/>
+
+    <mesh file="boom_arm_tube.obj"/>
+    <texture name="boom cylinder" type="2d" file="boom_arm_tube_texture.png"/>
+    <material name="boom cylinder" texture="boom cylinder"/>
+
+    <mesh file="boom_arm_rod.obj"/>
+    <texture name="boom rod" type="2d" file="boom_arm_rod_texture.png"/>
+    <material name="boom rod" emission="1" texture="boom rod"/>
+
+    <mesh file="arm.obj" refquat="0.966 0 -0.259 0"/>
+    <texture name="arm" type="2d" file="arm_texture.png"/>
+    <material name="arm" texture="arm" rgba="0.98 0.65 0.15 1"/>
+
+    <mesh file="arm_h_link_tube.obj"/>
+    <texture name="arm cylinder" type="2d" file="arm_h_link_tube_texture.png"/>
+    <material name="arm cylinder" texture="arm cylinder"/>
+
+    <mesh file="arm_h_link_rod.obj"/>
+    <texture name="arm rod" type="2d" file="arm_h_link_rod_texture.png"/>
+    <material name="arm rod" emission="1" texture="arm rod"/>
+
+    <mesh file="h_link.obj"/>
+    <texture name="H link" type="2d" file="h_link_texture.png"/>
+    <material name="H link" texture="H link"/>
+
+    <mesh file="bucket.obj"/>
+    <texture name="bucket" type="2d" file="bucket_texture.png"/>
+    <material name="bucket" texture="bucket" rgba="0.3 0.3 0.3 1"/>
+
+    <mesh file="side_link.obj"/>
+    <texture name="side link" type="2d" file="side_link_texture.png"/>
+    <material name="side link" texture="side link"/>
+  </asset>
+
+  <worldbody>
+    <!-- Floor -->
+    <body name="floor" pos="0 0 0" euler="0 0 0">
+      <geom name="terrain" type="hfield" hfield="terrain" material="floor"/>
+    </body> <!-- Floor -->
+
+    <!-- First bucket soil layer -->
+    <body name="soil 1" pos="0 0 0" euler="0 0 0">
+      <geom name="bucket soil 1" type="hfield" hfield="bucket soil 1"
+          material="floor" contype="0" conaffinity="0"/>
+    </body> <!-- First bucket soil layer -->
+
+    <!-- Second bucket soil layer -->
+    <body name="soil 2" pos="0 0 0" euler="0 0 0">
+      <geom name="bucket soil 2" type="hfield" hfield="bucket soil 2"
+          material="floor" contype="0" conaffinity="0"/>
+    </body> <!-- Second bucket soil layer -->
+
+    <!-- Caterpillar -->
+    <body name="caterpillar" pos="0 0 0.040" euler="0 0 0">
+      <joint type="free" limited='false' damping="0" stiffness="1" armature="0"/>
+      <geom name="caterpillar" type="mesh" mesh="caterpillar" material="caterpillar"
+            pos="0 0 0" euler="0 0 0"/>
+      <inertial pos="-0.070 0 0.386" mass="12200"
+                fullinertia="4896 6689 10884 -29 -46 -12"/>
+
+      <!-- Chassis -->
+      <body name="chassis" pos="0 0 0.767" euler="0 0 0">
+        <joint name="chassis" type="hinge" axis="0 0 1" pos="0 0 0"/>
+        <geom name="chassis" type="mesh" mesh="chassis" material="chassis"
+              pos="0 0 0" euler="0 0 0"/>
+        <inertial pos="-0.486 -0.150 0.480" mass="20592"
+                  fullinertia="6958 13393 17170 -2311 -980 -677"/>
+
+        <!-- Chassis/Boom piston cylinder -->
+        <body name="chassis piston cylinder" pos="0.800 0 0.152" euler="0 {{ pose.angle_chassis_boom_piston }} 0">
+          <joint name="chassis piston cylinder" type="hinge" axis="0 1 0" pos="0 0 0"/>
+          <geom name="chassis piston cylinder" type="mesh" mesh="chassis_boom_tube"
+                material="chassis cylinder" pos="0 0 0" euler="0 0 0"/>
+          <inertial pos="0.397 0 0" mass="116" diaginertia="2.8 8.5 11"/>
+
+          <!-- Chassis/Boom piston rod -->
+          <body name="chassis piston rod" pos="{{ pose.ext_chassis_boom_piston }} 0 0" euler="0 0 0">
+            <joint name="chassis piston rod" type="slide" axis="1 0 0" limited="true"
+                   ref="{{ pose.ext_chassis_boom_piston }}" range="0.06 0.56" pos="0 0 0"/>
+            <geom name="chassis piston rod" type="mesh" mesh="chassis_boom_rod"
+                  material="chassis rod" pos="0 0 0" euler="0 0 0"/>
+            <inertial pos="0.787 0 0" mass="29" diaginertia="0.7 5.1 5.8"/>
+          </body> <!-- Chassis/Boom piston rod -->
+        </body> <!-- Chassis/Boom piston cylinder -->
+
+        <!-- Boom -->
+        <body name="boom" pos="0.326 0 0.389" euler="0 {{ pose.angle_boom }} 0">
+          <joint name="boom" type="hinge" axis="0 1 0" pos="0 0 0"/>
+          <geom name="boom" type="mesh" mesh="boom" material="boom"
+                pos="0 0 0" euler="0 0 0"/>
+          <inertial pos="1.729 0 0.463" mass="1600"
+                    fullinertia="87 1768 1690 -0.2 -14 0.02"/>
+
+          <!-- Boom/Arm piston cylinder -->
+          <body name="boom piston cylinder" pos="2.165 0 0.944" euler="0 {{ pose.angle_boom_arm_piston }} 0">
+            <joint name="boom piston cylinder" type="hinge" axis="0 1 0" pos="0 0 0"/>
+            <geom name="boom piston cylinder" type="mesh" mesh="boom_arm_tube"
+                  material="boom cylinder" pos="0 0 0" euler="0 0 0"/>
+            <inertial pos="0.581 0 0" mass="63" diaginertia="0.07 9.6 9.6"/>
+
+            <!-- Boom/Arm piston rod -->
+            <body name="boom piston rod" pos="{{ pose.ext_boom_arm_piston }} 0 0" euler="0 0 0">
+              <joint name="boom piston rod" type="slide" axis="1 0 0" limited="true"
+                     ref="{{ pose.ext_boom_arm_piston }}" range="0.28 1.1" pos="0 0 0"/>
+              <geom name="boom piston rod" type="mesh" mesh="boom_arm_rod"
+                    material="boom rod" pos="0 0 0" euler="0 0 0"/>
+              <inertial pos="0.700 0 0" mass="30" diaginertia="0.03 4.2 4.2"/>
+            </body> <!-- Boom/Arm piston rod -->
+          </body> <!-- Boom/Arm piston cylinder -->
+
+          <!-- Arm -->
+          <body name="arm" pos="3.845 0 0" euler="0 {{ pose.angle_arm }} 0">
+            <joint name="arm" type="hinge" axis="0 1 0" pos="0 0 0"/>
+            <geom name="arm" type="mesh" mesh="arm" material="arm" pos="0 0 0" euler="0 0 0"/>
+            <inertial pos="0.476 0 0.119" mass="880" fullinertia="15 302 290 -0.2 23 0.02"/>
+
+            <!-- Arm/Bucket piston cylinder -->
+            <body name="arm piston cylinder" pos="0.397 0 0.207" euler="0 {{ pose.angle_arm_bucket_piston }} 0">
+              <joint name="arm piston cylinder" type="hinge" axis="0 1 0" pos="0 0 0"/>
+              <geom name="arm piston cylinder" type="mesh" mesh="arm_h_link_tube"
+                    material="arm cylinder" pos="0 0 0" euler="0 0 0"/>
+              <inertial pos="0.332 0 0" mass="25" diaginertia="0.02 1.9 1.9"/>
+
+              <!-- Arm/Bucket piston rod -->
+              <body name="arm piston rod" pos="{{ pose.ext_arm_bucket_piston }} 0 0" euler="0 0 0">
+                <joint name="arm piston rod" type="slide" axis="1 0 0" limited="true"
+                       ref="{{ pose.ext_arm_bucket_piston }}" range="0.15 0.75" pos="0 0 0"/>
+                <geom name="arm piston rod" type="mesh" mesh="arm_h_link_rod"
+                      material="arm rod" pos="0 0 0" euler="0 0 0"/>
+                <inertial pos="0.538 0 0" mass="16" diaginertia="0.02 1.3 1.3"/>
+
+                <!-- H link -->
+                <body name="H link" pos="0.866 0 0" euler="0 {{ pose.angle_h_link }} 0">
+                  <joint name="H link" type="hinge" axis="0 1 0" pos="0 0 0"/>
+                  <geom name="H link" type="mesh" mesh="h_link" material="H link"
+                        pos="0 0 0" euler="0 0 0"/>
+                  <inertial pos="0.227 0 0" mass="17" diaginertia="0.09 0.5 0.5"/>
+                </body> <!-- H link -->
+              </body> <!-- Arm/Bucket piston rod -->
+            </body> <!-- Arm/Bucket piston cylinder -->
+
+            <!-- Bucket -->
+            <body name="bucket" pos="1.729 0 -0.998" euler="0 {{ pose.angle_bucket }} 0">
+              <joint name="bucket" type="hinge" axis="0 1 0" pos="0 0 0"/>
+              <geom name="bucket" type="mesh" mesh="bucket" material="bucket"
+                    pos="0 0 0" euler="0 0 0"/>
+              <inertial pos="0.231 0 -0.468" mass="450"
+                        fullinertia="77 65 55 -0.2 -11 0.02"/>
+
+              <!-- Side link -->
+              <body name="side link" pos="0.379 0 0" euler="0 {{ pose.angle_side_link }} 0">
+                <joint name="side link" type="hinge" axis="0 1 0" pos="0 0 0"/>
+                <geom name="side link" type="mesh" mesh="side_link"
+                      material="side link" pos="0 0 0" euler="0 0 0"/>
+                <inertial pos="0.112 0 0" mass="18" diaginertia="0.06 0.5 0.5"/>
+              </body> <!-- Side link -->
+            </body> <!-- Bucket -->
+          </body> <!-- Arm -->
+        </body> <!-- Boom -->
+      </body> <!-- Chassis -->
+    </body> <!-- Caterpillar -->
+  </worldbody>
+
+  <equality>
+    <weld body1="floor" body2="caterpillar"/>
+    <connect body1="chassis piston rod" body2="boom" anchor="1.336 0 0"/>
+    <connect body1="boom piston rod" body2="arm" anchor="1.147 0 0"/>
+    <connect body1="H link" body2="arm" anchor="0.454 0 0"/>
+    <connect body1="side link" body2="H link" anchor="0.449 0 0"/>
+  </equality>
+
+  <!-- Because the two hydraulic pistons are merged into one, the
+  collision algorithm seems to consider that the cylinder and rod are
+  into contact with the boom. It is thus necessary to remove collision
+  checking between the hydraulic pistons and the boom-->
+  <contact>
+    <exclude body1="chassis piston rod" body2="boom"/>
+    <exclude body1="chassis piston cylinder" body2="boom"/>
+    <exclude body1="bucket" body2="floor"/>
+    <exclude body1="bucket" body2="soil 1"/>
+    <exclude body1="bucket" body2="soil 2"/>
+  </contact>
+
+  <actuator>
+    <velocity name="Rotation" joint="chassis" kv="700000"/>
+    <velocity name="Boom" joint="chassis piston rod" kv="700000"/>
+    <velocity name="Arm" joint="boom piston rod" kv="100000"/>
+    <velocity name="Bucket" joint="arm piston rod" kv="100000"/>
+  </actuator>
+</mujoco>
