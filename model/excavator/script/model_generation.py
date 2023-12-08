@@ -74,33 +74,33 @@ def generate_excavator_model(excavator_model: dict) -> list:
     processed_excavator_model["pose"] = {}
 
     # Populating the soil dictionary
-    processed_excavator_model["soil"]["grid_length_x"] = excavator_model.get(
+    processed_excavator_model["soil"]["grid_length_x"] = excavator_model["soil"].get(
         "grid_length_x", 8.0)
-    processed_excavator_model["soil"]["grid_length_y"] = excavator_model.get(
+    processed_excavator_model["soil"]["grid_length_y"] = excavator_model["soil"].get(
         "grid_length_y", 8.0)
-    processed_excavator_model["soil"]["grid_length_z"] = excavator_model.get(
+    processed_excavator_model["soil"]["grid_length_z"] = excavator_model["soil"].get(
         "grid_length_z", 12.0)
     processed_excavator_model["soil"]["grid_size_x"] = round(
         processed_excavator_model["soil"]["grid_length_x"] /
-        excavator_model.get("cell_size_xy", 0.025))
+        excavator_model["soil"].get("cell_size_xy", 0.025))
     processed_excavator_model["soil"]["grid_size_y"] = round(
         processed_excavator_model["soil"]["grid_length_y"] /
-        excavator_model.get("cell_size_xy", 0.025))
-    processed_excavator_model["soil"]["cell_size_z"] = excavator_model.get(
+        excavator_model["soil"].get("cell_size_xy", 0.025))
+    processed_excavator_model["soil"]["cell_size_z"] = excavator_model["soil"].get(
         "cell_size_z", 0.05)
-    processed_excavator_model["soil"]["repose_angle"] = excavator_model.get(
+    processed_excavator_model["soil"]["repose_angle"] = excavator_model["soil"].get(
         "repose_angle", 0.85)
-    processed_excavator_model["soil"]["max_iterations"] = excavator_model.get(
+    processed_excavator_model["soil"]["max_iterations"] = excavator_model["soil"].get(
         "max_iterations", 10)
-    processed_excavator_model["soil"]["cell_buffer"] = excavator_model.get(
+    processed_excavator_model["soil"]["cell_buffer"] = excavator_model["soil"].get(
         "cell_buffer", 4)
-    processed_excavator_model["soil"]["amp_noise"] = excavator_model.get(
+    processed_excavator_model["soil"]["amp_noise"] = excavator_model["soil"].get(
         "amp_noise", 50.0)
 
     # Calculating the excavator pose
-    angle_boom = excavator_model.get("angle_boom", 30.0)
-    angle_arm = excavator_model.get("angle_arm", -30.0)
-    angle_bucket = excavator_model.get("angle_bucket", 40.0)
+    angle_boom = excavator_model["pose"].get("angle_boom", 30.0)
+    angle_arm = excavator_model["pose"].get("angle_arm", -30.0)
+    angle_bucket = excavator_model["pose"].get("angle_bucket", 40.0)
     [angle_cb_piston, ext_cb_piston, angle_ba_piston, ext_ba_piston, angle_ah_piston,
         ext_ah_piston, angle_h_link, angle_side_link] = _calc_excavator_pose(
         np.deg2rad(angle_boom), np.deg2rad(angle_arm), np.deg2rad(angle_bucket))
