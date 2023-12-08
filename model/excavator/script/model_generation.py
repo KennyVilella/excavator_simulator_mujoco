@@ -105,6 +105,26 @@ def generate_excavator_model(excavator_model: dict) -> list:
         ext_ah_piston, angle_h_link, angle_side_link] = _calc_excavator_pose(
         np.deg2rad(angle_boom), np.deg2rad(angle_arm), np.deg2rad(angle_bucket))
 
+    # Testing validity of requested pose
+    if (ext_cb_piston > 0.56):
+        raise Exception(
+            "Excavator pose invalid.\n Chassis/boom piston extension is too large.")
+    if (ext_cb_piston < 0.06):
+        raise Exception(
+            "Excavator pose invalid.\n Chassis/boom piston extension is too short.")
+    if (ext_ba_piston > 1.1):
+        raise Exception(
+            "Excavator pose invalid.\n Boom/arm piston extension is too large.")
+    if (ext_ba_piston < 0.28):
+        raise Exception(
+            "Excavator pose invalid.\n Boom/arm piston extension is too short.")
+    if (ext_ah_piston > 0.75):
+        raise Exception(
+            "Excavator pose invalid.\n Arm/bucket piston extension is too large.")
+    if (ext_ah_piston < 0.15):
+        raise Exception(
+            "Excavator pose invalid.\n Arm/bucket piston extension is too short.")
+
     # Converting angles fram radians to degrees
     angle_cb_piston = np.rad2deg(angle_cb_piston)
     angle_ba_piston = np.rad2deg(angle_ba_piston)
