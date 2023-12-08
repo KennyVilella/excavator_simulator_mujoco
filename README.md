@@ -4,6 +4,7 @@ The simulator is built on the top of a customized version of [MuJoCo][MuJoCo], a
 The only modification of this customized version is a better visualization of floating soil.
 
 The soil dynamics is modeled using [soil_dyanmics_cpp][soil simulator] and a custom soil plugin serves as an interface with [MuJoCo][MuJoCo].
+A description of the soil plugin as well as an usage example is provided [here][soil README].
 An excavator model is also included that is thoroughly described in the corresponding [README](model/excavator/README.md).
 
 A customized executable to launch [MuJoCo][MuJoCo] is also provided, as the default executable does not include the update of `HField`.
@@ -44,4 +45,4 @@ These include, in order of priority:
 [MuJoCo]: https://mujoco.org/
 [MuJoCo2]: https://github.com/KennyVilella/mujoco
 [soil simulator]: https://github.com/KennyVilella/soil_dynamics_cpp
-
+[soil README]: plugin/soil/README.md
