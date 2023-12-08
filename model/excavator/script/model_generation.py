@@ -5,8 +5,12 @@ its pose, the geometry of the soil grid, and the properties of the soil simulato
 All the properties are given to the function as a dictionnary.
 The model generation relies on Jinja.
 
+The generated model is written in the excavator folder and is named "generated_model.xml".
+
 Typical usage example:
 
+    from model_generation import generate_excavator_model
+    generate_excavator_model(excavator_model)
 
 Copyright, 2023,  Vilella Kenny.
 """
@@ -20,6 +24,50 @@ from pose_calculation import _calc_excavator_pose
 #                                                                                      #
 #======================================================================================#
 def generate_excavator_model(excavator_model: dict) -> list:
+    """Generates an excavator model.
+
+    This function generates an excavator model following the properties inside the
+    input dictionary.
+
+    As the convention between MuJoCo and the pose calculation script is slightly
+    different, some conversion has to be made. In particular, all distances are
+    converted into meters and all angles in degrees, angle follows the trigonometric
+    convention in the pose calculation script while MuJoCo follows the anti-trigonometric
+    convention.
+
+    Note that a second dictionary is used in order to not modify the properties inside
+    the input dictionary.
+
+    The generated model is written into the model/excavator folder under the
+    "generated_moedl.xml" name.
+
+    Args:
+        model_excavator: Dictionary gathering all information about the excavator model.
+                         It contains:
+            soil: Dictionary gathering all information about the soil plugin.
+                  It contains:
+                grid_length_x: Total length of the grid in the X direction. [m]
+                               Default value to 8.0.
+                grid_length_y: Total length of the grid in the Y direction. [m]
+                               Default value to 8.0.
+                grid_length_z: Total length of the grid in the Z direction. [m]
+                               Default value to 12.0.
+                cell_size_xy: Length of the grid cells in the horizontal direction. [m]
+                              Default value to 0.025.
+                cell_size_z: Height of the grid cells. Default value to 0.05. [m]
+                repose_angle: Repose angle. Default value to 0.85. [rad]
+                max_iterations: Maximum number of iteration for the soil relaxation.
+                                Default value to 10.
+                cell_buffer: Number of cell used as a buffer around the active zone.
+                             Default value to 4.
+                amp_noise: Amplitude of the noise used for the terrain initialization.
+                             Default value to 50.0.
+            pose: Dictionary gathering all information about the excavator pose.
+                  It contains:
+                angle_boom: Angle of the boom relative to the horizontal plane. [deg]
+                angle_arm: Angle of the arm relative to the horizontal plane. [deg]
+                angle_bucket: Angle of the bucket relative to the horizontal plane. [deg]
+    """
     # Creating a new empty dictionary to avoid changing the input
     processed_excavator_model = {}
     processed_excavator_model["soil"] = {}
