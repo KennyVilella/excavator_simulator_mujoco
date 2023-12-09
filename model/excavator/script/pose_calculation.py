@@ -14,13 +14,15 @@ Typical usage example:
 Copyright, 2023,  Vilella Kenny.
 """
 import numpy as np
-#======================================================================================#
+
+
+# ==================================================================================== #
 #                                                                                      #
 #       Starting implementation of functions used to calculate the excavator pose      #
 #                                                                                      #
-#======================================================================================#
+# ==================================================================================== #
 def _calc_excavator_pose(
-    angle_boom: float, angle_arm: float, angle_bucket: float) -> list:
+        angle_boom: float, angle_arm: float, angle_bucket: float) -> list:
     """Calculates the excavator pose.
 
     This function calculates all the properties required to set the excavator pose in
@@ -35,13 +37,13 @@ def _calc_excavator_pose(
         angle_bucket: Angle of the bucket relative to the horizontal plane. [rad]
 
     Returns:
-        A list containing the angle of the chassis/boom piston relative to the horizontal
-        plane, the position of the piston rod in the chassis/boom piston cylinder, the
-        angle of the boom/arm piston relative to the horizontal plane, the position of
-        the piston rod in the boom/arm piston cylinder, the angle of the arm/H link piston
-        relative to the HM segment, the position of the piston rod in the arm/H link
-        piston cylinder, the angle of the H link relative to the IJ segment, and the
-        angle of the side link relative to the LM segment.
+        A list containing the angle of the chassis/boom piston relative to the
+        horizontal plane, the position of the piston rod in the chassis/boom piston
+        cylinder, the angle of the boom/arm piston relative to the horizontal plane, the
+        position of the piston rod in the boom/arm piston cylinder, the angle of the
+        arm/H link piston relative to the HM segment, the position of the piston rod in
+        the arm/H link piston cylinder, the angle of the H link relative to the IJ
+        segment, and the angle of the side link relative to the LM segment.
     """
     # Calculating the pose of the boom
     x_F, z_F, ext_cb_piston, angle_cb_piston = _calc_boom_pose(angle_boom)
@@ -58,16 +60,20 @@ def _calc_excavator_pose(
     print("angle_boom_arm_piston: %.2f deg" % (np.rad2deg(angle_ba_piston)))
 
     # Calculating the pose of the H link and bucket
-    ext_ah_piston, angle_h_link, angle_ah_piston, angle_side_link = _calc_H_link_pose(
-        angle_bucket, x_I, z_I, x_K, z_K, x_M, z_M)
+    ext_ah_piston, angle_h_link, angle_ah_piston, x_L, z_L, angle_side_link = (
+        _calc_H_link_pose(angle_bucket, x_I, z_I, x_K, z_K, x_M, z_M))
     print("\n================= H link pose =================")
     print("Piston extension: %.2f" % (ext_ah_piston))
     print("angle_arm_h_link_piston: %.2f deg" % (np.rad2deg(angle_ah_piston)))
     print("angle_h_link: %.2f deg" % (np.rad2deg(angle_h_link)))
     print("angle_side_link: %.2f deg" % (np.rad2deg(angle_side_link)))
 
-    return [angle_cb_piston, ext_cb_piston, angle_ba_piston, ext_ba_piston,
-        angle_ah_piston, ext_ah_piston, angle_h_link, angle_side_link]
+    return [
+        angle_cb_piston, ext_cb_piston, x_I, z_I, angle_ba_piston, ext_ba_piston,
+        angle_ah_piston, ext_ah_piston, angle_h_link, x_M, z_M, x_L, z_L,
+        angle_side_link
+    ]
+
 
 def _calc_boom_pose(angle_boom: float) -> list:
     """Calculates the boom pose.
@@ -88,9 +94,9 @@ def _calc_boom_pose(angle_boom: float) -> list:
 
     Returns:
         A list containing the position of the boom/arm piston cylinder attachment in the
-        arm frame (X and Z direction), the position of the piston rod in the chassis/boom
-        piston cylinder, and the angle of the chassis/boom piston relative to the
-        horizontal plane.
+        arm frame (X and Z direction), the position of the piston rod in the
+        chassis/boom piston cylinder, and the angle of the chassis/boom piston relative
+        to the horizontal plane.
     """
     # Input parameters measured from meshes
     CH = 384.5
@@ -115,12 +121,13 @@ def _calc_boom_pose(angle_boom: float) -> list:
     z_F = CF * np.sin(angle_boom + angle_HCF)
 
     # Calculating total length of the chassis/boom piston
-    ED = np.sqrt((x_E - x_D) ** 2 + (z_E - z_D) ** 2)
+    ED = np.sqrt((x_E - x_D)**2 + (z_E - z_D)**2)
 
     # Calculating angle of the chassis/boom piston relative to the horizontal plane
     angle_cb_piston = np.arccos((x_E - x_D) / ED)
 
     return [x_F - x_H, z_F - z_H, ED - piston_cylinder_length, angle_cb_piston]
+
 
 def _calc_arm_pose(angle_arm: float, x_F: float, z_F: float) -> list:
     """Calculates the arm pose.
@@ -148,8 +155,8 @@ def _calc_arm_pose(angle_arm: float, x_F: float, z_F: float) -> list:
         the arm frame (X and Z direction), the position of the H link attachment in the
         arm frame (X and Z direction), the position of the bucket attachment in the arm
         frame (X and Z direction), the position of the piston rod in the boom/arm
-        piston cylinder, and the angle of the boom/arm piston relative to the horizontal
-        plane.
+        piston cylinder, and the angle of the boom/arm piston relative to the
+        horizontal plane.
     """
     # Input parameters measured from meshes
     HG = 57.0
@@ -187,16 +194,17 @@ def _calc_arm_pose(angle_arm: float, x_F: float, z_F: float) -> list:
     z_M = HM * np.sin(angle_arm)
 
     # Calculating total length of the boom/arm piston
-    FG = np.sqrt((x_G - x_F) ** 2 + (z_G - z_F) ** 2)
+    FG = np.sqrt((x_G - x_F)**2 + (z_G - z_F)**2)
 
     # Calculating angle of the boom/arm piston relative to the horizontal plane
-    angle_ba_piston = np.arccos((x_G - x_F) / FG)
+    angle_ba_piston = np.arcsin((z_G - z_F) / FG)
 
     return [x_I, z_I, x_K, z_K, x_M, z_M, FG - piston_cylinder_length, angle_ba_piston]
 
+
 def _calc_H_link_pose(
-    angle_bucket: float, x_I: float, z_I: float, x_K: float, z_K: float,
-    x_M: float, z_M: float) -> list:
+        angle_bucket: float, x_I: float, z_I: float, x_K: float, z_K: float, x_M: float,
+        z_M: float) -> list:
     """Calculates the H link and bucket pose.
 
     This function calculates all the properties required to set the H link in the
@@ -243,7 +251,7 @@ def _calc_H_link_pose(
     z_L = LM * np.sin(angle_bucket)
 
     # Calculating the KL distance
-    KL = np.sqrt((x_L + x_M - x_K) ** 2 + (z_L + z_M - z_K) ** 2)
+    KL = np.sqrt((x_L + x_M - x_K)**2 + (z_L + z_M - z_K)**2)
 
     # Calculating the angle at the H link attachment formed by
     # the side link/H link triangle
@@ -261,7 +269,7 @@ def _calc_H_link_pose(
     z_J = z_K + JK * np.sin(angle_JKL + alpha)
 
     # Calculating total length of the arm/H link piston
-    IJ = np.sqrt((x_I - x_J) ** 2 + (z_I - z_J) ** 2)
+    IJ = np.sqrt((x_I - x_J)**2 + (z_I - z_J)**2)
 
     # Calculating the angle of the arm/H link relative to the HM segment
     angle_ah_piston = np.arccos((x_J - x_I) / IJ)
@@ -275,7 +283,11 @@ def _calc_H_link_pose(
     # Calculating the angle of the side link relative to the LM segment
     angle_side_link = -(np.pi - angle_side_link - angle_bucket)
 
-    return [IJ - piston_cylinder_length, angle_h_link, angle_ah_piston, angle_side_link]
+    return [
+        IJ - piston_cylinder_length, angle_h_link, angle_ah_piston, x_L, z_L,
+        angle_side_link
+    ]
+
 
 if __name__ == "__main__":
     _calc_excavator_pose(np.deg2rad(30), np.deg2rad(-30.), np.deg2rad(40.))

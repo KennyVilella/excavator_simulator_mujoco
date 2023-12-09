@@ -70,7 +70,7 @@ Copyright, 2023, Vilella Kenny.
     <texture name="boom rod" type="2d" file="boom_arm_rod_texture.png"/>
     <material name="boom rod" emission="1" texture="boom rod"/>
 
-    <mesh file="arm.obj" refquat="0.966 0 -0.259 0"/>
+    <mesh file="arm.obj"/>
     <texture name="arm" type="2d" file="arm_texture.png"/>
     <material name="arm" texture="arm" rgba="0.98 0.65 0.15 1"/>
 
@@ -86,7 +86,7 @@ Copyright, 2023, Vilella Kenny.
     <texture name="H link" type="2d" file="h_link_texture.png"/>
     <material name="H link" texture="H link"/>
 
-    <mesh file="bucket.obj"/>
+    <mesh file="bucket.obj" refquat="{{ pose.bucket_quat_w }} 0 {{ pose.bucket_quat_y }} 0"/>
     <texture name="bucket" type="2d" file="bucket_texture.png"/>
     <material name="bucket" texture="bucket" rgba="0.3 0.3 0.3 1"/>
 
@@ -178,7 +178,8 @@ Copyright, 2023, Vilella Kenny.
             <inertial pos="0.476 0 0.119" mass="880" fullinertia="15 302 290 -0.2 23 0.02"/>
 
             <!-- Arm/Bucket piston cylinder -->
-            <body name="arm piston cylinder" pos="0.397 0 0.207" euler="0 {{ pose.angle_arm_bucket_piston }} 0">
+            <body name="arm piston cylinder" pos="{{ pose.x_arm_bucket_piston }} 0 {{ pose.z_arm_bucket_piston }}"
+                  euler="0 {{ pose.angle_arm_bucket_piston }} 0">
               <joint name="arm piston cylinder" type="hinge" axis="0 1 0" pos="0 0 0"/>
               <geom name="arm piston cylinder" type="mesh" mesh="arm_h_link_tube"
                     material="arm cylinder" pos="0 0 0" euler="0 0 0"/>
@@ -203,7 +204,7 @@ Copyright, 2023, Vilella Kenny.
             </body> <!-- Arm/Bucket piston cylinder -->
 
             <!-- Bucket -->
-            <body name="bucket" pos="1.729 0 -0.998" euler="0 {{ pose.angle_bucket }} 0">
+            <body name="bucket" pos="{{ pose.x_bucket }} 0 {{ pose.z_bucket }}" euler="0 {{ pose.angle_bucket }} 0">
               <joint name="bucket" type="hinge" axis="0 1 0" pos="0 0 0"/>
               <geom name="bucket" type="mesh" mesh="bucket" material="bucket"
                     pos="0 0 0" euler="0 0 0"/>
@@ -211,7 +212,8 @@ Copyright, 2023, Vilella Kenny.
                         fullinertia="77 65 55 -0.2 -11 0.02"/>
 
               <!-- Side link -->
-              <body name="side link" pos="0.379 0 0" euler="0 {{ pose.angle_side_link }} 0">
+              <body name="side link" pos="{{ pose.x_side_link }} 0 {{ pose.z_side_link }}"
+                    euler="0 {{ pose.angle_side_link }} 0">
                 <joint name="side link" type="hinge" axis="0 1 0" pos="0 0 0"/>
                 <geom name="side link" type="mesh" mesh="side_link"
                       material="side link" pos="0 0 0" euler="0 0 0"/>
