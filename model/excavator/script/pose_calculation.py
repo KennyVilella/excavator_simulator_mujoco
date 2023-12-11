@@ -274,7 +274,7 @@ def _calc_H_link_pose(
     IJ = np.sqrt((x_I - x_J)**2 + (z_I - z_J)**2)
 
     # Calculating the angle of the arm/H link relative to the HM segment
-    angle_ah_piston = np.arccos((x_J - x_I) / IJ)
+    angle_ah_piston = -np.arcsin((z_J - z_I) / IJ)
 
     # Calculating the angle of the side link relative to the horizontal plane
     angle_side_link = np.arccos((x_J - x_M - x_L) / JL)

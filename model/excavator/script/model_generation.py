@@ -152,7 +152,6 @@ def generate_excavator_model(excavator_model: dict) -> list:
     x_L_bucket = x_L_bucket / 100.0
     z_L_bucket = z_L_bucket / 100.0
 
-    """
     # Testing validity of requested pose
     if (ext_cb_piston > 0.56):
         raise Exception(
@@ -172,7 +171,6 @@ def generate_excavator_model(excavator_model: dict) -> list:
     if (ext_ah_piston < 0.15):
         raise Exception(
             "Excavator pose invalid.\n Arm/bucket piston extension is too short.")
-    """
 
     # Populating the pose dictionary
     processed_excavator_model["pose"]["angle_boom"] = -angle_boom
@@ -224,9 +222,9 @@ if __name__ == "__main__":
         "amp_noise": 50.0,
     }
     pose = {
-        "angle_boom": 60.0,
-        "angle_arm": 30.0,
-        "angle_bucket": -30.0,
+        "angle_boom": 50.0,
+        "angle_arm": -20.0,
+        "angle_bucket": 30.0,
     }
     excavator_model = {
         "soil": soil,
