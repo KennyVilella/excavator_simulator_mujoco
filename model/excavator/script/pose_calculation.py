@@ -126,7 +126,7 @@ def _calc_boom_pose(angle_boom: float) -> list:
     ED = np.sqrt((x_E - x_D)**2 + (z_E - z_D)**2)
 
     # Calculating angle of the chassis/boom piston relative to the horizontal plane
-    angle_cb_piston = np.arccos((x_E - x_D) / ED)
+    angle_cb_piston = -np.arccos((x_E - x_D) / ED)
 
     return [x_F - x_H, z_F - z_H, ED - piston_cylinder_length, angle_cb_piston]
 
@@ -282,12 +282,9 @@ def _calc_H_link_pose(
     # Calculating the angle of the H link relative to the IJ segment
     angle_h_link = angle_LJK + np.pi - angle_side_link - angle_ah_piston
 
-    # Calculating the angle of the side link relative to the LM segment
-    angle_side_link = -angle_side_link
-
     return [
         IJ - piston_cylinder_length, angle_h_link, angle_ah_piston, x_L, z_L,
-        angle_side_link
+        -angle_side_link
     ]
 
 

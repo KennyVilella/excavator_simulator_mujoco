@@ -178,7 +178,7 @@ def generate_excavator_model(excavator_model: dict) -> list:
     processed_excavator_model["pose"]["angle_bucket"] = -angle_bucket
     processed_excavator_model["pose"]["bucket_quat_w"] = bucket_quat_w
     processed_excavator_model["pose"]["bucket_quat_y"] = bucket_quat_y
-    processed_excavator_model["pose"]["angle_chassis_boom_piston"] = -angle_cb_piston
+    processed_excavator_model["pose"]["angle_chassis_boom_piston"] = angle_cb_piston
     processed_excavator_model["pose"]["ext_chassis_boom_piston"] = ext_cb_piston
     processed_excavator_model["pose"]["angle_boom_arm_piston"] = angle_ba_piston
     processed_excavator_model["pose"]["ext_boom_arm_piston"] = ext_ba_piston
