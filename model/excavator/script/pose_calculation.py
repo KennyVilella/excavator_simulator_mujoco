@@ -39,11 +39,15 @@ def _calc_excavator_pose(
     Returns:
         A list containing the angle of the chassis/boom piston relative to the
         horizontal plane, the position of the piston rod in the chassis/boom piston
-        cylinder, the angle of the boom/arm piston relative to the horizontal plane, the
-        position of the piston rod in the boom/arm piston cylinder, the angle of the
-        arm/H link piston relative to the HM segment, the position of the piston rod in
-        the arm/H link piston cylinder, the angle of the H link relative to the IJ
-        segment, and the angle of the side link relative to the LM segment.
+        cylinder, the position of the arm/H link piston cylinder attachment in the arm
+        frame (X and Z direction), the angle of the boom/arm piston relative to the
+        horizontal plane, the position of the piston rod in the boom/arm piston
+        cylinder, the angle of the arm/H link piston relative to the HM segment,
+        the position of the piston rod in the arm/H link piston cylinder, the angle of
+        the H link relative to the IJ segment, the position of the bucket attachment in
+        the arm frame (X and Z direction), the position of the side link attachment in
+        the bucket frame (X and Z direction), and the angle of the side link relative to
+        the LM segment.
     """
     # Calculating the pose of the boom
     x_F, z_F, ext_cb_piston, angle_cb_piston = _calc_boom_pose(angle_boom)
@@ -239,8 +243,9 @@ def _calc_H_link_pose(
     Returns:
         A list containing the position of the piston rod in the arm/H link piston
         cylinder, the angle of the H link relative to the IJ segment, the angle of the
-        arm/H link piston relative to the HM segment, and the angle of the side link
-        relative to the LM segment.
+        arm/H link piston relative to the HM segment, the position of the side link
+        attachment in the bucket frame (X and Z direction), and the angle of the side
+        link relative to the LM segment.
     """
     # Input parameters measured from meshes
     JK = 45.4
