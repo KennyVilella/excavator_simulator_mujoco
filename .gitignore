@@ -7,6 +7,14 @@ build/
 # Mujoco files
 MUJOCO_LOG.TXT
 
+# Generated excavator model
+generated_excavator.xml
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
 # Prerequisites
 *.d
 
