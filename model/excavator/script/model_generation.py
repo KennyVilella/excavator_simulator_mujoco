@@ -114,21 +114,25 @@ def generate_excavator_model(excavator_model: dict) -> list:
     ] = _calc_excavator_pose(
         np.deg2rad(angle_boom), np.deg2rad(angle_arm), np.deg2rad(angle_bucket))
 
-    # Converting angles from degrees to radians
-    angle_boom_rad = np.deg2rad(angle_boom)
-    angle_arm_rad = np.deg2rad(angle_arm)
+    # Calculating total angles in degrees
+    angle_arm_rad = -np.deg2rad(angle_arm)
+    angle_bucket_rad = -np.deg2rad(angle_bucket) + angle_arm_rad
 
     # Calculating bucket reference orientation
-    bucket_quat_w = np.cos(-angle_arm_rad / 2)
-    bucket_quat_y = np.sin(-angle_arm_rad / 2)
+    bucket_quat_w = np.cos(angle_arm_rad / 2)
+    bucket_quat_y = np.sin(angle_arm_rad / 2)
 
-    # Calculating coordinate of arm/bucket attachment point in boom reference frame
-    x_I_boom = x_I * np.cos(angle_boom_rad) - z_I * np.sin(angle_boom_rad)
-    z_I_boom = x_I * np.sin(angle_boom_rad) + z_I * np.cos(angle_boom_rad)
+    # Calculating coordinate of arm/bucket attachment point in arm reference frame
+    x_I_arm = x_I * np.cos(angle_arm_rad) - z_I * np.sin(angle_arm_rad)
+    z_I_arm = x_I * np.sin(angle_arm_rad) + z_I * np.cos(angle_arm_rad)
 
-    # Calculating coordinate of bucket attachment point in boom reference frame
-    x_M_boom = x_M * np.cos(angle_boom_rad) - z_M * np.sin(angle_boom_rad)
-    z_M_boom = x_M * np.sin(angle_boom_rad) + z_M * np.cos(angle_boom_rad)
+    # Calculating coordinate of bucket attachment point in arm reference frame
+    x_M_arm = x_M * np.cos(angle_arm_rad) - z_M * np.sin(angle_arm_rad)
+    z_M_arm = x_M * np.sin(angle_arm_rad) + z_M * np.cos(angle_arm_rad)
+
+    # Calculating coordinate of side link attachment point in bucket reference frame
+    x_L_bucket = x_L * np.cos(angle_bucket_rad) - z_L * np.sin(angle_bucket_rad)
+    z_L_bucket = x_L * np.sin(angle_bucket_rad) + z_L * np.cos(angle_bucket_rad)
 
     # Converting angles from radians to degrees
     angle_cb_piston = np.rad2deg(angle_cb_piston)
@@ -141,10 +145,12 @@ def generate_excavator_model(excavator_model: dict) -> list:
     ext_cb_piston = ext_cb_piston / 100.0
     ext_ba_piston = ext_ba_piston / 100.0
     ext_ah_piston = ext_ah_piston / 100.0
-    x_I_boom = x_I_boom / 100.0
-    z_I_boom = z_I_boom / 100.0
-    x_M_boom = x_M_boom / 100.0
-    z_M_boom = z_M_boom / 100.0
+    x_I_arm = x_I_arm / 100.0
+    z_I_arm = z_I_arm / 100.0
+    x_M_arm = x_M_arm / 100.0
+    z_M_arm = z_M_arm / 100.0
+    x_L_bucket = x_L_bucket / 100.0
+    z_L_bucket = z_L_bucket / 100.0
 
     """
     # Testing validity of requested pose
@@ -178,18 +184,16 @@ def generate_excavator_model(excavator_model: dict) -> list:
     processed_excavator_model["pose"]["ext_chassis_boom_piston"] = ext_cb_piston
     processed_excavator_model["pose"]["angle_boom_arm_piston"] = angle_ba_piston
     processed_excavator_model["pose"]["ext_boom_arm_piston"] = ext_ba_piston
-    processed_excavator_model["pose"]["x_arm_bucket_piston"] = x_I_boom
-    processed_excavator_model["pose"]["z_arm_bucket_piston"] = z_I_boom
-    processed_excavator_model["pose"]["angle_arm_bucket_piston"] = (
-        angle_arm + angle_ah_piston)
+    processed_excavator_model["pose"]["x_arm_bucket_piston"] = x_I_arm
+    processed_excavator_model["pose"]["z_arm_bucket_piston"] = z_I_arm
+    processed_excavator_model["pose"]["angle_arm_bucket_piston"] = angle_ah_piston
     processed_excavator_model["pose"]["ext_arm_bucket_piston"] = ext_ah_piston
     processed_excavator_model["pose"]["angle_h_link"] = angle_h_link
-    processed_excavator_model["pose"]["x_bucket"] = x_M_boom
-    processed_excavator_model["pose"]["z_bucket"] = z_M_boom
-    processed_excavator_model["pose"]["x_side_link"] = x_L / 100.0
-    processed_excavator_model["pose"]["z_side_link"] = z_L / 100.0
-    processed_excavator_model["pose"]["angle_side_link"] = (
-        -angle_bucket + angle_side_link)
+    processed_excavator_model["pose"]["x_bucket"] = x_M_arm
+    processed_excavator_model["pose"]["z_bucket"] = z_M_arm
+    processed_excavator_model["pose"]["x_side_link"] = x_L_bucket
+    processed_excavator_model["pose"]["z_side_link"] = z_L_bucket
+    processed_excavator_model["pose"]["angle_side_link"] = angle_side_link
 
     # Generating excavator model
     filepath = os.path.abspath(os.path.dirname(__file__))
@@ -220,9 +224,9 @@ if __name__ == "__main__":
         "amp_noise": 50.0,
     }
     pose = {
-        "angle_boom": 30.0,
-        "angle_arm": -30.0,
-        "angle_bucket": 30.0,
+        "angle_boom": 60.0,
+        "angle_arm": 30.0,
+        "angle_bucket": -30.0,
     }
     excavator_model = {
         "soil": soil,

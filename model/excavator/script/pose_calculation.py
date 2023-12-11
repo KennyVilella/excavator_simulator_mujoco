@@ -62,6 +62,8 @@ def _calc_excavator_pose(
     # Calculating the pose of the H link and bucket
     ext_ah_piston, angle_h_link, angle_ah_piston, x_L, z_L, angle_side_link = (
         _calc_H_link_pose(angle_bucket, x_I, z_I, x_K, z_K, x_M, z_M))
+    angle_ah_piston = angle_arm + angle_ah_piston
+    angle_side_link = angle_arm + angle_bucket + angle_side_link
     print("\n================= H link pose =================")
     print("Piston extension: %.2f" % (ext_ah_piston))
     print("angle_arm_h_link_piston: %.2f deg" % (np.rad2deg(angle_ah_piston)))
@@ -275,13 +277,13 @@ def _calc_H_link_pose(
     angle_ah_piston = np.arccos((x_J - x_I) / IJ)
 
     # Calculating the angle of the side link relative to the horizontal plane
-    angle_side_link = np.arccos((x_L + x_M - x_J) / JL)
+    angle_side_link = np.arccos((x_J - x_M - x_L) / JL)
 
     # Calculating the angle of the H link relative to the IJ segment
-    angle_h_link = angle_LJK + angle_side_link - angle_ah_piston
+    angle_h_link = angle_LJK + np.pi - angle_side_link - angle_ah_piston
 
     # Calculating the angle of the side link relative to the LM segment
-    angle_side_link = -(np.pi - angle_side_link - angle_bucket)
+    angle_side_link = -angle_side_link
 
     return [
         IJ - piston_cylinder_length, angle_h_link, angle_ah_piston, x_L, z_L,
