@@ -10,6 +10,10 @@ The meshes are stored in the `mesh` folder.
 Textures have been downloaded online ([metal][metal], [steel][steel], and [dirt][dirt]) and applied to meshes using [Blender][Blender].
 The resulting textures are stored in the `texture` folder.
 
+The `template` folder contains a template to generate an excavator model following the requested pose, given grid geometry and soil properties.
+A new model can be generated using the python script `model_generation.py` located in the `script` folder.
+Note that the excavator pose is calculated using the fucntions inside the `pose_calculation.py` file located in the `script` folder.
+
 ## Model modifications
 This section lists all the modifications that have been made to the original meshes.
 
@@ -257,6 +261,37 @@ Below is the Cartesian coordinates of the important points of the H link in its 
 | ------ | ------------- |
 | **J**  | (0, 0, 0)     |
 | **K**  | (0.454, 0, 0) |
+
+## Model pose
+
+A typical excavator has four degrees of freedom (when excluding locomotion), so that its pose can be fully described by setting its four active joints.
+The four active joints are:
+
+(1) The rotation of the chassis relative to the caterpillar.
+(2) The boom rotation.
+(3) The arm rotation.
+(4) The bucket rotation.
+
+The first active joint is straightforward to set and will not be discussed.
+Other active joints are actuated by hydraulic pistons.
+The state of these active joints can therefore be described using the piston extension, that is, the position of the piston rod in the piston cylinder.
+It may however be difficult for the user to set the desired pose of the excavator using piston extensions.
+As a result, the state of these three active joints are rather set using their angle relative to the horizontal plane, as illustrated in the schematic below.
+\
+![angle schematic](image/angle_convention.jpg)
+\
+\
+\
+* The boom angle is calculated as the angle of the CH segment relative to the horizontal plane.
+* The arm angle is calculated as the agnle of the HM segment relative to the horizontal plane.
+* The bucket angle is calculated as the agnle of the ML segment relative to the horizontal plane.
+
+From these three input parameters, the full pose of the excavtor can be calculated using simple trigonometry, as explained in the following.
+
+Note that angles are defined as positive counter clockwise, while it is the opposite in MuJoCo.
+
+### Boom pose
+
 
 ## Actuation mode
 The current model uses velocity control to actuate the four joints.
