@@ -285,6 +285,7 @@ As a result, the state of these three active joints are rather set using their a
 ![Angle schematic](image/angle_convention.jpg)
 \
 \
+
 * The boom angle is calculated as the angle of the **CH** segment relative to the horizontal plane.
 * The arm angle is calculated as the agnle of the **HM** segment relative to the horizontal plane.
 * The bucket angle is calculated as the agnle of the **ML** segment relative to the horizontal plane.
@@ -310,13 +311,12 @@ z_H = CH * sin(angle_boom),
 ```
 where **CE**, **CF**, **CH**, `angle_HCE` and `angle_HCF` are constants that can be calculated from the grid geometry (values are given in the table below).
 
-From the **E** coordinates, it is possible to calculate the distance **ED**, and then the position of **E'** using the length **EE'** of the piston rod.
+From the **E** coordinates, it is possible to calculate the distance **ED**, and then the position of **E'** using the (constant) length **EE'** of the piston rod.
 It is also possible to calculate the angle of the chassis/boom piston relative to the horizontal
 ```
 angle_cb_piston = arccos((x_E - x_D) / ED).
 ```
 Note that `arccos` is used as `angle_cb_piston` is expected to be between 0 and 180 degrees.
-
 
 | Parameter   | Value | Unit |
 | ----------- | ----- | ---- |
@@ -328,6 +328,54 @@ Note that `arccos` is used as `angle_cb_piston` is expected to be between 0 and 
 | `angle_HCF` | 0.411 | rad  |
 
 ### Arm pose
+\
+![Arm pose schematic](image/arm_pose.jpg)
+\
+\
+\
+Following this schematic, the position of **M** relative to **H** can be easily calculated:
+```
+x_M = HM * cos(angle_arm),
+z_M = HM * sin(angle_arm),
+```
+where **HM** is a constant that can be calculated from the grid geometry.
+furthermore, the position of **G**, **I** and **K** relative to **H** can be calculated using the angles `alpha`, `beta` and `theta`:
+```
+x_G = -HG * sin(alpha),
+z_G = HG * cos(akpha),
+x_I = HI * cos(beta),
+z_I = HI * sin(beta),
+x_K = HK * cos(theta),
+z_K = HK * sin(theta),
+```
+where **HG**, **HI** and **HK** are constants that can be calculated from the grid geometry, and
+```
+alpha = angle_GHM + angle_arm - pi / 2,
+beta = angle_GHM + angle_arm - angle_GHI,
+theta = angle_GHM + angle_arm - angle_GHK,
+```
+with `angle_GHM`, `angle_GHI` and `angle_GHK` constants that can be calculated from the grid geometry.
+
+From the **G** and **F** coordinates, it is possible to calculate the distance **FG**, and then the position of **G'** using the (constant) length **GG'** of the piston rod.
+It is also possible to calculate the angle of the boom/arm piston relative to the horizontal
+```
+angle_ba_piston = np.arcsin((z_G - z_F) / FG)
+```
+Note that `arcsin` is used as `angle_ba_piston` is expected to be between -90 and 90 degrees.
+
+| Parameter   | Value | Unit |
+| ----------- | ----- | ---- |
+| **HM**      | 1.996 | m    |
+| **HG**      | 0.570 | m    |
+| **HI**      | 0.448 | m    |
+| **HK**      | 1.523 | m    |
+| **GG'**     | 1.147 | m    |
+| `angle_GHM` | 2.881 | rad  |
+| `angle_GHI` | 1.876 | rad  |
+| `angle_GHK` | 2.838 | rad  |
+
+### Bucket and H link pose
+
 
 ## Actuation mode
 The current model uses velocity control to actuate the four joints.
