@@ -34,9 +34,9 @@ def generate_excavator_model(excavator_model: dict) -> list:
 
     As the convention between MuJoCo and the pose calculation script is slightly
     different, some conversion has to be made. In particular, all distances are
-    converted into meters and all angles in degrees, angle follows the trigonometric
-    convention in the pose calculation script while MuJoCo follows the
-    anti-trigonometric convention.
+    converted into meters and all angles in degrees, angle are defined as positive
+    counter clockwise in the pose calculation script while MuJoCo follows the opposite
+    convention.
 
     Note that a second dictionary is used in order to not modify the properties inside
     the input dictionary.
