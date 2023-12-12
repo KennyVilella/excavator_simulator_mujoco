@@ -283,8 +283,6 @@ As a result, the state of these three active joints are rather set using their a
 \
 \
 ![Angle schematic](image/angle_convention.jpg)
-\
-\
 
 * The boom angle is calculated as the angle of the **CH** segment relative to the horizontal plane.
 * The arm angle is calculated as the agnle of the **HM** segment relative to the horizontal plane.
@@ -339,7 +337,7 @@ x_M = HM * cos(angle_arm),
 z_M = HM * sin(angle_arm),
 ```
 where **HM** is a constant that can be calculated from the grid geometry.
-furthermore, the position of **G**, **I** and **K** relative to **H** can be calculated using the angles `alpha`, `beta` and `theta`:
+Furthermore, the position of **G**, **I** and **K** relative to **H** can be calculated using the angles `alpha`, `beta` and `theta`:
 ```
 x_G = -HG * sin(alpha),
 z_G = HG * cos(akpha),
@@ -359,9 +357,10 @@ with `angle_GHM`, `angle_GHI` and `angle_GHK` constants that can be calculated f
 From the **G** and **F** coordinates, it is possible to calculate the distance **FG**, and then the position of **G'** using the (constant) length **GG'** of the piston rod.
 It is also possible to calculate the angle of the boom/arm piston relative to the horizontal
 ```
-angle_ba_piston = np.arcsin((z_G - z_F) / FG)
+angle_ba_piston = np.arcsin((z_G - z_F) / FG).
 ```
 Note that `arcsin` is used as `angle_ba_piston` is expected to be between -90 and 90 degrees.
+In the excavator model, `angle_ba_piston` should be measured relative to the segment **CH**, as it is on the schematic above, that is the angle `angle_boom - angle_ba_piston`.
 
 | Parameter   | Value | Unit |
 | ----------- | ----- | ---- |
