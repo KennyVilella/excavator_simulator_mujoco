@@ -278,20 +278,52 @@ The state of these active joints can therefore be described using the piston ext
 It may however be difficult for the user to set the desired pose of the excavator using piston extensions.
 As a result, the state of these three active joints are rather set using their angle relative to the horizontal plane, as illustrated in the schematic below.
 \
-![angle schematic](image/angle_convention.jpg)
+![Angle schematic](image/angle_convention.jpg)
 \
 \
 \
-* The boom angle is calculated as the angle of the CH segment relative to the horizontal plane.
-* The arm angle is calculated as the agnle of the HM segment relative to the horizontal plane.
-* The bucket angle is calculated as the agnle of the ML segment relative to the horizontal plane.
+* The boom angle is calculated as the angle of the **CH** segment relative to the horizontal plane.
+* The arm angle is calculated as the agnle of the **HM** segment relative to the horizontal plane.
+* The bucket angle is calculated as the agnle of the **ML** segment relative to the horizontal plane.
 
 From these three input parameters, the full pose of the excavtor can be calculated using simple trigonometry, as explained in the following.
 
 Note that angles are defined as positive counter clockwise, while it is the opposite in MuJoCo.
 
 ### Boom pose
+\
+![Boom pose schematic](image/boom_pose.jpg)
+\
+\
+\
+Following this schematic, the position of **E**, **F**, and **H** relative to **C** can be easily calculated:
+```
+x_E = CE * cos(angle_boom + angle_HCE),
+z_E = CE * sin(angle_boom + angle_HCE),
+x_F = CF * cos(angle_boom + angle_HCF),
+z_F = CF * sin(angle_boom + angle_HCF),
+x_H = CH * cos(angle_boom),
+z_H = CH * sin(angle_boom),
+```
+where **CE**, **CF**, **CH**, **angle_HCE** and **angle_HCF** are constant that can be calculated from the grid geometry (values are given in the table below).
 
+From the **E** coordinates, it is possible to calculate the distance **ED**, and then the position of **E'** using the length **EE'** of the piston rod.
+It is also possible to calculate the angle of the chassis/boom piston relative to the horizontal
+```
+angle_cb_piston = arccos((x_E - x_D) / ED).
+```
+Note that `arccos` is used as `angle_cb_piston` is expected to be between 0 and 180 degrees.
+
+| Parameter   | Value | Unit |
+| ----------- | ----- | ---- |
+| **CH**      | 3.845 | m    |
+| **CE**      | 1.678 | m    |
+| **CF**      | 2.362 | m    |
+| **EE'**     | 1.336 | m    |
+| `angle_HCE` | 0.421 | rad  |
+| `angle_HCF` | 0.411 | rad  |
+
+### Arm pose
 
 ## Actuation mode
 The current model uses velocity control to actuate the four joints.
