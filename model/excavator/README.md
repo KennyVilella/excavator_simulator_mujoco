@@ -263,13 +263,16 @@ Below is the Cartesian coordinates of the important points of the H link in its 
 | **K**  | (0.454, 0, 0) |
 
 ## Model pose
-
-A typical excavator has four degrees of freedom (when excluding locomotion), so that its pose can be fully described by setting its four active joints.
+A typical excavator has four degrees of freedom in addition to locomotion.
+Its pose can therefore be fully described by setting the state of its four active joints.
 The four active joints are:
 
 (1) The rotation of the chassis relative to the caterpillar.
+
 (2) The boom rotation.
+
 (3) The arm rotation.
+
 (4) The bucket rotation.
 
 The first active joint is straightforward to set and will not be discussed.
@@ -278,8 +281,8 @@ The state of these active joints can therefore be described using the piston ext
 It may however be difficult for the user to set the desired pose of the excavator using piston extensions.
 As a result, the state of these three active joints are rather set using their angle relative to the horizontal plane, as illustrated in the schematic below.
 \
-![Angle schematic](image/angle_convention.jpg)
 \
+![Angle schematic](image/angle_convention.jpg)
 \
 \
 * The boom angle is calculated as the angle of the **CH** segment relative to the horizontal plane.
@@ -305,7 +308,7 @@ z_F = CF * sin(angle_boom + angle_HCF),
 x_H = CH * cos(angle_boom),
 z_H = CH * sin(angle_boom),
 ```
-where **CE**, **CF**, **CH**, **angle_HCE** and **angle_HCF** are constant that can be calculated from the grid geometry (values are given in the table below).
+where **CE**, **CF**, **CH**, `angle_HCE` and `angle_HCF` are constants that can be calculated from the grid geometry (values are given in the table below).
 
 From the **E** coordinates, it is possible to calculate the distance **ED**, and then the position of **E'** using the length **EE'** of the piston rod.
 It is also possible to calculate the angle of the chassis/boom piston relative to the horizontal
@@ -313,6 +316,7 @@ It is also possible to calculate the angle of the chassis/boom piston relative t
 angle_cb_piston = arccos((x_E - x_D) / ED).
 ```
 Note that `arccos` is used as `angle_cb_piston` is expected to be between 0 and 180 degrees.
+
 
 | Parameter   | Value | Unit |
 | ----------- | ----- | ---- |
