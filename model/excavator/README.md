@@ -357,7 +357,7 @@ with `angle_GHM`, `angle_GHI` and `angle_GHK` constants that can be calculated f
 From the **G** and **F** coordinates, it is possible to calculate the distance **FG**, and then the position of **G'** using the (constant) length **GG'** of the piston rod.
 It is also possible to calculate the angle of the boom/arm piston relative to the horizontal
 ```
-angle_ba_piston = np.arcsin((z_G - z_F) / FG).
+angle_ba_piston = arcsin((z_G - z_F) / FG).
 ```
 Note that `arcsin` is used as `angle_ba_piston` is expected to be between -90 and 90 degrees.
 In the excavator model, `angle_ba_piston` should be measured relative to the segment **CH**, as it is on the schematic above, that is the angle `angle_boom - angle_ba_piston`.
@@ -374,7 +374,61 @@ In the excavator model, `angle_ba_piston` should be measured relative to the seg
 | `angle_GHK` | 2.838 | rad  |
 
 ### Bucket and H link pose
+\
+![Bucket pose schematic](image/bucket_pose.jpg)
+\
+\
+\
+Following this schematic, the position of **L** relative to **M** can be easily calculated:
+```
+x_L = LM * cos(angle_bucket),
+z_L = LM * sin(angle_bucket),
+```
+where **LM** is a constant that can be calculated from the grid geometry.
+From the **K** and **L** coordinates, it is possible to calculate the distance **KL**, which in turn gives
+```
+angle_JKL = arccos((JK * JK + KL * KL - JL * JL) / (2 * JK * KL)),
+angle_LJK = arccos((JK * JK + JL * JL - KL * KL) / (2 * JK * JL)),
+```
+from the law of cosines in the **JKL** triangle, with **JK** and **JL** are constants that can be calculated from the grid geometry.
 
+Using this, one may calculate the position of **J** relative to H
+```
+x_J = x_K + JK * cos(angle_JKL + alpha),
+z_J = z_K + JK * sin(angle_JKL + alpha),
+```
+where **JK** is a is a constant that can be calculated from the grid geometry, and
+```
+alpha = arcsin((z_L + z_M - z_K) / KL).
+```
+Note that `arcsin` is used as `alpha` is expected to be between -90 and 90 degrees.
+
+From the **I** and **J** coordinates, it is possible to calculate the distance **IJ**, and then the position of **J'** using the (constant) length **JJ'** of the piston rod.
+It is also possible to calculate the angle of the arm/bucket piston relative to the horizontal
+```
+angle_ah_piston = arcsin((z_J - z_I) / IJ).
+```
+Note that `arcsin` is used as `angle_ah_piston` is expected to be between -90 and 90 degrees.
+In the excavator model, `angle_ah_piston` should be measured relative to the segment **HM**, as it is on the schematic above, that is the angle `angle_arm - angle_ah_piston`.
+
+From the **L** and **J** coordinates, it is possible to calculate the angle of the side link relative to the horizontal
+```
+angle_side_link = arccos((x_J - x_M - x_L) / JL).
+```
+Note that `arccos` is used as `angle_side_link` is expected to be between 0 and 180 degrees.
+In the excavator model, `angle_side_link` should be measured relative to the segment **ML**, as it is on the schematic above, that is the angle `angle_arm + angle_bucket + angle_side_link`.
+
+Finally, it is also necessary to calculate the angle of the H link relative to the IJ segment
+```
+angle_h_link = 2 pi - angle_KJI = pi - angle_side_link + angle_ah_piston + angle_LJK.
+```
+
+| Parameter   | Value | Unit |
+| ----------- | ----- | ---- |
+| **JK**      | 0.454 | m    |
+| **JL**      | 0.449 | m    |
+| **LM**      | 0.379 | m    |
+| **JJ'**     | 0.866 | m    |
 
 ## Actuation mode
 The current model uses velocity control to actuate the four joints.
