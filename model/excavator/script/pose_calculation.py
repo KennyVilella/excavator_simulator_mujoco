@@ -2,14 +2,16 @@
 
 The purpose of the functions in this file is to calculate the pose of the different
 parts of an excavator provided the boom, arm and bucket angle.
-The math behind the calculation is provided in the model readme.
+The reasoning behind the calculation is provided in the model readme.
 
 Typical usage example:
 
     from pose_calculation import _calc_excavator_pose
-    [angle_cb_piston, ext_cb_piston, angle_ba_piston, ext_ba_piston,
-        angle_ah_piston, ext_ah_piston, angle_h_link, angle_side_link] =
-        _calc_excavator_pose(0.5, 0.0, 0.2)
+    [
+        angle_cb_piston, ext_cb_piston, x_I, z_I, angle_ba_piston, ext_ba_piston,
+        angle_ah_piston, ext_ah_piston, angle_h_link, x_M, z_M, x_L, z_L,
+        angle_side_link
+    ] = _calc_excavator_pose(0.5, 0.0, 0.2)
 
 Copyright, 2023,  Vilella Kenny.
 """
@@ -28,7 +30,7 @@ def _calc_excavator_pose(
     This function calculates all the properties required to set the excavator pose in
     the MuJoCo model and prints them.
 
-    The math behind the calculation as well as the convention used are available in
+    The reasoning behind the calculation as well as the convention used are available in
     the model readme.
 
     Args:
@@ -88,11 +90,11 @@ def _calc_boom_pose(angle_boom: float) -> list:
     MuJoCo model.
 
     Some information about this function:
-    - All distance are given in cm.
+    - All distances are given in cm.
     - All angles are given in radian.
     - The position of E, D, H and F are given in the boom frame.
 
-    The math behind the calculation as well as the convention used are available in
+    The reasoning behind the calculation as well as the convention used are available in
     the model readme.
 
     Args:
@@ -142,11 +144,11 @@ def _calc_arm_pose(angle_arm: float, x_F: float, z_F: float) -> list:
     MuJoCo model.
 
     Some information about this function:
-    - All distance are given in cm.
+    - All distances are given in cm.
     - All angles are given in radian.
     - The position of G, I, K and M are given in the arm frame.
 
-    The math behind the calculation as well as the convention used are available in
+    The reasoning behind the calculation as well as the convention used are available in
     the model readme.
 
     Args:
@@ -217,12 +219,12 @@ def _calc_H_link_pose(
     MuJoCo model.
 
     Some information about this function:
-    - All distance are given in cm.
+    - All distances are given in cm.
     - All angles are given in radian.
     - The position of L is given in the bucket frame.
     - The position of J is given in the arm frame.
 
-    The math behind the calculation as well as the convention used are available in
+    The reasoning behind the calculation as well as the convention used are available in
     the model readme.
 
     Args:

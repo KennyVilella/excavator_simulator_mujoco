@@ -12,7 +12,7 @@ The resulting textures are stored in the `texture` folder.
 
 The `template` folder contains a template to generate an excavator model following the requested pose, given grid geometry and soil properties.
 A new model can be generated using the python script `model_generation.py` located in the `script` folder.
-Note that the excavator pose is calculated using the fucntions inside the `pose_calculation.py` file located in the `script` folder.
+Note that the excavator pose is calculated using the functions inside the `pose_calculation.py` file located in the `script` folder.
 
 ## Model modifications
 This section lists all the modifications that have been made to the original meshes.

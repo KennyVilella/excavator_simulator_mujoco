@@ -2,7 +2,7 @@
 
 The purpose of the functions in this file is to generate an excavator model provided
 its pose, the geometry of the soil grid, and the properties of the soil simulator.
-All the properties are given to the function as a dictionnary.
+All the properties are given to the function as a dictionary.
 The model generation relies on Jinja.
 
 The generated model is written in the excavator folder and is named
@@ -34,7 +34,7 @@ def generate_excavator_model(excavator_model: dict) -> list:
 
     As the convention between MuJoCo and the pose calculation script is slightly
     different, some conversion has to be made. In particular, all distances are
-    converted into meters and all angles in degrees, angle are defined as positive
+    converted into meters and all angles in degrees, angles are defined as positive
     counter clockwise in the pose calculation script while MuJoCo follows the opposite
     convention.
 
@@ -64,7 +64,7 @@ def generate_excavator_model(excavator_model: dict) -> list:
                 cell_buffer: Number of cell used as a buffer around the active zone.
                              Default value to 4.
                 amp_noise: Amplitude of the noise used for the terrain initialization.
-                             Default value to 50.0.
+                           Default value to 50.0.
             pose: Dictionary gathering all information about the excavator pose.
                   It contains:
                 angle_boom: Angle of the boom relative to the horizontal plane. [deg]
