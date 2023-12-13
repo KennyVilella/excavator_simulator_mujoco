@@ -39,11 +39,11 @@ def _calc_excavator_pose(
     Returns:
         A list containing the angle of the chassis/boom piston relative to the
         horizontal plane, the position of the piston rod in the chassis/boom piston
-        cylinder, the position of the arm/H link piston cylinder attachment in the arm
+        cylinder, the position of the arm/bucket piston cylinder attachment in the arm
         frame (X and Z direction), the angle of the boom/arm piston relative to the
         horizontal plane, the position of the piston rod in the boom/arm piston
-        cylinder, the angle of the arm/H link piston relative to the HM segment,
-        the position of the piston rod in the arm/H link piston cylinder, the angle of
+        cylinder, the angle of the arm/bucket piston relative to the HM segment,
+        the position of the piston rod in the arm/bucket piston cylinder, the angle of
         the H link relative to the IJ segment, the position of the bucket attachment in
         the arm frame (X and Z direction), the position of the side link attachment in
         the bucket frame (X and Z direction), and the angle of the side link relative to
@@ -157,7 +157,7 @@ def _calc_arm_pose(angle_arm: float, x_F: float, z_F: float) -> list:
              given in the arm frame. [cm]
 
     Returns:
-        A list containing the position of the arm/H link piston cylinder attachment in
+        A list containing the position of the arm/bucket piston cylinder attachment in
         the arm frame (X and Z direction), the position of the H link attachment in the
         arm frame (X and Z direction), the position of the bucket attachment in the arm
         frame (X and Z direction), the position of the piston rod in the boom/arm
@@ -187,7 +187,7 @@ def _calc_arm_pose(angle_arm: float, x_F: float, z_F: float) -> list:
     x_G = -HG * np.sin(alpha)
     z_G = HG * np.cos(alpha)
 
-    # Calculating position of the arm/H link piston cylinder attachment in the arm frame
+    # Calculating position of the arm/bucket piston cylinder attachment in the arm frame
     x_I = HI * np.cos(beta)
     z_I = HI * np.sin(beta)
 
@@ -227,9 +227,9 @@ def _calc_H_link_pose(
 
     Args:
         angle_bucket: Angle of the bucket relative to the horizontal plane. [rad]
-        x_I: Position of the arm/H link piston cylinder attachment in the X direction
+        x_I: Position of the arm/bucket piston cylinder attachment in the X direction
              given in the arm frame. [cm]
-        z_I: Position of the arm/H link piston cylinder attachment in the Z direction
+        z_I: Position of the arm/bucket piston cylinder attachment in the Z direction
              given in the arm frame. [cm]
         x_K: Position of the H link attachment in the X direction given in the arm
              frame. [cm]
@@ -241,9 +241,9 @@ def _calc_H_link_pose(
              frame. [cm]
 
     Returns:
-        A list containing the position of the piston rod in the arm/H link piston
+        A list containing the position of the piston rod in the arm/bucket piston
         cylinder, the angle of the H link relative to the IJ segment, the angle of the
-        arm/H link piston relative to the HM segment, the position of the side link
+        arm/bucket piston relative to the HM segment, the position of the side link
         attachment in the bucket frame (X and Z direction), and the angle of the side
         link relative to the LM segment.
     """
@@ -264,18 +264,18 @@ def _calc_H_link_pose(
     # the side link/H link triangle
     angle_JKL = np.arccos((JK * JK + KL * KL - JL * JL) / (2 * JK * KL))
 
-    # Calculating the angle at the arm/H link piston rod attachment formed by
+    # Calculating the angle at the arm/bucket piston rod attachment formed by
     # the side link/H link triangle
     angle_LJK = np.arccos((JK * JK + JL * JL - KL * KL) / (2 * JK * JL))
 
     # Calculating angle of the segment KL relative to the horizontal plane
     alpha = np.arcsin((z_L + z_M - z_K) / KL)
 
-    # Calculating position of the arm/H link piston rod attachment in the arm frame
+    # Calculating position of the arm/bucket piston rod attachment in the arm frame
     x_J = x_K + JK * np.cos(angle_JKL + alpha)
     z_J = z_K + JK * np.sin(angle_JKL + alpha)
 
-    # Calculating total length of the arm/H link piston
+    # Calculating total length of the arm/bucket piston
     IJ = np.sqrt((x_I - x_J)**2 + (z_I - z_J)**2)
 
     # Calculating the angle of the arm/H link relative to the HM segment
