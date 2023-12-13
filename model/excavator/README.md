@@ -285,10 +285,10 @@ As a result, the state of these three active joints are rather set using their a
 ![Angle schematic](image/angle_convention.jpg)
 
 * The boom angle is calculated as the angle of the **CH** segment relative to the horizontal plane.
-* The arm angle is calculated as the agnle of the **HM** segment relative to the horizontal plane.
-* The bucket angle is calculated as the agnle of the **ML** segment relative to the horizontal plane.
+* The arm angle is calculated as the angle of the **HM** segment relative to the horizontal plane.
+* The bucket angle is calculated as the angle of the **ML** segment relative to the horizontal plane.
 
-From these three input parameters, the full pose of the excavtor can be calculated using simple trigonometry, as explained in the following.
+From these three input parameters, the full pose of the excavator can be calculated using simple trigonometry, as explained in the following.
 
 Note that angles are defined as positive counter clockwise, while it is the opposite in MuJoCo.
 
@@ -298,7 +298,7 @@ Note that angles are defined as positive counter clockwise, while it is the oppo
 \
 \
 \
-Following this schematic, the position of **E**, **F**, and **H** relative to **C** can be easily calculated:
+Following this schematic, the position of **E**, **F**, and **H** relative to **C** can be easily calculated
 ```
 x_E = CE * cos(angle_boom + angle_HCE),
 z_E = CE * sin(angle_boom + angle_HCE),
@@ -310,7 +310,7 @@ z_H = CH * sin(angle_boom),
 where **CE**, **CF**, **CH**, `angle_HCE` and `angle_HCF` are constants that can be calculated from the grid geometry (values are given in the table below).
 
 From the **E** coordinates, it is possible to calculate the distance **ED**, and then the position of **E'** using the (constant) length **EE'** of the piston rod.
-It is also possible to calculate the angle of the chassis/boom piston relative to the horizontal
+It is also possible to calculate the angle of the chassis/boom piston relative to the horizontal plane
 ```
 angle_cb_piston = arccos((x_E - x_D) / ED).
 ```
@@ -331,16 +331,16 @@ Note that `arccos` is used as `angle_cb_piston` is expected to be between 0 and 
 \
 \
 \
-Following this schematic, the position of **M** relative to **H** can be easily calculated:
+Following this schematic, the position of **M** relative to **H** can be easily calculated
 ```
 x_M = HM * cos(angle_arm),
 z_M = HM * sin(angle_arm),
 ```
 where **HM** is a constant that can be calculated from the grid geometry.
-Furthermore, the position of **G**, **I** and **K** relative to **H** can be calculated using the angles `alpha`, `beta` and `theta`:
+Furthermore, the position of **G**, **I** and **K** relative to **H** can be calculated using the angles `alpha`, `beta` and `theta`
 ```
 x_G = -HG * sin(alpha),
-z_G = HG * cos(akpha),
+z_G = HG * cos(alpha),
 x_I = HI * cos(beta),
 z_I = HI * sin(beta),
 x_K = HK * cos(theta),
@@ -355,12 +355,12 @@ theta = angle_GHM + angle_arm - angle_GHK,
 with `angle_GHM`, `angle_GHI` and `angle_GHK` constants that can be calculated from the grid geometry.
 
 From the **G** and **F** coordinates, it is possible to calculate the distance **FG**, and then the position of **G'** using the (constant) length **GG'** of the piston rod.
-It is also possible to calculate the angle of the boom/arm piston relative to the horizontal
+It is also possible to calculate the angle of the boom/arm piston relative to the horizontal plane
 ```
 angle_ba_piston = arcsin((z_G - z_F) / FG).
 ```
 Note that `arcsin` is used as `angle_ba_piston` is expected to be between -90 and 90 degrees.
-In the excavator model, `angle_ba_piston` should be measured relative to the segment **CH**, as it is on the schematic above, that is the angle `angle_boom - angle_ba_piston`.
+In the excavator model, `angle_ba_piston` should be measured relative to the segment **CH**, as it is shown on the schematic above, that is the angle `angle_boom - angle_ba_piston`.
 
 | Parameter   | Value | Unit |
 | ----------- | ----- | ---- |
@@ -379,7 +379,7 @@ In the excavator model, `angle_ba_piston` should be measured relative to the seg
 \
 \
 \
-Following this schematic, the position of **L** relative to **M** can be easily calculated:
+Following this schematic, the position of **L** relative to **M** can be easily calculated
 ```
 x_L = LM * cos(angle_bucket),
 z_L = LM * sin(angle_bucket),
@@ -397,28 +397,28 @@ Using this, one may calculate the position of **J** relative to H
 x_J = x_K + JK * cos(angle_JKL + alpha),
 z_J = z_K + JK * sin(angle_JKL + alpha),
 ```
-where **JK** is a is a constant that can be calculated from the grid geometry, and
+where
 ```
 alpha = arcsin((z_L + z_M - z_K) / KL).
 ```
 Note that `arcsin` is used as `alpha` is expected to be between -90 and 90 degrees.
 
 From the **I** and **J** coordinates, it is possible to calculate the distance **IJ**, and then the position of **J'** using the (constant) length **JJ'** of the piston rod.
-It is also possible to calculate the angle of the arm/bucket piston relative to the horizontal
+It is also possible to calculate the angle of the arm/bucket piston relative to the horizontal plane
 ```
 angle_ah_piston = arcsin((z_J - z_I) / IJ).
 ```
 Note that `arcsin` is used as `angle_ah_piston` is expected to be between -90 and 90 degrees.
-In the excavator model, `angle_ah_piston` should be measured relative to the segment **HM**, as it is on the schematic above, that is the angle `angle_arm - angle_ah_piston`.
+In the excavator model, `angle_ah_piston` should be measured relative to the segment **HM**, as it is shown on the schematic above, that is the angle `angle_arm - angle_ah_piston`.
 
-From the **L** and **J** coordinates, it is possible to calculate the angle of the side link relative to the horizontal
+From the **L** and **J** coordinates, it is possible to calculate the angle of the side link relative to the horizontal plane
 ```
 angle_side_link = arccos((x_J - x_M - x_L) / JL).
 ```
 Note that `arccos` is used as `angle_side_link` is expected to be between 0 and 180 degrees.
-In the excavator model, `angle_side_link` should be measured relative to the segment **ML**, as it is on the schematic above, that is the angle `angle_arm + angle_bucket + angle_side_link`.
+In the excavator model, `angle_side_link` should be measured relative to the segment **ML**, as it is shown on the schematic above, that is the angle `angle_arm + angle_bucket + angle_side_link`.
 
-Finally, it is also necessary to calculate the angle of the H link relative to the IJ segment
+Finally, it is also necessary to calculate the angle of the H link relative to the **IJ** segment
 ```
 angle_h_link = 2 pi - angle_KJI = pi - angle_side_link + angle_ah_piston + angle_LJK.
 ```
