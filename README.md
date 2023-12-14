@@ -32,6 +32,14 @@ A window will open with the hydraulic excavator.
 It is suggested to toggle on the "Wireframe" view in the "Rendering" section in order to better visualize the soil.
 The hydraulic excavator can be actuated using the four sliders in the "Control" section.
 
+To change the initial pose of the excavator or the simulation properties (grid and soil), it is recommended to use the script `model_generation.py` in the `model/excavator/script/` folder.
+This script can generate an excavator model following properties given in an input dictionary.
+For more details, the user may refer to the [model README](model/excavator/README.md) and the docstrings inside the script.
+Note that the script relies on the `Jinja2` templating engine that can be installed using the following command
+```
+pip install Jinja2.
+```
+
 # To-do list
 There are several important features that are yet to be implemented.
 These include, in order of priority:
