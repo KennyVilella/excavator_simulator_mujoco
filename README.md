@@ -44,9 +44,6 @@ pip install Jinja2.
 There are several important features that are yet to be implemented.
 These include, in order of priority:
 
-- A template to generate excavator model with varying initial position.
-- Add options to customize the initial terrain shape.
-- Improve the soil plugin. In particular, add more check to ensure the plugin is properly connected.
 - Improve the actuation. The excavator should not move when a zero velocity is requested.
 - Add reaction force from the soil.
 
