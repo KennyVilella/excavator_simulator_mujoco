@@ -10,6 +10,10 @@ The meshes are stored in the `mesh` folder.
 Textures have been downloaded online ([metal][metal], [steel][steel], and [dirt][dirt]) and applied to meshes using [Blender][Blender].
 The resulting textures are stored in the `texture` folder.
 
+The `template` folder contains a template to generate an excavator model following the requested pose, given grid geometry and soil properties.
+A new model can be generated using the python script `model_generation.py` located in the `script` folder.
+Note that the excavator pose is calculated using the functions inside the `pose_calculation.py` file located in the `script` folder.
+
 ## Model modifications
 This section lists all the modifications that have been made to the original meshes.
 
@@ -257,6 +261,174 @@ Below is the Cartesian coordinates of the important points of the H link in its 
 | ------ | ------------- |
 | **J**  | (0, 0, 0)     |
 | **K**  | (0.454, 0, 0) |
+
+## Model pose
+A typical excavator has four degrees of freedom in addition to locomotion.
+Its pose can therefore be fully described by setting the state of its four active joints.
+The four active joints are:
+
+(1) The rotation of the chassis relative to the caterpillar.
+
+(2) The boom rotation.
+
+(3) The arm rotation.
+
+(4) The bucket rotation.
+
+The first active joint is straightforward to set and will not be discussed.
+Other active joints are actuated by hydraulic pistons.
+The state of these active joints can therefore be described using the piston extension, that is, the position of the piston rod in the piston cylinder.
+It may however be difficult for the user to set the desired pose of the excavator using piston extensions.
+As a result, the state of these three active joints are rather set using their angle relative to the horizontal plane, as illustrated in the schematic below.
+\
+\
+![Angle schematic](image/angle_convention.jpg)
+
+* The boom angle is calculated as the angle of the **CH** segment relative to the horizontal plane.
+* The arm angle is calculated as the angle of the **HM** segment relative to the horizontal plane.
+* The bucket angle is calculated as the angle of the **ML** segment relative to the horizontal plane.
+
+From these three input parameters, the full pose of the excavator can be calculated using simple trigonometry, as explained in the following.
+
+Note that angles are defined as positive counter clockwise, while it is the opposite in MuJoCo.
+
+### Boom pose
+\
+![Boom pose schematic](image/boom_pose.jpg)
+\
+\
+\
+Following this schematic, the position of **E**, **F**, and **H** relative to **C** can be easily calculated
+```
+x_E = CE * cos(angle_boom + angle_HCE),
+z_E = CE * sin(angle_boom + angle_HCE),
+x_F = CF * cos(angle_boom + angle_HCF),
+z_F = CF * sin(angle_boom + angle_HCF),
+x_H = CH * cos(angle_boom),
+z_H = CH * sin(angle_boom),
+```
+where **CE**, **CF**, **CH**, `angle_HCE` and `angle_HCF` are constants that can be calculated from the grid geometry (values are given in the table below).
+
+From the **E** coordinates, it is possible to calculate the distance **ED**, and then the position of **E'** using the (constant) length **EE'** of the piston rod.
+It is also possible to calculate the angle of the chassis/boom piston relative to the horizontal plane
+```
+angle_cb_piston = arccos((x_E - x_D) / ED).
+```
+Note that `arccos` is used as `angle_cb_piston` is expected to be between 0 and 180 degrees.
+
+| Parameter   | Value | Unit |
+| ----------- | ----- | ---- |
+| **CH**      | 3.845 | m    |
+| **CE**      | 1.678 | m    |
+| **CF**      | 2.362 | m    |
+| **EE'**     | 1.336 | m    |
+| `angle_HCE` | 0.421 | rad  |
+| `angle_HCF` | 0.411 | rad  |
+
+### Arm pose
+\
+![Arm pose schematic](image/arm_pose.jpg)
+\
+\
+\
+Following this schematic, the position of **M** relative to **H** can be easily calculated
+```
+x_M = HM * cos(angle_arm),
+z_M = HM * sin(angle_arm),
+```
+where **HM** is a constant that can be calculated from the grid geometry.
+Furthermore, the position of **G**, **I** and **K** relative to **H** can be calculated using the angles `alpha`, `beta` and `theta`
+```
+x_G = -HG * sin(alpha),
+z_G = HG * cos(alpha),
+x_I = HI * cos(beta),
+z_I = HI * sin(beta),
+x_K = HK * cos(theta),
+z_K = HK * sin(theta),
+```
+where **HG**, **HI** and **HK** are constants that can be calculated from the grid geometry, and
+```
+alpha = angle_GHM + angle_arm - pi / 2,
+beta = angle_GHM + angle_arm - angle_GHI,
+theta = angle_GHM + angle_arm - angle_GHK,
+```
+with `angle_GHM`, `angle_GHI` and `angle_GHK` constants that can be calculated from the grid geometry.
+
+From the **G** and **F** coordinates, it is possible to calculate the distance **FG**, and then the position of **G'** using the (constant) length **GG'** of the piston rod.
+It is also possible to calculate the angle of the boom/arm piston relative to the horizontal plane
+```
+angle_ba_piston = arcsin((z_G - z_F) / FG).
+```
+Note that `arcsin` is used as `angle_ba_piston` is expected to be between -90 and 90 degrees.
+In the excavator model, `angle_ba_piston` should be measured relative to the segment **CH**, as it is shown on the schematic above, that is the angle `angle_boom - angle_ba_piston`.
+
+| Parameter   | Value | Unit |
+| ----------- | ----- | ---- |
+| **HM**      | 1.996 | m    |
+| **HG**      | 0.570 | m    |
+| **HI**      | 0.448 | m    |
+| **HK**      | 1.523 | m    |
+| **GG'**     | 1.147 | m    |
+| `angle_GHM` | 2.881 | rad  |
+| `angle_GHI` | 1.876 | rad  |
+| `angle_GHK` | 2.838 | rad  |
+
+### Bucket and H link pose
+\
+![Bucket pose schematic](image/bucket_pose.jpg)
+\
+\
+\
+Following this schematic, the position of **L** relative to **M** can be easily calculated
+```
+x_L = LM * cos(angle_bucket),
+z_L = LM * sin(angle_bucket),
+```
+where **LM** is a constant that can be calculated from the grid geometry.
+From the **K** and **L** coordinates, it is possible to calculate the distance **KL**, which in turn gives
+```
+angle_JKL = arccos((JK * JK + KL * KL - JL * JL) / (2 * JK * KL)),
+angle_LJK = arccos((JK * JK + JL * JL - KL * KL) / (2 * JK * JL)),
+```
+from the law of cosines in the **JKL** triangle, with **JK** and **JL** are constants that can be calculated from the grid geometry.
+
+Using this, one may calculate the position of **J** relative to H
+```
+x_J = x_K + JK * cos(angle_JKL + alpha),
+z_J = z_K + JK * sin(angle_JKL + alpha),
+```
+where
+```
+alpha = arcsin((z_L + z_M - z_K) / KL).
+```
+Note that `arcsin` is used as `alpha` is expected to be between -90 and 90 degrees.
+
+From the **I** and **J** coordinates, it is possible to calculate the distance **IJ**, and then the position of **J'** using the (constant) length **JJ'** of the piston rod.
+It is also possible to calculate the angle of the arm/bucket piston relative to the horizontal plane
+```
+angle_ah_piston = arcsin((z_J - z_I) / IJ).
+```
+Note that `arcsin` is used as `angle_ah_piston` is expected to be between -90 and 90 degrees.
+In the excavator model, `angle_ah_piston` should be measured relative to the segment **HM**, as it is shown on the schematic above, that is the angle `angle_arm - angle_ah_piston`.
+
+From the **L** and **J** coordinates, it is possible to calculate the angle of the side link relative to the horizontal plane
+```
+angle_side_link = arccos((x_J - x_M - x_L) / JL).
+```
+Note that `arccos` is used as `angle_side_link` is expected to be between 0 and 180 degrees.
+In the excavator model, `angle_side_link` should be measured relative to the segment **ML**, as it is shown on the schematic above, that is the angle `angle_arm + angle_bucket + angle_side_link`.
+
+Finally, it is also necessary to calculate the angle of the H link relative to the **IJ** segment
+```
+angle_h_link = 2 pi - angle_KJI = pi - angle_side_link + angle_ah_piston + angle_LJK.
+```
+
+| Parameter   | Value | Unit |
+| ----------- | ----- | ---- |
+| **JK**      | 0.454 | m    |
+| **JL**      | 0.449 | m    |
+| **LM**      | 0.379 | m    |
+| **JJ'**     | 0.866 | m    |
 
 ## Actuation mode
 The current model uses velocity control to actuate the four joints.
